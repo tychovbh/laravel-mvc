@@ -3,9 +3,9 @@
 namespace Tychovbh\Mvc;
 
 use Illuminate\Support\ServiceProvider;
-use Tychovbh\Mvc\Console\RepositoryMake;
+use Tychovbh\Mvc\Console\MvcRepository;
 
-class RepositoryServiceProvider extends ServiceProvider
+class MvcServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -15,7 +15,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->commands([
-            RepositoryMake::class,
+            MvcRepository::class,
         ]);
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tychovbh\Tests\Mvc;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Tychovbh\Mvc\RepositoryServiceProvider;
+use Tychovbh\Mvc\MvcServiceProvider;
 
 class TestCase extends BaseTestCase
 {
@@ -38,7 +38,7 @@ class TestCase extends BaseTestCase
      */
     protected function getPackageProviders($app)
     {
-        return [RepositoryServiceProvider::class];
+        return [MvcServiceProvider::class];
     }
 
     /** @test */
