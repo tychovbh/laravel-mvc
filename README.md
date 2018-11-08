@@ -2,9 +2,6 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Laravel MVC is created by, and is maintained by Tycho, and is a Laravel/Lumen package to manage all your data via a Repositoru. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/tychovbh/laravel-mvc/releases), [license](LICENSE.md), and [contribution guidelines](CONTRIBUTING.md)
