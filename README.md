@@ -16,11 +16,14 @@ $ composer require tychovbh/laravel-mvc
 
 ## Usage
 
+Create a Repository:
+```
+// Creates a repository in app/Repositories
+artisan make:repository UserRepository
+```
+
 Use The UserRepository in controller, but you can use it anywhere else too.
 ``` php
-// Creates a repositoru in app/Repositories
-artisan make:repository UserRepository
-
 class UserController extends controller
 {
     public function __construct(UserRepository $repository)
