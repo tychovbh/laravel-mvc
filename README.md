@@ -21,6 +21,7 @@ $ composer require tychovbh/laravel-mvc
 
 Use The UserRepository in controller, but you can use it anywhere else too.
 ``` php
+// Creates a repositoru in app/Repositories
 artisan make:repository UserRepository
 
 class UserController extends controller
