@@ -38,7 +38,7 @@ class MvcRepository extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $directory = app_path('Repositories');
+        $directory = app('path') . '/Repositories';
 
         if (!is_dir($directory)) {
             mkdir($directory);
