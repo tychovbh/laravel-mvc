@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -30,22 +31,40 @@ abstract class AbstractRepository
             return $this->model::all();
         }
 
+        return $this->filters($filters)->get();
+    }
+
+    /**
+     * @param array $filters
+     * @return Builder
+     */
+    private function filters(array $filters): Builder
+    {
         $query = $this->model::select('*');
         foreach ($filters as $filter => $value) {
+            if (is_array($value)) {
+                $query->whereIn($filter, $value);
+                continue;
+            }
             $query->where($filter, $value);
         }
 
-        return $query->get();
+        return $query;
     }
 
     /**
      * Retrieve a paginated collection
      * @param int $paginate
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function paginate(int $paginate): LengthAwarePaginator
+    public function paginate(int $paginate, array $filters = []): LengthAwarePaginator
     {
-        return $this->model::paginate($paginate);
+        if (!$filters) {
+            return $this->model::paginate($paginate);
+        }
+
+        return $this->filters($filters)->paginate($paginate);
     }
 
     /**

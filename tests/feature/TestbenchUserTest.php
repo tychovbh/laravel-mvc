@@ -64,6 +64,58 @@ class TestUserTest extends TestCase
      * @depends itCanInstantiate
      * @param TestUserRepository $repository
      */
+    public function itCanFilterCollectionOfUsers(TestUserRepository $repository)
+    {
+        $users = factory(TestUser::class, 10)->create();
+        factory(TestUser::class, 10)->create();
+        $all = $repository->all([
+            'id' => $users->map(function (TestUser $user) {
+                return $user->id;
+            })->toArray()
+        ]);
+
+        $this->assertEquals($users->toArray(), $all->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
+    public function itCanPaginateUsers(TestUserRepository $repository)
+    {
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        factory(TestUser::class, 10)->create();
+        $users = TestUser::paginate(4);
+        $paginated = $repository->paginate(4);
+        $this->assertEquals(4, $paginated->count());
+        $this->assertEquals($users->toArray(), $paginated->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
+    public function itCanFilterAndPaginateUsers(TestUserRepository $repository)
+    {
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        factory(TestUser::class, 10)->create();
+        $users = TestUser::paginate(2);
+        $paginated = $repository->paginate(4, [
+            'id' => $users->map(function (TestUser $user) {
+                return $user->id;
+            })->toArray()
+        ]);
+        $this->assertEquals(2, $paginated->count());
+        $this->assertEquals($users->toArray()['data'], $paginated->toArray()['data']);
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
     public function itCanFindUserById(TestUserRepository $repository)
     {
         $user = factory(TestUser::class)->create();
