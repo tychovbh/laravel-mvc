@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V0.5 Alpha  11-12-2018
+
+- Add pagination with filtering and tests 
+
 ## V0.4 Alpha  08-11-2018
 
 - Fix Repository command for lumen app_path does not exist
