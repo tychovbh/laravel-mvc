@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V0.6 Alpha  11-12-2018
+
+- Add where, orderBy and select and replace filters 
+
 ## V0.5 Alpha  11-12-2018
 
 - Add pagination with filtering and tests 
