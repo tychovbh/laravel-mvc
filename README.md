@@ -53,16 +53,19 @@ Available methods"
 $this->repository->all();
 
 // Search all resources where name: Jan
-$this->repository->all(['name' => 'Jan']);
+$this->repository->where(['name' => 'Jan'])->all();
 
 // Search all resources where names in: Jan and piet
-$this->repository->all(['name' => ['jan', 'piet']]);
+$this->repository->where(['name' => ['jan', 'piet']])->all();
+
+// Order all resources by name
+$this->repository->orderBy('name', 'desc')->all();
 
 // Paginate 10
 $this->repository->paginate(10);
 
 // Paginate 10 where country in Netherlands or Belgium.
-$this->repository->paginate(10, ['country' => ['Netherlands', 'Belgium']]);
+$this->repository->where(['country' => ['Netherlands', 'Belgium']])->paginate(4);
 
 // Search resource with ID: 1
 $this->repository->find(1);

@@ -2,15 +2,20 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * @property $model
  */
 abstract class AbstractRepository
 {
+    /**
+     * @var Builder
+     */
+    private $query;
+
     /**
      * AbstractRepository constructor.
      * @throws \Exception
@@ -22,49 +27,80 @@ abstract class AbstractRepository
 
     /**
      * Retrieve a collection.
-     * @param array $filters
      * @return Collection
      */
-    public function all(array $filters = []): Collection
+    public function all(): Collection
     {
-        if (!$filters) {
-            return $this->model::all();
+        if ($this->query) {
+            $query = $this->query;
+            $this->query = null;
+            return $query->get();
         }
-
-        return $this->filters($filters)->get();
+        return $this->model::all();
     }
 
     /**
-     * @param array $filters
-     * @return Builder
+     * Add select to query.
+     * @param string $select
+     * @return Repository
      */
-    private function filters(array $filters): Builder
+    public function select(string $select = '*'): Repository
     {
-        $query = $this->model::select('*');
-        foreach ($filters as $filter => $value) {
-            if (is_array($value)) {
-                $query->whereIn($filter, $value);
-                continue;
-            }
-            $query->where($filter, $value);
+        $this->query = $this->model::select($select);
+        return $this;
+    }
+
+    /**
+     * Add where to query.
+     * @param array $filters
+     * @return Repository
+     */
+    public function where(array $filters): Repository
+    {
+        if (!$this->query) {
+            $this->select();
         }
 
-        return $query;
+        foreach ($filters as $filter => $value) {
+            if (is_array($value)) {
+                $this->query->whereIn($filter, $value);
+                continue;
+            }
+            $this->query->where($filter, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add order by to query.
+     * @param string $key
+     * @param string $direction
+     * @return Repository
+     */
+    public function orderBy(string $key, string $direction = 'asc'): Repository
+    {
+        if (!$this->query) {
+            $this->select();
+        }
+        $this->query->orderBy($key, $direction);
+        return $this;
     }
 
     /**
      * Retrieve a paginated collection
      * @param int $paginate
-     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function paginate(int $paginate, array $filters = []): LengthAwarePaginator
+    public function paginate(int $paginate): LengthAwarePaginator
     {
-        if (!$filters) {
-            return $this->model::paginate($paginate);
+        if ($this->query) {
+            $query = $this->query;
+            $this->query = null;
+            return $query->paginate($paginate);
         }
 
-        return $this->filters($filters)->paginate($paginate);
+        return $this->model::paginate($paginate);
     }
 
     /**

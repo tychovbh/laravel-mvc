@@ -2,34 +2,55 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 interface Repository
 {
     /**
      * Retrieve a collection.
-     * @param array $filters
      * @return Collection
      */
-    public function all(array $filters = []): Collection;
+    public function all(): Collection;
 
     /**
-     * Retrieve a paginated collection
+     * Retrieve a paginated collection.
      * @param int $paginate
      * @return LengthAwarePaginator
      */
-    public function paginate(int $paginate) : LengthAwarePaginator;
+    public function paginate(int $paginate): LengthAwarePaginator;
 
     /**
-     * Find a resource by ID
+     * Add select to query.
+     * @param string $select
+     * @return Repository
+     */
+    public function select(string $select = '*'): Repository;
+
+    /**
+     * Add where to query.
+     * @param array $filters
+     * @return Repository
+     */
+    public function where(array $filters): Repository;
+
+    /**
+     * Add order by to query.
+     * @param string $key
+     * @param string $direction
+     * @return Repository
+     */
+    public function orderBy(string $key, string $direction = 'asc'): Repository;
+
+    /**
+     * Find a resource by ID.
      * @param int $id
      * @return mixed
      */
     public function find(int $id);
 
     /**
-     * Find a resource by key
+     * Find a resource by key.
      * @param string $key
      * @param string $value
      * @return mixed
@@ -52,10 +73,10 @@ interface Repository
     public function update(array $data, int $id);
 
     /**
-     * Destroy resources
+     * Destroy resources.
      * @param array $ids
      * @return bool
      */
-    public function destroy(array $ids) : bool;
+    public function destroy(array $ids): bool;
 }
 

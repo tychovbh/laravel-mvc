@@ -52,9 +52,9 @@ class TestUserTest extends TestCase
     {
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         $user = factory(TestUser::class, 10)->create()->first();
-        $all = $repository->all([
+        $all = $repository->where([
             'id' => $user->id
-        ]);
+        ])->all();
 
         $this->assertEquals($user->toArray(), $all->first()->toArray());
     }
@@ -68,11 +68,26 @@ class TestUserTest extends TestCase
     {
         $users = factory(TestUser::class, 10)->create();
         factory(TestUser::class, 10)->create();
-        $all = $repository->all([
+        $all = $repository->where([
             'id' => $users->map(function (TestUser $user) {
                 return $user->id;
             })->toArray()
-        ]);
+        ])->all();
+
+        $this->assertEquals($users->toArray(), $all->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
+    public function itCanOrderByCollectionOfUsers(TestUserRepository $repository)
+    {
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        factory(TestUser::class, 10)->create();
+        $users = TestUser::orderBy('id', 'asc')->get();
+        $all = $repository->orderBy('id')->all();
 
         $this->assertEquals($users->toArray(), $all->toArray());
     }
@@ -102,11 +117,11 @@ class TestUserTest extends TestCase
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         factory(TestUser::class, 10)->create();
         $users = TestUser::paginate(2);
-        $paginated = $repository->paginate(4, [
+        $paginated = $repository->where([
             'id' => $users->map(function (TestUser $user) {
                 return $user->id;
             })->toArray()
-        ]);
+        ])->paginate(4);
         $this->assertEquals(2, $paginated->count());
         $this->assertEquals($users->toArray()['data'], $paginated->toArray()['data']);
     }
