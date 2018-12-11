@@ -54,7 +54,7 @@ class TestUserTest extends TestCase
         $user = factory(TestUser::class, 10)->create()->first();
         $all = $repository->where([
             'id' => $user->id
-        ])->all();
+        ])->get();
 
         $this->assertEquals($user->toArray(), $all->first()->toArray());
     }
@@ -72,7 +72,7 @@ class TestUserTest extends TestCase
             'id' => $users->map(function (TestUser $user) {
                 return $user->id;
             })->toArray()
-        ])->all();
+        ])->get();
 
         $this->assertEquals($users->toArray(), $all->toArray());
     }
@@ -87,7 +87,7 @@ class TestUserTest extends TestCase
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         factory(TestUser::class, 10)->create();
         $users = TestUser::orderBy('id', 'asc')->get();
-        $all = $repository->orderBy('id')->all();
+        $all = $repository->model::orderBy('id')->get();
 
         $this->assertEquals($users->toArray(), $all->toArray());
     }

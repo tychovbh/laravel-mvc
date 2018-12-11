@@ -53,13 +53,13 @@ Available methods"
 $this->repository->all();
 
 // Search all resources where name: Jan
-$this->repository->where(['name' => 'Jan'])->all();
+$this->repository->where(['name' => 'Jan'])->get();
 
 // Search all resources where names in: Jan and piet
-$this->repository->where(['name' => ['jan', 'piet']])->all();
+$this->repository->where(['name' => ['jan', 'piet']])->get();
 
-// Order all resources by name
-$this->repository->orderBy('name', 'desc')->all();
+// Order all resources by name or any other Laravel statement
+$this->repository->model::orderBy('name', 'desc')->get();
 
 // Paginate 10
 $this->repository->paginate(10);

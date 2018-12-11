@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V0.7 Alpha  11-12-2018
+
+- Query all other queries than where on the repository->model because it will get to complex
+
 ## V0.6 Alpha  11-12-2018
 
 - Add where, orderBy and select and replace filters 

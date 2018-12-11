@@ -12,11 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 abstract class AbstractRepository
 {
     /**
-     * @var Builder
-     */
-    private $query;
-
-    /**
      * AbstractRepository constructor.
      * @throws \Exception
      */
@@ -31,60 +26,28 @@ abstract class AbstractRepository
      */
     public function all(): Collection
     {
-        if ($this->query) {
-            $query = $this->query;
-            $this->query = null;
-            return $query->get();
-        }
         return $this->model::all();
     }
 
     /**
-     * Add select to query.
-     * @param string $select
-     * @return Repository
-     */
-    public function select(string $select = '*'): Repository
-    {
-        $this->query = $this->model::select($select);
-        return $this;
-    }
-
-    /**
-     * Add where to query.
+     * Start where query.
      * @param array $filters
-     * @return Repository
+     * @param string $select
+     * @return Builder
      */
-    public function where(array $filters): Repository
+    public function where(array $filters, string $select = '*'): Builder
     {
-        if (!$this->query) {
-            $this->select();
-        }
+        $query = $this->model::select($select);
 
         foreach ($filters as $filter => $value) {
             if (is_array($value)) {
-                $this->query->whereIn($filter, $value);
+                $query->whereIn($filter, $value);
                 continue;
             }
-            $this->query->where($filter, $value);
+            $query->where($filter, $value);
         }
 
-        return $this;
-    }
-
-    /**
-     * Add order by to query.
-     * @param string $key
-     * @param string $direction
-     * @return Repository
-     */
-    public function orderBy(string $key, string $direction = 'asc'): Repository
-    {
-        if (!$this->query) {
-            $this->select();
-        }
-        $this->query->orderBy($key, $direction);
-        return $this;
+        return $query;
     }
 
     /**
@@ -94,12 +57,6 @@ abstract class AbstractRepository
      */
     public function paginate(int $paginate): LengthAwarePaginator
     {
-        if ($this->query) {
-            $query = $this->query;
-            $this->query = null;
-            return $query->paginate($paginate);
-        }
-
         return $this->model::paginate($paginate);
     }
 
