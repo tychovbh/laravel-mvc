@@ -52,6 +52,9 @@ class TestCase extends BaseTestCase
             'id',
             'email',
             'password',
+            'firstname',
+            'surname',
+            'hidden',
             'created_at',
             'updated_at',
         ], $columns);

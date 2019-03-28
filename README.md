@@ -53,19 +53,19 @@ Available methods"
 $this->repository->all();
 
 // Search all resources where name: Jan
-$this->repository->where(['name' => 'Jan'])->get();
+$this->repository->params(['name' => 'Jan'])->all();
 
 // Search all resources where names in: Jan and piet
-$this->repository->where(['name' => ['jan', 'piet']])->get();
+$this->repository->params(['name' => ['jan', 'piet']])->all();
 
 // Order all resources by name or any other Laravel statement
-$this->repository->model::orderBy('name', 'desc')->get();
+$this->repository->params([sport => 'name desc')]->all();
 
 // Paginate 10
 $this->repository->paginate(10);
 
 // Paginate 10 where country in Netherlands or Belgium.
-$this->repository->where(['country' => ['Netherlands', 'Belgium']])->paginate(4);
+$this->repository->params(['country' => ['Netherlands', 'Belgium']])->paginate(4);
 
 // Search resource with ID: 1
 $this->repository->find(1);
@@ -96,6 +96,23 @@ class UserRepository extends AbstractRepository implements Repository
         $data['password'] = Hash:make($data['password']);
         return parent::save($data);
     }
+    
+    // You can add your own custom params to filter the request
+    // This will be triggered when key is "search" is added to the params:
+    // Let's say we want to build a search on firstname, lastname and email:
+    // $repository->params(['search' => 'jan'])->all();
+    // $repository->params(['search' => 'jan@gmail.com'])->all();
+    // $repository->params(['search' => 'piet'])->all();
+    // We can do that by adding a method, just capitalize the param key and add index{key}Param to the method name.
+    public function indexSearchParam(string $search)
+    {
+        $this->query->where('email', $search)
+                    ->orWhere('firstname', $search)
+                    ->orWhere('surname', $search);    
+    }
+    
+    // You can do the same for show methods like find
+    public function showSearchParam(string $search);
 }
 
 ```

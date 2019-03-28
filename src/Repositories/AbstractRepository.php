@@ -5,12 +5,23 @@ namespace Tychovbh\Mvc\Repositories;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property $model
+ * @property Model $model
  */
 abstract class AbstractRepository
 {
+    /**
+     * @var array
+     */
+    protected $params = [];
+
+    /**
+     * @var Builder
+     */
+    protected $query;
+
     /**
      * AbstractRepository constructor.
      * @throws \Exception
@@ -26,28 +37,67 @@ abstract class AbstractRepository
      */
     public function all(): Collection
     {
-        return $this->model::all();
+        if (!$this->params) {
+            return $this->model::all();
+        }
+
+        return $this->applyIndexParams()->get([$this->model->getTable() . '.*']);
     }
 
     /**
-     * Start where query.
-     * @param array $filters
-     * @param string $select
+     * Apply index params
      * @return Builder
      */
-    public function where(array $filters, string $select = '*'): Builder
+    private function applyIndexParams(): Builder
     {
-        $query = $this->model::select($select);
+        return $this->applyParams('index');
+    }
 
-        foreach ($filters as $filter => $value) {
-            if (is_array($value)) {
-                $query->whereIn($filter, $value);
+    /**
+     * Apply show params
+     * @return Builder
+     */
+    private function applyShowParams(): Builder
+    {
+        return $this->applyParams('show');
+    }
+
+    /**
+     * @param string $type
+     * @return Builder
+     */
+    private function applyParams(string $type): Builder
+    {
+        $this->query = $this->model::query();
+        foreach ($this->params as $param => $value) {
+            $method = str_replace('_', ' ', $param);
+            $method = ucwords($method);
+            $method = str_replace(' ', '', $method);
+            $method = $type . $method . 'Param';
+
+            if (method_exists($this, $method)) {
+                $this->{$method}($value);
                 continue;
             }
-            $query->where($filter, $value);
+
+
+            is_array($value) ? $this->query->whereIn($param, $value) : $this->query->where($param, $value);
         }
 
-        return $query;
+        $this->params = [];
+        return $this->query;
+    }
+
+    /**
+     * Add filter params before retrieving data.
+     * @param array $params
+     * @return Repository
+     */
+    public function params(array $params): Repository
+    {
+        $this->params = $params;
+
+        return $this;
     }
 
     /**
@@ -57,7 +107,11 @@ abstract class AbstractRepository
      */
     public function paginate(int $paginate): LengthAwarePaginator
     {
-        return $this->model::paginate($paginate);
+        if (!$this->params) {
+            return $this->model::paginate($paginate);
+        }
+
+        return $this->applyIndexParams()->paginate($paginate, [$this->model->getTable() . '.*']);
     }
 
     /**
@@ -67,7 +121,11 @@ abstract class AbstractRepository
      */
     public function find(int $id)
     {
-        return $this->model::findOrFail($id);
+        if (!$this->params) {
+            return $this->model::findOrFail($id);
+        }
+
+        return $this->applyShowParams()->where('id', $id)->firstOrFail();
     }
 
     /**
@@ -113,6 +171,25 @@ abstract class AbstractRepository
     public function destroy(array $ids): bool
     {
         return $this->model::destroy($ids);
+    }
+
+    /**
+     * Add param random
+     * @param $value
+     */
+    public function indexRandomParam($value)
+    {
+        $this->query->orderByRaw('RAND()');
+    }
+
+    /**
+     * Add param sort
+     * @param string $value
+     */
+    public function indexSortParam(string $value)
+    {
+        $sort = explode(' ', $value);
+        $this->query->orderBy(...$sort);
     }
 }
 

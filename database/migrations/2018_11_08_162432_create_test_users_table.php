@@ -19,6 +19,9 @@ class CreateTestUsersTable extends Migration
             $table->increments('id');
             $table->string('email');
             $table->string('password');
+            $table->string('firstname')->nullable();
+            $table->string('surname')->nullable();
+            $table->boolean('hidden')->default(0);
             $table->timestamps();
         });
         $now = Carbon::now();

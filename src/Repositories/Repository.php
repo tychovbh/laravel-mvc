@@ -23,11 +23,10 @@ interface Repository
 
     /**
      * Start where query.
-     * @param array $filters
-     * @param string $select
-     * @return Builder
+     * @param array $params
+     * @return Repository
      */
-    public function where(array $filters, string $select = '*'): Builder;
+    public function params(array $params) : Repository;
 
     /**
      * Find a resource by ID.

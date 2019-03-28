@@ -52,9 +52,9 @@ class TestUserTest extends TestCase
     {
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         $user = factory(TestUser::class, 10)->create()->first();
-        $all = $repository->where([
+        $all = $repository->params([
             'id' => $user->id
-        ])->get();
+        ])->all();
 
         $this->assertEquals($user->toArray(), $all->first()->toArray());
     }
@@ -68,11 +68,11 @@ class TestUserTest extends TestCase
     {
         $users = factory(TestUser::class, 10)->create();
         factory(TestUser::class, 10)->create();
-        $all = $repository->where([
+        $all = $repository->params([
             'id' => $users->map(function (TestUser $user) {
                 return $user->id;
             })->toArray()
-        ])->get();
+        ])->all();
 
         $this->assertEquals($users->toArray(), $all->toArray());
     }
@@ -87,9 +87,30 @@ class TestUserTest extends TestCase
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         factory(TestUser::class, 10)->create();
         $users = TestUser::orderBy('id', 'asc')->get();
-        $all = $repository->model::orderBy('id')->get();
+        $all = $repository->params(['sort' => 'id asc'])->all();
 
         $this->assertEquals($users->toArray(), $all->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
+    public function itCanCustomFilterUsers(TestUserRepository $repository)
+    {
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        factory(TestUser::class, 10)->create();
+        $user = factory(TestUser::class)->create();
+
+        $all = $repository->params(['search' => $user->email])->all();
+        $this->assertEquals([$user->toArray()], $all->toArray());
+
+        $all = $repository->params(['search' => $user->firstname])->all();
+        $this->assertEquals([$user->toArray()], $all->toArray());
+
+        $all = $repository->params(['search' => $user->surname])->all();
+        $this->assertEquals([$user->toArray()], $all->toArray());
     }
 
     /**
@@ -117,7 +138,7 @@ class TestUserTest extends TestCase
         TestUser::destroy(TestUser::select('id')->get()->toArray());
         factory(TestUser::class, 10)->create();
         $users = TestUser::paginate(2);
-        $paginated = $repository->where([
+        $paginated = $repository->params([
             'id' => $users->map(function (TestUser $user) {
                 return $user->id;
             })->toArray()
@@ -137,6 +158,21 @@ class TestUserTest extends TestCase
         $result = $repository->find($user->id);
         $this->assertInstanceOf(TestUser::class, $result);
         $this->assertEquals($user->toArray(), $result->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
+    public function itCanFindUserWithCustomFilter(TestUserRepository $repository)
+    {
+        $this->expectException(ModelNotFoundException::class);
+        $user = factory(TestUser::class)->create([
+            'hidden' => 1
+        ]);
+        $result = $repository->params(['hidden', 0])->find($user->id);
+        $this->assertInstanceOf(TestUser::class, $result);
     }
 
     /**
