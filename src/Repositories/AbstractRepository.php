@@ -80,8 +80,9 @@ abstract class AbstractRepository
                 continue;
             }
 
-
-            is_array($value) ? $this->query->whereIn($param, $value) : $this->query->where($param, $value);
+            if (has_column($this->model, $param)) {
+                is_array($value) ? $this->query->whereIn($param, $value) : $this->query->where($param, $value);
+            }
         }
 
         $this->params = [];

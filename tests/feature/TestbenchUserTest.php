@@ -64,6 +64,22 @@ class TestUserTest extends TestCase
      * @depends itCanInstantiate
      * @param TestUserRepository $repository
      */
+    public function itCanIndexUsersParamFieldDoesNotExists(TestUserRepository $repository)
+    {
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        $user = factory(TestUser::class, 10)->create()->first();
+        $all = $repository->params([
+            'unknownfield' => 'unkownvalue'
+        ])->all();
+
+        $this->assertEquals($user->toArray(), $all->first()->toArray());
+    }
+
+    /**
+     * @test
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     */
     public function itCanFilterCollectionOfUsers(TestUserRepository $repository)
     {
         $users = factory(TestUser::class, 10)->create();
@@ -171,7 +187,7 @@ class TestUserTest extends TestCase
         $user = factory(TestUser::class)->create([
             'hidden' => 1
         ]);
-        $result = $repository->params(['hidden', 0])->find($user->id);
+        $result = $repository->params(['hidden' => 0])->find($user->id);
         $this->assertInstanceOf(TestUser::class, $result);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Tychovbh\Mvc\Repositories\Repository;
 
 if (!function_exists('repository')) {
@@ -125,5 +127,18 @@ if (!function_exists('resource')) {
             throw new \Exception('Resource not found!');
         }
         return $class;
+    }
+}
+
+if (!function_exists('has_column')) {
+    /**
+     * Check if model has column
+     * @param Model $model
+     * @param string $key
+     * @return mixed
+     */
+    function has_column(Model $model, string $key)
+    {
+        return Schema::hasColumn($model->getTable(), $key);
     }
 }

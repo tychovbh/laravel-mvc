@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V0.9 Alpha  28-12-2018
+
+- Fix tests + check for params to exists on model
+
 ## V0.8 Alpha  28-12-2018
 
 - Remove where and replace it with params so that you can manage complex querying inside the Repository
