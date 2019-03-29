@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc\Repositories;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 interface Repository
@@ -22,11 +21,11 @@ interface Repository
     public function paginate(int $paginate): LengthAwarePaginator;
 
     /**
-     * Start where query.
+     * Start query with params.
      * @param array $params
      * @return Repository
      */
-    public function params(array $params) : Repository;
+    public static function withParams(array $params) : Repository;
 
     /**
      * Find a resource by ID.
@@ -34,6 +33,18 @@ interface Repository
      * @return mixed
      */
     public function find(int $id);
+
+    /**
+     * Retrieve a collection.
+     * @return Collection
+     */
+    public function get(): Collection;
+
+    /**
+     * Retrieve first resource.
+     * @return mixed
+     */
+    public function first();
 
     /**
      * Find a resource by key.

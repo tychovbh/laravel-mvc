@@ -37,29 +37,7 @@ abstract class AbstractRepository
      */
     public function all(): Collection
     {
-        if (!$this->params) {
-            return $this->model::all();
-        }
-
-        return $this->applyIndexParams()->get([$this->model->getTable() . '.*']);
-    }
-
-    /**
-     * Apply index params
-     * @return Builder
-     */
-    private function applyIndexParams(): Builder
-    {
-        return $this->applyParams('index');
-    }
-
-    /**
-     * Apply show params
-     * @return Builder
-     */
-    private function applyShowParams(): Builder
-    {
-        return $this->applyParams('show');
+        return $this->model::all();
     }
 
     /**
@@ -81,7 +59,8 @@ abstract class AbstractRepository
             }
 
             if (has_column($this->model, $param)) {
-                is_array($value) ? $this->query->whereIn($param, $value) : $this->query->where($param, $value);
+                $key = $this->model->getTable() . '.' . $param;
+                is_array($value) ? $this->query->whereIn($key, $value) : $this->query->where($key, $value);
             }
         }
 
@@ -93,12 +72,32 @@ abstract class AbstractRepository
      * Add filter params before retrieving data.
      * @param array $params
      * @return Repository
+     * @throws \Exception
      */
-    public function params(array $params): Repository
+    public static function withParams(array $params): Repository
     {
-        $this->params = $params;
+        $repository = new static();
+        $repository->params = $params;
 
-        return $this;
+        return $repository;
+    }
+
+    /**
+     * Get param filtered Collection.
+     * @return Collection
+     */
+    public function get(): Collection
+    {
+        return $this->applyParams('index')->get([$this->model->getTable() . '.*']);
+    }
+
+    /**
+     * Get param filtered first item.
+     * @return Model
+     */
+    public function first()
+    {
+        return $this->applyParams('show')->firstOrFail();
     }
 
     /**
@@ -112,7 +111,7 @@ abstract class AbstractRepository
             return $this->model::paginate($paginate);
         }
 
-        return $this->applyIndexParams()->paginate($paginate, [$this->model->getTable() . '.*']);
+        return $this->applyParams('index')->paginate($paginate, [$this->model->getTable() . '.*']);
     }
 
     /**
@@ -122,11 +121,7 @@ abstract class AbstractRepository
      */
     public function find(int $id)
     {
-        if (!$this->params) {
-            return $this->model::findOrFail($id);
-        }
-
-        return $this->applyShowParams()->where('id', $id)->firstOrFail();
+        return $this->model::findOrFail($id);
     }
 
     /**

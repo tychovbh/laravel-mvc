@@ -53,19 +53,19 @@ Available methods"
 $this->repository->all();
 
 // Search all resources where name: Jan
-$this->repository->params(['name' => 'Jan'])->all();
+$this->repository::withParams(['name' => 'Jan'])->get();
 
 // Search all resources where names in: Jan and piet
-$this->repository->params(['name' => ['jan', 'piet']])->all();
+$this->repository::withParams(['name' => ['jan', 'piet']])->get();
 
 // Order all resources by name or any other Laravel statement
-$this->repository->params([sport => 'name desc')]->all();
+$this->repository::withParams([sport => 'name desc')]->get();
 
 // Paginate 10
 $this->repository->paginate(10);
 
 // Paginate 10 where country in Netherlands or Belgium.
-$this->repository->params(['country' => ['Netherlands', 'Belgium']])->paginate(4);
+$this->repository::withParams(['country' => ['Netherlands', 'Belgium']])->paginate(4);
 
 // Search resource with ID: 1
 $this->repository->find(1);
