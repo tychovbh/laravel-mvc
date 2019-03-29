@@ -55,11 +55,14 @@ $this->repository->all();
 // Search all resources where name: Jan
 $this->repository::withParams(['name' => 'Jan'])->get();
 
+// Search all resources where name: Jan and get first.
+$this->repository::withParams(['name' => 'Jan'])->first();
+
 // Search all resources where names in: Jan and piet
 $this->repository::withParams(['name' => ['jan', 'piet']])->get();
 
 // Order all resources by name or any other Laravel statement
-$this->repository::withParams([sport => 'name desc')]->get();
+$this->repository::withParams(['sort' => 'name desc')]->get();
 
 // Paginate 10
 $this->repository->paginate(10);

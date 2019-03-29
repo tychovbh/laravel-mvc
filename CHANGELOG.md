@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V1.1 Alpha  29-12-2018
+
+- Fix spelling mistake readme and add first() to readme 
+
 ## V1.0 Alpha  29-12-2018
 
 - Make params static and change name, because query is conflicting with other requests
