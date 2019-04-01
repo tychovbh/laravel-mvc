@@ -23,12 +23,31 @@ abstract class AbstractRepository
     protected $query;
 
     /**
+     * @var array
+     */
+    protected $joins = [];
+
+    /**
      * AbstractRepository constructor.
      * @throws \Exception
      */
     public function __construct()
     {
         $this->model = model(get_called_class());
+    }
+
+    /**
+     * Join tables in param methods, without conflicting when already joined.
+     * @param string $table
+     * @param string $first
+     * @param string $second
+     */
+    public function join(string $table, string $first, string $second)
+    {
+        if (!in_array($table, $this->joins)) {
+            $this->joins[] = $table;
+            $this->query->join($table, $first, $second);
+        }
     }
 
     /**
@@ -97,7 +116,7 @@ abstract class AbstractRepository
      */
     public function first()
     {
-        return $this->applyParams('show')->firstOrFail();
+        return $this->applyParams('show')->firstOrFail([$this->model->getTable() . '.*']);
     }
 
     /**
