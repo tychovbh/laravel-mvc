@@ -2,16 +2,20 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
-## V1.2 Alpha  29-12-2018
+## V1.3 Alpha  01-04-2019
+
+- Add group by to prevent multiple records with joins 
+
+## V1.2 Alpha  29-03-2019
 
 - Select only table fields in first method
 - Add join method to fix already joined conflicts in param methods 
 
-## V1.1 Alpha  29-12-2018
+## V1.1 Alpha  29-03-2019
 
 - Fix spelling mistake readme and add first() to readme 
 
-## V1.0 Alpha  29-12-2018
+## V1.0 Alpha  29-03-2019
 
 - Make params static and change name, because query is conflicting with other requests
 

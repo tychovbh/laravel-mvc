@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property Model $model
+ * @property string name
  */
 abstract class AbstractRepository
 {
@@ -34,6 +35,7 @@ abstract class AbstractRepository
     public function __construct()
     {
         $this->model = model(get_called_class());
+        $this->name = $this->model->getTable();
     }
 
     /**
@@ -78,12 +80,13 @@ abstract class AbstractRepository
             }
 
             if (has_column($this->model, $param)) {
-                $key = $this->model->getTable() . '.' . $param;
+                $key = $this->name . '.' . $param;
                 is_array($value) ? $this->query->whereIn($key, $value) : $this->query->where($key, $value);
             }
         }
 
         $this->params = [];
+        $this->query->groupBy($this->name . '.id');
         return $this->query;
     }
 
@@ -107,7 +110,7 @@ abstract class AbstractRepository
      */
     public function get(): Collection
     {
-        return $this->applyParams('index')->get([$this->model->getTable() . '.*']);
+        return $this->applyParams('index')->get([$this->name . '.*']);
     }
 
     /**
@@ -116,7 +119,7 @@ abstract class AbstractRepository
      */
     public function first()
     {
-        return $this->applyParams('show')->firstOrFail([$this->model->getTable() . '.*']);
+        return $this->applyParams('show')->firstOrFail([$this->name . '.*']);
     }
 
     /**
@@ -130,7 +133,7 @@ abstract class AbstractRepository
             return $this->model::paginate($paginate);
         }
 
-        return $this->applyParams('index')->paginate($paginate, [$this->model->getTable() . '.*']);
+        return $this->applyParams('index')->paginate($paginate, [$this->name . '.*']);
     }
 
     /**
