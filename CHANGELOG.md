@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V1.4 Alpha  18-04-2019
+
+- Add support for multiple sort queries. 
+
 ## V1.3 Alpha  01-04-2019
 
 - Add group by to prevent multiple records with joins 

@@ -202,12 +202,21 @@ abstract class AbstractRepository
 
     /**
      * Add param sort
-     * @param string $value
+     * @param string|array $value
      */
-    public function indexSortParam(string $value)
+    public function indexSortParam($value)
     {
-        $sort = explode(' ', $value);
-        $this->query->orderBy(...$sort);
+        if (is_string($value)) {
+            $sort = explode(' ', $value);
+            $this->query->orderBy(...$sort);
+        }
+
+        if (is_array($value)) {
+            foreach($value as $order) {
+                $sort = explode(' ', $order);
+                $this->query->orderBy(...$sort);
+            }
+        }
     }
 }
 
