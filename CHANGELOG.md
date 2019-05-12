@@ -15,6 +15,10 @@ All notable changes to `laravel-mvc` will be documented in this file.
 - Select only table fields in first method
 - Add join method to fix already joined conflicts in param methods 
 
+## V1.3 Alpha  12-05-2019
+
+- Require laravel package skeleton
+
 ## V1.2 Alpha  12-05-2019
 
 - Add abstract controller + rest module + make command
