@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V1.8 Alpha  12-05-2019
+
+- Remove framework packages
+
 ## V1.7 Alpha  12-05-2019
 
 - Update laravel skeleton
