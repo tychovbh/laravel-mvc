@@ -15,7 +15,7 @@ All notable changes to `laravel-mvc` will be documented in this file.
 - Select only table fields in first method
 - Add join method to fix already joined conflicts in param methods 
 
-## V1.2 Alpha  29-03-2019
+## V1.2 Alpha  12-05-2019
 
 - Add abstract controller + rest module + make command
 - Add Form Requests + make command
