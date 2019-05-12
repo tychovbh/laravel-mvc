@@ -1,0 +1,3 @@
+<?php
+
+include('vendor/tychovbh/laravel-package-skeleton/artisan');

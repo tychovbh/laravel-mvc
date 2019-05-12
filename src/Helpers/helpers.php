@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Tychovbh\Mvc\Repositories\Repository;
 
@@ -140,5 +143,103 @@ if (!function_exists('has_column')) {
     function has_column(Model $model, string $key)
     {
         return Schema::hasColumn($model->getTable(), $key);
+    }
+}
+
+if (!function_exists('error')) {
+
+    /**
+     * Log warning
+     *
+     * @param string $message
+     * @param array $context
+     */
+    function error(string $message, $context = [])
+    {
+        Log::error($message, $context);
+    }
+}
+
+if (!function_exists('warning')) {
+
+    /**
+     * Log warning
+     *
+     * @param string $message
+     * @param array $context
+     */
+    function warning(string $message, $context = [])
+    {
+        Log::warning($message, $context);
+    }
+}
+
+if (!function_exists('info')) {
+
+    /**
+     * Log warning
+     *
+     * @param string $message
+     * @param array $context
+     */
+    function info(string $message, $context = [])
+    {
+        Log::info($message, $context);
+    }
+}
+
+if (!function_exists('message')) {
+
+    /**
+     * Generate response message.
+     * @param string $message
+     * @param mixed ...$params
+     * @return string
+     */
+    function message(string $message, ...$params)
+    {
+        $config = config('messages');
+        $message = Arr::get($config, $message) ?? Arr::get($config, 'server.error');
+
+        return $params ? sprintf($message, ...$params) : $message;
+    }
+}
+
+if (!function_exists('is_application')) {
+
+    /**
+     * Check Application type
+     * @return string
+     */
+    function is_application(): string
+    {
+        $app = app();
+        if ($app instanceof \Illuminate\Foundation\Application && $app->runningInConsole()) {
+            return 'laravel';
+        } elseif ($app instanceof \Laravel\Lumen\Application) {
+            return 'lumen';
+        }
+
+        return 'laravel';
+    }
+}
+
+if (!function_exists('get_route_info')) {
+
+    /**
+     * @param Request $request
+     * @param $key
+     * @return mixed|string
+     */
+    function get_route_info(Request $request, $key)
+    {
+        $route = (array)$request->route();
+        foreach ($route as $items) {
+
+            if (is_array($items) && Arr::has($items, $key)) {
+                return $items[$key];
+            }
+        }
+        return null;
     }
 }

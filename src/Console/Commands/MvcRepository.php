@@ -1,6 +1,6 @@
 <?php
 
-namespace Tychovbh\Mvc\Console;
+namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -38,21 +38,12 @@ class MvcRepository extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $directory = app('path') . '/Repositories';
+        $file = sprintf('%s/Repositories/%s.php', app('path'), $name);
 
-        if (!is_dir($directory)) {
-            mkdir($directory);
-        }
-        $output = "<?php\n\n";
-        $output .= "namespace App\Repositories;\n\n";
-        $output .= "use Tychovbh\Mvc\Repositories\Repository;\n";
-        $output .= "use Tychovbh\Mvc\Repositories\AbstractRepository;\n\n";
-        $output .= "class " . $name . " extends AbstractRepository implements Repository\n";
-        $output .= "{\n";
-        $output .= "    //\n";
-        $output .= "}\n";
-        $file = $directory . '/' . $name . '.php';
-        shell_exec('touch ' . $file);
-        shell_exec(sprintf('echo "%s" > %s', $output, $file));
+        file_replace('Repository.php', [
+            'EntityRepository' => $name
+        ], $file, __DIR__ . '/..');
+
+        $this->line('Controller created!');
     }
 }

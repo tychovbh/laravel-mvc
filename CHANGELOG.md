@@ -15,6 +15,19 @@ All notable changes to `laravel-mvc` will be documented in this file.
 - Select only table fields in first method
 - Add join method to fix already joined conflicts in param methods 
 
+## V1.2 Alpha  29-03-2019
+
+- Add abstract controller + rest module + make command
+- Add Form Requests + make command
+- Add separate lumen/laravel logic
+- Add Form Request Validation middleware
+
+#### Missing
+
+- validation middleware logic for Laravel
+- New test cases
+- Updated readme
+
 ## V1.1 Alpha  29-03-2019
 
 - Fix spelling mistake readme and add first() to readme 
