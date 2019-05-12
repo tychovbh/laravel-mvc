@@ -28,7 +28,7 @@
     "require-dev": {
         "mockery/mockery": "^1.2",
         "squizlabs/php_codesniffer": "^2.3",
-        "tychovbh/laravel-package-skeleton": "^1.0"
+        "tychovbh/laravel-package-skeleton": "^1.2"
     },
     "autoload": {
         "psr-4": {

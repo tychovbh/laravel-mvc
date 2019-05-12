@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98c3d8832fcf1562d97df450040e7c1b",
+    "content-hash": "180ab4bbeb94bea735e7f234f86414d3",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -4086,16 +4086,16 @@
         },
         {
             "name": "tychovbh/laravel-package-skeleton",
-            "version": "v1.0",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tychovbh/laravel-package-skeleton.git",
-                "reference": "e73e6026b01072ac33143892c0ea7db6322f3130"
+                "reference": "c6e993862ffbda0c7a1a54b4a2ec5eb011eb5670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tychovbh/laravel-package-skeleton/zipball/e73e6026b01072ac33143892c0ea7db6322f3130",
-                "reference": "e73e6026b01072ac33143892c0ea7db6322f3130",
+                "url": "https://api.github.com/repos/tychovbh/laravel-package-skeleton/zipball/c6e993862ffbda0c7a1a54b4a2ec5eb011eb5670",
+                "reference": "c6e993862ffbda0c7a1a54b4a2ec5eb011eb5670",
                 "shasum": ""
             },
             "require": {
@@ -4144,7 +4144,7 @@
                 "Laravel Package Skeleton",
                 "tychovbh"
             ],
-            "time": "2019-05-08T16:28:40+00:00"
+            "time": "2019-05-12T13:31:44+00:00"
         },
         {
             "name": "webmozart/assert",
