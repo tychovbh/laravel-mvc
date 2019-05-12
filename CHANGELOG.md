@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V1.7 Alpha  12-05-2019
+
+- Update laravel skeleton
+- Add dev dependencies
+
 ## V1.6 Alpha  12-05-2019
 
 - Require laravel skeleton
