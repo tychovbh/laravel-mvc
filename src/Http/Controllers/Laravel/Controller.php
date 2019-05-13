@@ -4,8 +4,9 @@ namespace Tychovbh\Mvc\Http\Controllers\Laravel;
 
 use App\Http\Controllers\Rest;
 use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller as IController;
 
-class Controller extends BaseController
+class Controller extends BaseController implements IController
 {
     use Rest;
 

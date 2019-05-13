@@ -44,6 +44,6 @@ class MvcRepository extends Command
             'EntityRepository' => $name
         ], $file, __DIR__ . '/..');
 
-        $this->line('Controller created!');
+        $this->line('Repository created!');
     }
 }

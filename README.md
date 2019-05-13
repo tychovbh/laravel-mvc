@@ -4,7 +4,7 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Laravel MVC is created by, and is maintained by Tycho, and is a Laravel/Lumen package to manage all your data via a Repositoru. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/tychovbh/laravel-mvc/releases), [license](LICENSE.md), and [contribution guidelines](CONTRIBUTING.md)
+Laravel MVC is created by, and is maintained by Tycho, and is a Laravel/Lumen package to manage all your data via a Repository. Feel free to check out the [change log](CHANGELOG.md), [releases](https://github.com/tychovbh/laravel-mvc/releases), [license](LICENSE.md), and [contribution guidelines](CONTRIBUTING.md)
 
 ## Install
 
@@ -14,12 +14,19 @@ Via Composer
 $ composer require tychovbh/laravel-mvc
 ```
 
+For lumen application add Service Provider to bootstrap/app.php
+```php
+$app->register(\Tychovbh\Mvc\MvcServiceProvider::class);
+```
+
 ## Usage
+
+### Repositories
 
 Create a Repository:
 ```
 // Creates a repository in app/Repositories
-artisan make:repository UserRepository
+artisan mvc:repository UserRepository
 ```
 
 Use The UserRepository in controller, but you can use it anywhere else too.
@@ -119,6 +126,60 @@ class UserRepository extends AbstractRepository implements Repository
 }
 
 ```
+
+### Controllers
+
+Create a Controller:
+```
+// Creates a Controller in app/Http/Controllers
+artisan mvc:controller UserController
+```
+All Laravel Resource methods are now available (index, show, store, update, destroy). See their documentation here for setting up routes: [laravel resource controllers](https://laravel.com/docs/5.8/controllers#resource-controllers).
+
+You can override Resource methods to do project related stuff
+``` php
+class UserController extends Controller
+{
+    public function index()
+    {
+        // Do stuff before querying
+        
+        $response = parent::index();
+
+        // Do stuff after querying
+
+        return $response;
+    }
+}
+```
+
+### Form Requests
+
+Create a Form Request:
+```
+// Creates a Form Request in app/Http/Requests
+artisan mvc:request StoreUser
+```
+
+You can use the request middleware "valdiate" to validate the request. It will look for the FormRequest and validate it So for example model User:
+- store request (POST /users) will look for a FormRequest with name StoreUser
+- update request (UPDATE /user/{id}) will look for a FormRequest with name UpdateUser
+
+``` php
+// routes/web.php (Laravel)
+$router->post('/users', 'UserController@index')
+->name('user.index')
+->middleware('validate');
+
+// routes/web.php (Lumen)
+$router->post('/users', [
+    'middleware' => 'validate',
+    'as' => 'users.index',
+    'uses' => 'UserController@index'
+]);
+
+```
+
 
 ## Change log
 

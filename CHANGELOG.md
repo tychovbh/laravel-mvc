@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V2.1 Alpha  13-05-2019
+
+- Add Controllers and Form Requests to readme
+- Make interface for Controller to add Resource methods
+
 ## V2.0 Alpha  13-05-2019
 
 - Init Repository, Model and Resource
