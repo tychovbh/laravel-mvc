@@ -16,7 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property \Tychovbh\Mvc\Repositories\Repository repository
  * @property string resource
  * @property string controller
- * @package App\Http\Controllers
+ * @package Tychovbh\Mvc\Http\Controllers
  */
 trait Rest
 {

@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V2.4 Alpha  13-05-2019
+
+- Correct namespaces
+- Make controller an abstract class
+
 ## V2.3 Alpha  13-05-2019
 
 - Fix Rest namespace

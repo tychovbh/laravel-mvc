@@ -2,11 +2,18 @@
 
 namespace Tychovbh\Mvc\Http\Controllers\Laravel;
 
-use App\Http\Controllers\Rest;
+use Tychovbh\Mvc\Http\Controllers\Rest;
 use Illuminate\Routing\Controller as BaseController;
 use Tychovbh\Mvc\Http\Controllers\Controller as IController;
 
-class Controller extends BaseController implements IController
+/**
+ * Class Controller
+ * @property \Tychovbh\Mvc\Repositories\Repository repository
+ * @property string resource
+ * @property String controller
+ * @package Tychovbh\Mvc\Http\Controllers\Laravel
+ */
+abstract class Controller extends BaseController implements IController
 {
     use Rest;
 
@@ -21,4 +28,3 @@ class Controller extends BaseController implements IController
         $this->controller = controller(get_called_class());
     }
 }
-
