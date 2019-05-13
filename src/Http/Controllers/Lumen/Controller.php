@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Http\Controllers\Lumen;
 
 use App\Http\Controllers\Rest;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Http\Controllers\Controller as IController;
+use Tychovbh\Mvc\Http\Controllers\Controller as IController;
 
 class Controller extends BaseController implements IController
 {

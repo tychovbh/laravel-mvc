@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Http\Controllers\Laravel;
 
 use App\Http\Controllers\Rest;
 use Illuminate\Routing\Controller as BaseController;
-use App\Http\Controllers\Controller as IController;
+use Tychovbh\Mvc\Http\Controllers\Controller as IController;
 
 class Controller extends BaseController implements IController
 {
@@ -21,3 +21,4 @@ class Controller extends BaseController implements IController
         $this->controller = controller(get_called_class());
     }
 }
+

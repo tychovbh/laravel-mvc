@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace Tychovbh\Mvc\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
