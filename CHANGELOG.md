@@ -2,7 +2,11 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
-## V1.9 Alpha  12-05-2019
+## V2.0 Alpha  13-05-2019
+
+- Init Repository, Model and Resource
+
+## V1.9 Alpha  13-05-2019
 
 - Allow more composer versions for Illuminate
 
