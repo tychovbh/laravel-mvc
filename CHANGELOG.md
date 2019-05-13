@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V2.3 Alpha  13-05-2019
+
+- Fix Rest namespace
+
 ## V2.2 Alpha  13-05-2019
 
 - Fix Interface Controller namespace

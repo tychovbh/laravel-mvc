@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Mvc\Http\Controllers\Lumen;
 
-use App\Http\Controllers\Rest;
+use Tychovbh\Mvc\Http\Controllers\Rest;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Tychovbh\Mvc\Http\Controllers\Controller as IController;
 
