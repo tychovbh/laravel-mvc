@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V1.9 Alpha  12-05-2019
+
+- Allow more composer versions for Illuminate
+
 ## V1.8 Alpha  12-05-2019
 
 - Remove framework packages
