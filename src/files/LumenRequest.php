@@ -25,5 +25,16 @@ class EntityRequest extends FormRequest
             //
         ];
     }
+
+    /**
+     * Get field translations for messages.
+     * @return array
+     */
+    public function translations(): array
+    {
+        return [
+            //
+        ];
+    }
 }
 

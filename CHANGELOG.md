@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V2.5 Alpha  16-05-2019
+
+- Translate message fields
+
 ## V2.4 Alpha  13-05-2019
 
 - Correct namespaces

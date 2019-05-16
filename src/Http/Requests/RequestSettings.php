@@ -2,6 +2,7 @@
 namespace Tychovbh\Mvc\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 
 trait RequestSettings
 {
@@ -38,13 +39,13 @@ trait RequestSettings
                 $rule = explode(':', $rule);
                 switch ($rule[0]) {
                     case 'required_with':
-                        $message = message('field.' . $rule[0], $rule[1]);
+                        $message = message('field.' . $rule[0], $this->translate($field));
                         break;
                     case 'min':
-                        $message = message('field.' . $rule[0], $field, $rule[1]);
+                        $message = message('field.' . $rule[0], $field, $this->translate($rule[1]));
                         break;
                     default:
-                        $message = message('field.' . $rule[0], $field);
+                        $message = message('field.' . $rule[0], $this->translate($field));
 
                 }
                 $messages[$field . '.' . $rule[0]] = $message;
@@ -52,5 +53,21 @@ trait RequestSettings
         }
 
         return $messages;
+    }
+
+    /**
+     * Translate fields
+     * @param string $field
+     * @return string
+     */
+    private function translate(string $field): string
+    {
+        if (!method_exists($this, 'translations')) {
+            return $field;
+        }
+
+        $translations = $this->translations();
+
+        return Arr::get($translations, $field) ?? $field;
     }
 }
