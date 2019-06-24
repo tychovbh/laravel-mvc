@@ -34,6 +34,8 @@ class MvcServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
 
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
         if (is_application() === 'lumen') {
             $this->app->configure('messages');
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
