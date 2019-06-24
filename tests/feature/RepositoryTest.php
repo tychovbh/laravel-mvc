@@ -15,7 +15,7 @@ use Tychovbh\Tests\Mvc\TestCase;
 /**
  * @property TestUserRepository repository
  */
-class TestUserTest extends TestCase
+class RepositoryTest extends TestCase
 {
     /**
      * @test
@@ -206,7 +206,9 @@ class TestUserTest extends TestCase
     public function itCanSaveUser(TestUserRepository $repository)
     {
         $formData = factory(TestUser::class)->make();
-        $user = $repository->save($formData->toArray());
+        $user = $repository->save(array_merge($formData->toArray(), [
+            'password' => bcrypt('secret')
+        ]));
         $this->assertInstanceOf(TestUser::class, $user);
         $this->assertNotEmpty($user->id);
         $this->assertEquals($formData->email, $user->email);

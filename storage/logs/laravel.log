@@ -1,0 +1,258 @@
+[2019-05-30 15:04:41] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:04:41] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_150441_create_users_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_150441_create_users_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_users_ta...', '/home/vagrant/b...', 'users', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_users_ta...', 'users', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 
+[2019-05-30 15:05:01] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:05:01] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_150501_create_users_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_150501_create_users_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_users_ta...', '/home/vagrant/b...', 'users', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_users_ta...', 'users', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 
+[2019-05-30 15:47:14] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:47:14] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_154714_create_user_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/src/database/migrations/2019_05_30_154714_create_user_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_user_tab...', '/home/vagrant/b...', 'user', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_user_tab...', 'user', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 
+[2019-05-30 15:48:09] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:48:09] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc//database/migrations/2019_05_30_154809_create_user_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc//database/migrations/2019_05_30_154809_create_user_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_user_tab...', '/home/vagrant/b...', 'user', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_user_tab...', 'user', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 
+[2019-05-30 15:48:18] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:48:18] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/database/migrations/2019_05_30_154818_create_user_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/database/migrations/2019_05_30_154818_create_user_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_user_tab...', '/home/vagrant/b...', 'user', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_user_tab...', 'user', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 
+[2019-05-30 15:48:31] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve(NULL)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get(NULL)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('file_put_conten...', Array)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/src/Exceptions/Handler.php(39): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Matthewbdaly\\ArtisanStandalone\\Exceptions\\Handler->report(Object(ErrorException))
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#10 {main}
+"} 
+[2019-05-30 15:48:31] laravel.ERROR: file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/database/migrations/2019_05_30_154831_create_user_table.php): failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/home/vagrant/bespokeweb/packages/laravel-mvc/database/migrations/2019_05_30_154831_create_user_table.php): failed to open stream: No such file or directory at /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:122)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/home/vagrant/b...', 122, Array)
+#1 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(122): file_put_contents('/home/vagrant/b...', '<?php\
+\
+use Illu...', 0)
+#2 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Migrations/MigrationCreator.php(59): Illuminate\\Filesystem\\Filesystem->put('/home/vagrant/b...', '<?php\
+\
+use Illu...')
+#3 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(109): Illuminate\\Database\\Migrations\\MigrationCreator->create('create_user_tab...', '/home/vagrant/b...', 'user', true)
+#4 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateMakeCommand.php(93): Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->writeMigration('create_user_tab...', 'user', true)
+#5 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand->handle()
+#6 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(32): call_user_func_array(Array, Array)
+#7 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#8 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Object(Closure))
+#9 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Container/Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Matthewbdaly\\ArtisanStandalone\\Base\\Application), Array, Array, NULL)
+#10 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#11 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#13 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(908): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(269): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/symfony/console/Application.php(145): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Console/Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#18 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/matthewbdaly/artisan-standalone/artisan(36): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 /home/vagrant/bespokeweb/packages/laravel-mvc/vendor/tychovbh/laravel-package-skeleton/artisan(3): include('/home/vagrant/b...')
+#20 /home/vagrant/bespokeweb/packages/laravel-mvc/artisan(3): include('/home/vagrant/b...')
+#21 {main}
+"} 

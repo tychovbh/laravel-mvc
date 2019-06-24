@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -24,13 +22,6 @@ class CreateTestUsersTable extends Migration
             $table->boolean('hidden')->default(0);
             $table->timestamps();
         });
-        $now = Carbon::now();
-        DB::table('test_users')->insert([
-            'email' => 'hello@orchestraplatform.com',
-            'password' => Hash::make('123'),
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
     }
 
     /**
@@ -40,6 +31,6 @@ class CreateTestUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_users');
+        Schema::dropIfExists('users');
     }
 }

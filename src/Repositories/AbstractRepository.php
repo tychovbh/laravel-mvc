@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property Model $model
- * @property string name
- */
 abstract class AbstractRepository
 {
     /**
@@ -29,12 +25,22 @@ abstract class AbstractRepository
     protected $joins = [];
 
     /**
+     * @var Model
+     */
+    public $model;
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
      * AbstractRepository constructor.
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->model = model(get_called_class());
+        $this->model = $this->model ?? model(get_called_class());
         $this->name = $this->model->getTable();
     }
 

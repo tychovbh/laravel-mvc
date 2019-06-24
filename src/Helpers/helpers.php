@@ -26,7 +26,7 @@ if (!function_exists('repository')) {
             $class->getNamespaceName(),
             'Controller'
         ], [
-            config('env') === 'testing' ? 'Tychovbh\\Mvc\\Tests\\App' : 'App\\Repositories',
+            'App\\Repositories',
             'Repository'
         ], $repository);
 
@@ -58,7 +58,7 @@ if (!function_exists('model')) {
             $class->getNamespaceName(),
             'Repository',
         ], [
-            config('env') === 'testing' ? 'Tychovbh\\Tests\\Mvc\\App' : 'App',
+            'App',
             '',
         ], $model);
 
@@ -118,16 +118,14 @@ if (!function_exists('resource')) {
 
         $class = str_replace([
             $class->getNamespaceName(),
-            'Test',
             'Controller'
         ], [
             'App\\Http\\Resources',
-            'Resource',
             'Resource'
         ], $resource);
 
         if (!class_exists($class)) {
-            throw new \Exception('Resource not found!');
+            throw new \Exception('Resource not found: ' . $class);
         }
         return $class;
     }

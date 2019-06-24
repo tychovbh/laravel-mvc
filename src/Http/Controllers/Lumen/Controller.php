@@ -16,15 +16,4 @@ use Tychovbh\Mvc\Http\Controllers\Controller as IController;
 abstract class Controller extends BaseController implements IController
 {
     use Rest;
-
-    /**
-     * AbstractController constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->repository = repository(get_called_class());
-        $this->resource = resource(get_called_class());
-        $this->controller = controller(get_called_class());
-    }
 }

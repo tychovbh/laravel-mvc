@@ -8,6 +8,16 @@ use Tychovbh\Mvc\Repositories\Repository;
 class TestUserRepository extends AbstractRepository implements Repository
 {
     /**
+     * TestUserRepository constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->model = new TestUser();
+        parent::__construct();
+    }
+
+    /**
      * Index param search.
      * @param string $search
      */

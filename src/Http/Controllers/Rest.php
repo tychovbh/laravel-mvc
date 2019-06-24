@@ -13,13 +13,36 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Trait Rest
- * @property \Tychovbh\Mvc\Repositories\Repository repository
- * @property string resource
- * @property string controller
  * @package Tychovbh\Mvc\Http\Controllers
  */
 trait Rest
 {
+    /**
+     * @var \Tychovbh\Mvc\Repositories\Repository
+     */
+    public $repository;
+
+    /**
+     * @var String
+     */
+    public $controller;
+
+    /**
+     * @var string
+     */
+    public $resource;
+
+    /**
+     * AbstractController constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->repository = $this->repository ?? repository(get_called_class());
+        $this->resource = $this->resource ?? resource(get_called_class());
+        $this->controller = controller(get_called_class());
+    }
+
     /**
      * List all resources.
      * @param Request $request

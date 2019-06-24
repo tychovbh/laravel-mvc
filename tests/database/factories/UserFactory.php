@@ -2,6 +2,7 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 
 $factory->define(\Tychovbh\Tests\Mvc\App\TestUser::class, function (Faker $faker) {
     return [
-        'password' => Hash::make(str_random(10)),
+        'password' => Hash::make(Str::random(10)),
         'email' => $faker->unique()->safeEmail,
         'firstname' => $faker->name,
         'surname' => $faker->name,

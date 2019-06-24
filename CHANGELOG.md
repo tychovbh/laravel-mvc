@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V2.6 Alpha  24-06-2019
+
+- Refactor helpers
+- Write tests for AbstractController via Test User
+- Create migrations for users and invites (authentication will be implemented)
+
 ## V2.5 Alpha  16-05-2019
 
 - Translate message fields
