@@ -41,7 +41,7 @@ class TestCase extends BaseTestCase
         ]);
 
         $app['router']->get('users', TestUserController::class . '@index')->name('users.index');
-        $app['router']->get('users', TestUserController::class . '@create')->name('users.create');
+        $app['router']->get('users/create', TestUserController::class . '@create')->name('users.create');
     }
 
     /**
