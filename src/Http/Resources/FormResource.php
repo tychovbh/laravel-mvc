@@ -18,7 +18,6 @@ class FormResource extends JsonResource
             'label' => $this->label,
             'name' => $this->name,
             'description' => $this->description,
-            'table' => $this->table,
             'route' => $this->table . '.store'
         ];
     }

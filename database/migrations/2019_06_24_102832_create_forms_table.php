@@ -15,10 +15,9 @@ class CreateFormsTable extends Migration
     {
         Schema::create('forms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('label');
-            $table->string('name');
-            $table->string('description');
-            $table->string('table');
+            $table->string('label')->nullable();
+            $table->string('name')->unique();
+            $table->string('description')->nullable();
             $table->string('route');
             $table->timestamps();
         });

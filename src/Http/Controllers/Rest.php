@@ -16,7 +16,6 @@ use Tychovbh\Mvc\Repositories\FormRepository;
 
 /**
  * Trait Rest
- * @property FormRepository forms
  * @package Tychovbh\Mvc\Http\Controllers
  */
 trait Rest
@@ -131,15 +130,15 @@ trait Rest
 
     /**
      * Return the form.
+     * @param Request $request
      * @return mixed
      * @throws \Exception
      */
-    public function create()
+    public function create(Request $request)
     {
-        $this->forms = new FormRepository();
-        $table_name = explode('_', $this->controller)[1] . 's';
+        $forms = new FormRepository();
 
-        $form = $this->forms->findBy('table', $table_name);
+        $form = $forms->findBy('name', $request->has('name') ? $request->get('name') : $this->repository->name);
         return new FormResource($form);
     }
 }

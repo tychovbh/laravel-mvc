@@ -33,7 +33,7 @@ class ControllerTest extends TestCase
     public function itCanCreateForm()
     {
         $form = factory(Form::class)->create([
-            'table' => 'users'
+            'name' => 'test_users'
         ]);
         factory(Field::class, 2)->create([
             'form_id' => $form->id,
