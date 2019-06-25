@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(Tychovbh\Mvc\Form::class, function (Faker $faker) {
     return [
         'label' => $faker->name,
-        'name' => $faker->word,
+        'name' => uniqid(),
         'description' => $faker->sentence,
         'route' => $faker->word . '.store',
     ];

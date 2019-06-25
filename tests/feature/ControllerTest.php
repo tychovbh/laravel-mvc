@@ -48,4 +48,55 @@ class ControllerTest extends TestCase
                     ->getData(true)
             );
     }
+
+    /**
+     * @test
+     */
+    public function storeFromCreate()
+    {
+        $this->seedTestForm();
+
+        $form = $this->get(route('users.create'));
+        $content = json_decode($form->baseResponse->getContent());
+
+        $user = factory(TestUser::class)->make();
+        $user->password = uniqid();
+
+        $params = [];
+        foreach ($content->data->fields as $field) {
+            $params[$field->name] = $user->{$field->name};
+        }
+
+        $user = new TestUserResource($user);
+
+        $this->post(route($content->data->route, $params))
+            ->assertStatus(201)
+            ->assertJson(
+                $user->response($this->app['request'])
+                    ->getData(true)
+            );
+    }
+
+    private function seedTestForm()
+    {
+        $form = factory(Form::class)->create([
+            'name' => 'test_users'
+        ]);
+        factory(Field::class)->create([
+            'label' => 'email',
+            'name' => 'email',
+            'description' => 'email',
+            'placeholder' => 'test@example.com',
+            'required' => 'true',
+            'form_id' => $form->id,
+        ]);
+        factory(Field::class)->create([
+            'label' => 'password',
+            'name' => 'password',
+            'description' => 'password',
+            'placeholder' => '',
+            'required' => 'true',
+            'form_id' => $form->id,
+        ]);
+    }
 }

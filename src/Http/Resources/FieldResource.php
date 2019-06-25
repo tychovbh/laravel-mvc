@@ -20,8 +20,7 @@ class FieldResource extends JsonResource
             'description' => $this->description,
             'placeholder' => $this->placeholder,
             'required' => $this->required,
-            'form_id' => $this->form,
-            'input_id' => $this->input,
+            'input_type' => new InputResource($this->input),
         ];
     }
 }

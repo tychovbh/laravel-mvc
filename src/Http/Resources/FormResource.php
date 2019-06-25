@@ -20,7 +20,8 @@ class FormResource extends JsonResource
             'label' => $this->label,
             'name' => $this->name,
             'description' => $this->description,
-            'route' => (sizeof($route) > 1 ? $route[1] : $route[0]) . '.store'
+            'route' => (sizeof($route) > 1 ? $route[1] : $route[0]) . '.store',
+            'fields' => FieldResource::collection($this->fields),
         ];
     }
 }

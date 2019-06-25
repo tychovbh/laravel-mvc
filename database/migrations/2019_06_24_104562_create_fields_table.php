@@ -18,7 +18,7 @@ class CreateFieldsTable extends Migration
             $table->string('label');
             $table->string('name');
             $table->string('description');
-            $table->string('placeholder');
+            $table->string('placeholder')->nullable();
             $table->string('required');
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');

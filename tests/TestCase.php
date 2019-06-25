@@ -42,6 +42,7 @@ class TestCase extends BaseTestCase
 
         $app['router']->get('users', TestUserController::class . '@index')->name('users.index');
         $app['router']->get('users/create', TestUserController::class . '@create')->name('users.create');
+        $app['router']->post('users', TestUserController::class . '@store')->name('users.store');
     }
 
     /**
@@ -105,7 +106,9 @@ class TestCase extends BaseTestCase
 
         $uri = explode('.', $uri);
 
-        $this->assertDatabaseMissing($uri[0], $resource->toArray($this->app['request']));
+        $this->assertDatabaseMissing($uri[0], [
+            'id' => $resource->id
+        ]);
 
         return $response;
     }

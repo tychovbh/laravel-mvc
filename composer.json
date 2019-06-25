@@ -31,7 +31,8 @@
         "mockery/mockery": "^1.2",
         "orchestra/testbench": "^3.8",
         "phpunit/phpunit": "^8.1",
-        "squizlabs/php_codesniffer": "^2.3"
+        "squizlabs/php_codesniffer": "^2.3",
+      "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
