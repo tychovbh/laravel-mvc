@@ -14,7 +14,7 @@ class InputTest extends TestCase
      */
     public function itCanIndex()
     {
-        $forms = factory(Input::class, 3)->create();
+        $forms = Input::all();
         $this->index('inputs.index', (InputResource::collection($forms)));
     }
 
@@ -23,9 +23,7 @@ class InputTest extends TestCase
      */
     public function itCanShow()
     {
-        factory(Input::class, 2)->create();
-        $form = factory(Input::class)->create();
-
+        $form = Input::all()->first();
         $this->show('inputs.show', (new InputResource($form)));
     }
 }

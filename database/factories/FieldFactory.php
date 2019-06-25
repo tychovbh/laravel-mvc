@@ -13,12 +13,14 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Tychovbh\Mvc\Form::class, function (Faker $faker) {
+$factory->define(Tychovbh\Mvc\Field::class, function (Faker $faker) {
     return [
         'label' => $faker->name,
         'name' => $faker->name,
         'description' => $faker->sentence,
-        'table' => $faker->word,
-        'route' => $faker->word . '.store',
+        'placeholder' => $faker->word,
+        'required' => $faker->boolean,
+        'form_id' => factory(\Tychovbh\Mvc\Form::class)->create()->id,
+        'input_id' => factory(\Tychovbh\Mvc\Input::class)->create()->id,
     ];
 });

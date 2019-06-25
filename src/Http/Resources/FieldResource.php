@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FormResource extends JsonResource
+class FieldResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +18,10 @@ class FormResource extends JsonResource
             'label' => $this->label,
             'name' => $this->name,
             'description' => $this->description,
-            'table' => $this->table,
-            'route' => $this->table . '.store'
+            'placeholder' => $this->placeholder,
+            'required' => $this->required,
+            'form_id' => $this->form,
+            'input_id' => $this->input,
         ];
     }
 }

@@ -7,4 +7,5 @@ Route::group([
 ], function () {
     Route::resource('forms', 'FormController');
     Route::resource('inputs', 'InputController');
+    Route::resource('fields', 'FieldController');
 });

@@ -10,9 +10,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Http\Resources\FormResource;
+use Tychovbh\Mvc\Repositories\FormRepository;
 
 /**
  * Trait Rest
+ * @property FormRepository forms
  * @package Tychovbh\Mvc\Http\Controllers
  */
 trait Rest
@@ -123,5 +127,19 @@ trait Rest
         return response()->json([
             'deleted' => $this->repository->destroy([$id])
         ]);
+    }
+
+    /**
+     * Return the form.
+     * @return mixed
+     * @throws \Exception
+     */
+    public function create()
+    {
+        $this->forms = new FormRepository();
+        $table_name = explode('_', $this->controller)[1] . 's';
+
+        $form = $this->forms->findBy('table', $table_name);
+        return new FormResource($form);
     }
 }
