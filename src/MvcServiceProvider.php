@@ -34,12 +34,7 @@ class MvcServiceProvider extends ServiceProvider
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
 
-        $directory = sprintf('%s/../routes/%s', __DIR__, is_application());
-        $routes = array_diff(scandir($directory), ['..', '.']);
-
-        foreach ($routes as $route) {
-            $this->loadRoutesFrom($directory . '/' . $route);
-        }
+        $this->loadRoutesFrom(sprintf('%s/../routes/%s/web.php', __DIR__, is_application()));
 
         if (is_application() === 'lumen') {
             $this->app->configure('messages');
