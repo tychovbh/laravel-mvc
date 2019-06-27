@@ -1,6 +1,6 @@
 <?php
 
-$app->router->group([
+$this->app->router->group([
     'namespace' => '\Tychovbh\Mvc\Http\Controllers',
 ], function ($router) {
     require 'fields.php';
