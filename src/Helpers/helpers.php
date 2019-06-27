@@ -19,7 +19,7 @@ if (!function_exists('repository')) {
         try {
             $class = new \ReflectionClass($repository);
         } catch (\Exception $exception) {
-            throw new \Exception('Repository '. $repository .' not found!');
+            throw new \Exception('Repository ' . $repository . ' not found!');
         }
 
         $class = str_replace([
@@ -239,5 +239,18 @@ if (!function_exists('get_route_info')) {
             }
         }
         return null;
+    }
+}
+
+if (!function_exists('config_path')) {
+    /**
+     * Get the configuration path.
+     *
+     * @param string $path
+     * @return string
+     */
+    function config_path($path = '')
+    {
+        return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
     }
 }

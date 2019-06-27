@@ -1,9 +1,10 @@
 <?php
 namespace Tychovbh\Tests\Mvc\App;
 
-use Tychovbh\Mvc\Http\Controllers\Laravel\Controller;
 
-class TestUserController extends Controller
+use Tychovbh\Mvc\Http\Controllers\AbstractController;
+
+class TestUserController extends AbstractController
 {
     /**
      * @var string

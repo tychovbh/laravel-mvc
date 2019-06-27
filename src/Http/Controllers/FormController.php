@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace Tychovbh\Mvc\Http\Controllers;
 
 use Tychovbh\Mvc\Repositories\FormRepository;
-use Tychovbh\Mvc\Http\Controllers\Laravel\Controller as BaseController;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 
-class FormController extends BaseController
+class FormController extends AbstractController
 {
     /**
      * @var string

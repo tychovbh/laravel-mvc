@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace Tychovbh\Mvc\Http\Controllers;
 
 use Tychovbh\Mvc\Http\Resources\FieldResource;
-use Tychovbh\Mvc\Http\Controllers\Laravel\Controller as BaseController;
 use Tychovbh\Mvc\Repositories\FieldRepository;
 
-class FieldController extends BaseController
+class FieldController extends AbstractController
 {
     /**
      * @var string

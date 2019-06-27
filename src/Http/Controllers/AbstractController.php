@@ -1,27 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tychovbh\Mvc\Http\Controllers;
 
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Repositories\FormRepository;
+use Tychovbh\Mvc\Repositories\Repository;
 
 /**
- * Trait Rest
+ * Class Controller
  * @package Tychovbh\Mvc\Http\Controllers
  */
-trait Rest
+abstract class AbstractController implements ControllerInterface
 {
     /**
-     * @var \Tychovbh\Mvc\Repositories\Repository
+     * @var Repository
      */
     public $repository;
 
@@ -37,7 +36,7 @@ trait Rest
 
     /**
      * AbstractController constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
@@ -55,7 +54,9 @@ trait Rest
     {
         $query = $this->repository::withParams($request->toArray());
 
-        return $this->resource::collection($request->has('paginate') ? $query->paginate((int)$request->get('paginate')) : $query->get());
+        return $this->resource::collection($request->has('paginate') ?
+            $query->paginate((int)$request->get('paginate')) :
+            $query->get());
     }
 
     /**
@@ -106,7 +107,7 @@ trait Rest
                 'request' => $request->toArray(),
             ]);
             abort(400, message('model.invalid'));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             error($exception->getMessage(), [
                 'method' => __METHOD__,
                 'id' => $id,
@@ -132,7 +133,7 @@ trait Rest
      * Return the form.
      * @param Request $request
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(Request $request)
     {

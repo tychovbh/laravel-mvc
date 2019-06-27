@@ -5,9 +5,8 @@ namespace Tychovbh\Mvc\Http\Controllers;
 
 use Tychovbh\Mvc\Http\Resources\InputResource;
 use Tychovbh\Mvc\Repositories\InputRepository;
-use Tychovbh\Mvc\Http\Controllers\Laravel\Controller as BaseController;
 
-class InputController extends BaseController
+class InputController extends AbstractController
 {
     /**
      * @var string

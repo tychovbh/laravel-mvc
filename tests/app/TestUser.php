@@ -2,7 +2,9 @@
 
 namespace Tychovbh\Tests\Mvc\App;
 
-class TestUser extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+
+class TestUser extends Model
 {
     protected $fillable = ['email', 'password', 'firstname', 'surname'];
     protected $hidden = ['password'];

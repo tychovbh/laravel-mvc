@@ -40,7 +40,7 @@ class MvcController extends Command
         $name = $this->argument('name');
         $file = sprintf('%s/Http/Controllers/%s.php', app('path'), $name);
 
-        file_replace(ucfirst(is_application()) .'Controller.php', [
+        file_replace('Controller.php', [
             'EntityController' => $name
         ], $file, __DIR__ . '/..');
 

@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-mvc` will be documented in this file.
 
+## V3.0 Beta 27-06-2019
+
+- Refactor abstract controller, extend all Controller from Tychovbh\Mvc\Http\Controllers\AbstractController from now.  
+
 ## V2.6 Alpha  24-06-2019
 
 - Refactor helpers

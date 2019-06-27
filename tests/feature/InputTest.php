@@ -17,13 +17,4 @@ class InputTest extends TestCase
         $forms = Input::all();
         $this->index('inputs.index', (InputResource::collection($forms)));
     }
-
-    /**
-     * @test
-     */
-    public function itCanShow()
-    {
-        $form = Input::all()->first();
-        $this->show('inputs.show', (new InputResource($form)));
-    }
 }

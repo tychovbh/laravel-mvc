@@ -31,7 +31,7 @@ artisan mvc:repository UserRepository
 
 Use The UserRepository in controller, but you can use it anywhere else too.
 ``` php
-class UserController extends controller
+class UserController extends AbstractController
 {
     public function __construct(UserRepository $repository)
     {
@@ -138,7 +138,7 @@ All Laravel Resource methods are now available (index, show, store, update, dest
 
 You can override Resource methods to do project related stuff
 ``` php
-class UserController extends Controller
+class UserController extends AbstractController
 {
     public function index()
     {
