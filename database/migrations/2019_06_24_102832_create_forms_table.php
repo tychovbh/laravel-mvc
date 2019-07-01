@@ -18,7 +18,6 @@ class CreateFormsTable extends Migration
             $table->string('label')->nullable();
             $table->string('name')->unique();
             $table->string('description')->nullable();
-            $table->string('route');
             $table->timestamps();
         });
     }

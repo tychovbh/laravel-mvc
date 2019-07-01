@@ -14,13 +14,11 @@ class FormResource extends JsonResource
      */
     public function toArray($request)
     {
-        $route = explode('_', $this->name);
-
         return [
             'label' => $this->label,
             'name' => $this->name,
             'description' => $this->description,
-            'route' => (sizeof($route) > 1 ? $route[1] : $route[0]) . '.store',
+            'route' => route($this->name . '.store'),
             'fields' => FieldResource::collection($this->fields),
         ];
     }
