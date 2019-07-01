@@ -68,6 +68,11 @@ class CreateInputsTable extends Migration
                 'name' => 'file',
                 'description' => 'file'
             ],
+            [
+                'label' => 'Textarea',
+                'name' => 'textarea',
+                'description' => 'textarea'
+            ],
         ]);
     }
 
