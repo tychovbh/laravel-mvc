@@ -29,9 +29,24 @@ class FieldRepository extends AbstractRepository implements Repository
      */
     public function save(array $data)
     {
+        return parent::save($this->addInput($data));
+    }
+
+    public function update(array $data, int $id)
+    {
+        return parent::update($this->addInput($data), $id);
+    }
+
+    /**
+     * Add input_id to data
+     * @param array $data
+     * @return array|void
+     */
+    private function addInput(array $data)
+    {
         if (Arr::has($data, 'input')) {
             $data['input_id'] = $this->inputs->findBy('name', $data['input'])->id;
         }
-        return parent::save($data);
+        return $data;
     }
 }
