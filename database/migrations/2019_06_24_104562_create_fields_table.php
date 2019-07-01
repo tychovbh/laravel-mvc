@@ -15,11 +15,11 @@ class CreateFieldsTable extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('label');
+            $table->string('label')->nullable();
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('placeholder')->nullable();
-            $table->string('required');
+            $table->boolean('required');
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
             $table->unsignedBigInteger('input_id');
