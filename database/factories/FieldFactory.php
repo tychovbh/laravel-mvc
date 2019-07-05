@@ -1,6 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\DB;
+use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +22,8 @@ $factory->define(Tychovbh\Mvc\Field::class, function (Faker $faker) {
         'name' => $faker->name,
         'description' => $faker->sentence,
         'placeholder' => $faker->word,
-        'required' => $faker->boolean,
-        'form_id' => factory(\Tychovbh\Mvc\Form::class)->create()->id,
-        'input_id' => factory(\Tychovbh\Mvc\Input::class)->create()->id,
+        'required' => $faker->boolean ? '1' : '0',
+        'form_id' => factory(Form::class)->create()->id,
+        'input_id' => DB::table('inputs')->inRandomOrder()->first()->id ?? factory(Input::class)->create()->id,
     ];
 });

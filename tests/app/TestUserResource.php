@@ -15,8 +15,10 @@ class TestUserResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'email' => $this->email,
             'password' => $this->password,
+            'avatar' => $this->avatar
         ];
     }
 }

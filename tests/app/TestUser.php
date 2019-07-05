@@ -2,10 +2,14 @@
 
 namespace Tychovbh\Tests\Mvc\App;
 
-use Illuminate\Database\Eloquent\Model;
+use Tychovbh\Mvc\Model;
 
 class TestUser extends Model
 {
-    protected $fillable = ['email', 'password', 'firstname', 'surname'];
+    protected $fillable = ['email', 'password', 'avatar'];
     protected $hidden = ['password'];
+
+    protected $files = [
+        'avatar' => 'public/avatars'
+    ];
 }

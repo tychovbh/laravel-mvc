@@ -14,7 +14,7 @@ class FieldController extends AbstractController
     public $resource = FieldResource::class;
 
     /**
-     * TestUserController constructor.
+     * FieldController constructor.
      * @throws \Exception
      */
     public function __construct()

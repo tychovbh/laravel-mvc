@@ -14,7 +14,7 @@ class InputController extends AbstractController
     public $resource = InputResource::class;
 
     /**
-     * TestUserController constructor.
+     * InputController constructor.
      * @throws \Exception
      */
     public function __construct()

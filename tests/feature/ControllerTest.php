@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tychovbh\Mvc\Field;
 use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
@@ -18,7 +20,7 @@ class ControllerTest extends TestCase
     public function itCanIndex()
     {
         $users = factory(TestUser::class, 1)->create();
-        $this->get(route('users.index'))
+        $this->get(route('test_users.index'))
             ->assertStatus(200)
             ->assertJson(
                 TestUserResource::collection($users)
@@ -41,7 +43,7 @@ class ControllerTest extends TestCase
 
         $form = new FormResource($form);
 
-        $this->get(route('users.create'))
+        $this->get(route('test_users.create'))
             ->assertStatus(200)
             ->assertJson(
                 $form->response($this->app['request'])
@@ -52,24 +54,67 @@ class ControllerTest extends TestCase
     /**
      * @test
      */
+    public function itCanStore()
+    {
+        Storage::fake('app/public/avatars');
+
+        $user = factory(TestUser::class)->make([
+            'avatar' => UploadedFile::fake()->image('fake_photo.jpg')
+        ]);
+        $store = $user->toArray();
+        $store['password'] = uniqid();
+
+        $response = $this->post(route('test_users.store'), $store)
+            ->assertStatus(201);
+        $user = json_decode($response->baseResponse->getContent(), true)['data'];
+
+        Storage::disk('app/public/avatars')->assertExists(str_replace('avatars/', '', $user['avatar']));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanUpdate()
+    {
+        Storage::fake('app/public/avatars');
+
+        $user = factory(TestUser::class)->create();
+        $update = factory(TestUser::class)->make();
+        $update->avatar = UploadedFile::fake()->image('fake_photo.jpg');
+
+        $response = $this->put(route('test_users.update', ['id' => $user->id]), $update->toArray())
+            ->assertStatus(200);
+        $response = json_decode($response->getContent(), true)['data'];
+
+        Storage::disk('app/public/avatars')->assertMissing($user->avatar);
+        Storage::disk('app/public/avatars')->assertExists(str_replace('avatars/', '', $response['avatar']));
+
+        $this->assertEquals($update->email, $response['email']);
+    }
+
+    /**
+     * @test
+     */
     public function storeFromCreate()
     {
         $this->seedTestForm();
 
-        $form = $this->get(route('users.create'));
+        $form = $this->get(route('test_users.create'));
         $content = json_decode($form->baseResponse->getContent());
 
-        $user = factory(TestUser::class)->make();
-        $user->password = uniqid();
+        $user = factory(TestUser::class)->make([
+            'password' => uniqid(),
+            'id' => 1,
+        ]);
 
-        $params = [];
+        $store = [];
         foreach ($content->data->fields as $field) {
-            $params[$field->name] = $user->{$field->name};
+            $store[$field->name] = $user->{$field->name};
         }
 
         $user = new TestUserResource($user);
 
-        $this->post(route($content->data->route, $params))
+        $this->post($content->data->route, $store)
             ->assertStatus(201)
             ->assertJson(
                 $user->response($this->app['request'])
@@ -77,6 +122,9 @@ class ControllerTest extends TestCase
             );
     }
 
+    /**
+     * Seed a test form
+     */
     private function seedTestForm()
     {
         $form = factory(Form::class)->create([
@@ -94,6 +142,14 @@ class ControllerTest extends TestCase
             'label' => 'password',
             'name' => 'password',
             'description' => 'password',
+            'placeholder' => '',
+            'required' => 'true',
+            'form_id' => $form->id,
+        ]);
+        factory(Field::class)->create([
+            'label' => 'avatar',
+            'name' => 'avatar',
+            'description' => 'avatar',
             'placeholder' => '',
             'required' => 'true',
             'form_id' => $form->id,

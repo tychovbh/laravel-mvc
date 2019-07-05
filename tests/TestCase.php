@@ -39,10 +39,13 @@ class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        $app['config']->set('filesystems.disks.local.root', storage_path('framework/testing/disks/app'));
 
-        $app['router']->get('users', TestUserController::class . '@index')->name('users.index');
-        $app['router']->get('users/create', TestUserController::class . '@create')->name('users.create');
-        $app['router']->post('users', TestUserController::class . '@store')->name('users.store');
+
+        $app['router']->get('users', TestUserController::class . '@index')->name('test_users.index');
+        $app['router']->get('users/create', TestUserController::class . '@create')->name('test_users.create');
+        $app['router']->post('users', TestUserController::class . '@store')->name('test_users.store');
+        $app['router']->put('users/{id}', TestUserController::class . '@update')->name('test_users.update');
     }
 
     /**
@@ -54,6 +57,13 @@ class TestCase extends BaseTestCase
         return [MvcServiceProvider::class];
     }
 
+    /**
+     * Index resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @param array $headers
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
     public function index($uri, JsonResource $resource, array $headers = [])
     {
         $response = parent::get(route($uri), $headers)
@@ -65,6 +75,12 @@ class TestCase extends BaseTestCase
         return $response;
     }
 
+    /**
+     * Show resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
     public function show($uri, JsonResource $resource)
     {
         $response = parent::get(route($uri, ['id' => $resource->id]))
@@ -76,6 +92,12 @@ class TestCase extends BaseTestCase
         return $response;
     }
 
+    /**
+     * Store resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
     public function store($uri, JsonResource $resource)
     {
         $response = parent::post(route($uri), $resource->toArray($this->app['request']))
@@ -87,9 +109,16 @@ class TestCase extends BaseTestCase
         return $response;
     }
 
-    public function update($uri, JsonResource $resource)
+    /**
+     * Update resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @param array $params
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function update($uri, JsonResource $resource, array $params)
     {
-        $response = parent::put(route($uri, ['id' => $resource->id]))
+        $response = parent::put(route($uri, ['id' => $resource->id]), $params)
             ->assertStatus(200)
             ->assertJson(
                 $resource->response($this->app['request'])->getData(true)
@@ -98,6 +127,12 @@ class TestCase extends BaseTestCase
         return $response;
     }
 
+    /**
+     * Destroy resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
     public function destroy($uri, JsonResource $resource)
     {
         $response = parent::delete(route($uri, ['id' => $resource->id]))

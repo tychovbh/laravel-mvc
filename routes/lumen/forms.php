@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 $router->get('/forms', [
     'as' => 'forms.index',
@@ -24,5 +25,4 @@ $router->delete('/forms/{id}', [
     'as' => 'forms.destroy',
     'uses' => 'FormController@destroy',
 ]);
-
 

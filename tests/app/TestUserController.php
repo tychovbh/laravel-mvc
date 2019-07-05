@@ -1,6 +1,6 @@
 <?php
-namespace Tychovbh\Tests\Mvc\App;
 
+namespace Tychovbh\Tests\Mvc\App;
 
 use Tychovbh\Mvc\Http\Controllers\AbstractController;
 

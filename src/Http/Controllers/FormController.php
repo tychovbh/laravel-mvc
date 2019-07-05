@@ -14,7 +14,7 @@ class FormController extends AbstractController
     public $resource = FormResource::class;
 
     /**
-     * TestUserController constructor.
+     * FormController constructor.
      * @throws \Exception
      */
     public function __construct()

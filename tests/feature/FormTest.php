@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tychovbh\Tests\Mvc\Feature;
 
 use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Http\Controllers\FormController;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Tests\Mvc\TestCase;
 
@@ -14,8 +15,8 @@ class FormTest extends TestCase
      */
     public function itCanIndex()
     {
-        $forms = factory(Form::class, 3)->create();
-        $this->index('forms.index', (FormResource::collection($forms)));
+        $forms = Form::all();
+        $this->index('forms.index', FormResource::collection($forms));
     }
 
     /**
@@ -44,7 +45,7 @@ class FormTest extends TestCase
     public function itCanUpdate()
     {
         $form = factory(Form::class)->create();
-        $this->update('forms.update', (new FormResource($form)));
+        $this->update('forms.update', (new FormResource($form)), $form->toArray());
     }
 
     /**

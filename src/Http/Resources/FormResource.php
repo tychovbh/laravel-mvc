@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Http\Resources;
 
@@ -18,7 +19,7 @@ class FormResource extends JsonResource
             'label' => $this->label,
             'name' => $this->name,
             'description' => $this->description,
-            'route' => route($this->name . '.store'),
+            'route' => $this->route,
             'fields' => FieldResource::collection($this->fields),
         ];
     }

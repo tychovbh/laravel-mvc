@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -233,7 +234,6 @@ if (!function_exists('get_route_info')) {
     {
         $route = (array)$request->route();
         foreach ($route as $items) {
-
             if (is_array($items) && Arr::has($items, $key)) {
                 return $items[$key];
             }
@@ -252,5 +252,19 @@ if (!function_exists('config_path')) {
     function config_path($path = '')
     {
         return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+    }
+}
+
+if (!function_exists('file_from_data')) {
+    // Is this function necessary? TODO
+    /**
+     * Return file from data
+     * @param array $data
+     * @param string $name
+     * @return UploadedFile
+     */
+    function file_from_data(array $data, string $name) : UploadedFile
+    {
+        return $data[$name];
     }
 }

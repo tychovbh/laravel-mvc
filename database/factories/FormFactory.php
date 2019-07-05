@@ -18,6 +18,5 @@ $factory->define(Tychovbh\Mvc\Form::class, function (Faker $faker) {
         'label' => $faker->name,
         'name' => uniqid(),
         'description' => $faker->sentence,
-        'route' => $faker->word . '.store',
     ];
 });

@@ -1,7 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /*
@@ -16,8 +18,12 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(\Tychovbh\Tests\Mvc\App\TestUser::class, function (Faker $faker) {
+    Storage::fake('app/public/avatars');
+    $file = UploadedFile::fake()->image('fake_photo.jpg');
+
     return [
         'password' => Hash::make(Str::random(10)),
         'email' => $faker->unique()->safeEmail,
+        'avatar' => str_replace('public/', '', $file->store('avatars'))
     ];
 });

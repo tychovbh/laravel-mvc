@@ -218,11 +218,10 @@ abstract class AbstractRepository
         }
 
         if (is_array($value)) {
-            foreach($value as $order) {
+            foreach ($value as $order) {
                 $sort = explode(' ', $order);
                 $this->query->orderBy(...$sort);
             }
         }
     }
 }
-

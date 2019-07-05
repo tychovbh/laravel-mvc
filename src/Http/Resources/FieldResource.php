@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Http\Resources;
 
@@ -20,7 +21,7 @@ class FieldResource extends JsonResource
             'description' => $this->description,
             'placeholder' => $this->placeholder,
             'required' => $this->required,
-            'input' => new InputResource($this->input),
+            'input' => $this->input ? new InputResource($this->input) : [],
         ];
     }
 }

@@ -17,6 +17,7 @@ class CreateTestUsersTable extends Migration
             $table->increments('id');
             $table->string('email');
             $table->string('password');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

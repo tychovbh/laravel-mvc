@@ -138,7 +138,6 @@ abstract class AbstractController implements ControllerInterface
     public function create(Request $request)
     {
         $forms = new FormRepository();
-
         $form = $forms->findBy('name', $request->has('name') ? $request->get('name') : $this->repository->name);
         return new FormResource($form);
     }

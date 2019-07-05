@@ -24,54 +24,59 @@ class CreateInputsTable extends Migration
 
         DB::table('inputs')->insert([
             [
-                'label' => 'text',
+                'label' => 'Text Input',
                 'name' => 'text',
-                'description' => 'text'
+                'description' => 'Accepts letters, numbers and special characters.'
             ],
             [
-                'label' => 'number',
+                'label' => 'Number Input',
                 'name' => 'number',
-                'description' => 'number'
+                'description' => 'Accepts only numbers.'
             ],
             [
-                'label' => 'email',
+                'label' => 'Email Input',
                 'name' => 'email',
-                'description' => 'email'
+                'description' => 'Accepts only a valid e-mail address'
             ],
             [
-                'label' => 'checkbox',
+                'label' => 'Checkbox Input',
                 'name' => 'checkbox',
-                'description' => 'checkbox'
+                'description' => 'Ask a no or yes question.'
             ],
             [
-                'label' => 'radio',
+                'label' => 'Radio Input',
                 'name' => 'radio',
-                'description' => 'radio'
+                'description' => 'Ask a group of questions where do user can pick from.'
             ],
             [
-                'label' => 'drop_down',
+                'label' => 'Dropdown Input',
                 'name' => 'select',
-                'description' => 'select'
+                'description' => 'Ask a list of questions where do user can pick from.'
             ],
             [
-                'label' => 'search',
+                'label' => 'Search Input',
                 'name' => 'search',
-                'description' => 'search'
+                'description' => 'Searchable text input, lists results from a data collection.'
             ],
             [
-                'label' => 'wysiwyg',
+                'label' => 'Richt Text Editor',
                 'name' => 'wysiwyg',
-                'description' => 'wysiwyg'
+                'description' => 'Accepts text, photo\'s, video\'s and enables font customisation.'
             ],
             [
-                'label' => 'file',
+                'label' => 'File Input',
                 'name' => 'file',
-                'description' => 'file'
+                'description' => 'Accepts a file'
             ],
             [
-                'label' => 'Textarea',
+                'label' => 'TextArea Input',
                 'name' => 'textarea',
-                'description' => 'textarea'
+                'description' => 'Accepts the same as a Text Input, but with a larger typing area'
+            ],
+            [
+                'label' => 'Dropzone Upload',
+                'name' => 'dropzone',
+                'description' => 'File upload with drag and drop'
             ],
         ]);
     }
