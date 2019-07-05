@@ -60,6 +60,7 @@ class InsertIntoFormsTable extends Migration
      */
     public function down()
     {
-        //
+        DB::table('forms')->truncate();
+        DB::table('fields')->truncate();
     }
 }
