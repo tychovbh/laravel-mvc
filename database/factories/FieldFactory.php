@@ -22,7 +22,7 @@ $factory->define(Tychovbh\Mvc\Field::class, function (Faker $faker) {
         'name' => $faker->name,
         'description' => $faker->sentence,
         'placeholder' => $faker->word,
-        'required' => $faker->boolean ? '1' : '0',
+        'required' => $faker->boolean,
         'form_id' => factory(Form::class)->create()->id,
         'input_id' => DB::table('inputs')->inRandomOrder()->first()->id ?? factory(Input::class)->create()->id,
     ];

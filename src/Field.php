@@ -24,6 +24,11 @@ class Field extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $casts = ['required' => 'boolean'];
+
+    /**
      * The Form
      * @return BelongsTo
      */
