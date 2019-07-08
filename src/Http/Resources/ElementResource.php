@@ -5,7 +5,7 @@ namespace Tychovbh\Mvc\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InputResource extends JsonResource
+class ElementResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

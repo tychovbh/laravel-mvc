@@ -6,5 +6,5 @@ $this->app->router->group([
 ], function ($router) {
     require 'fields.php';
     require 'forms.php';
-    require 'inputs.php';
+    require 'elements.php';
 });

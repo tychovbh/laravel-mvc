@@ -36,7 +36,7 @@ class FormTest extends TestCase
     public function itCanStore()
     {
         $form = factory(Form::class)->make();
-        $this->store('forms.store', (new FormResource($form)));
+        $this->store('forms.store', (new FormResource($form)), $form->toArray());
     }
 
     /**

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Illuminate\Support\Arr;
-use Tychovbh\Mvc\Field;
+use Tychovbh\Mvc\Property;
 
-class FieldRepository extends AbstractRepository implements Repository
+class PropertyRepository extends AbstractRepository implements Repository
 {
     /**
      * FieldRepository constructor.
@@ -14,7 +13,7 @@ class FieldRepository extends AbstractRepository implements Repository
      */
     public function __construct()
     {
-        $this->model = new Field();
+        $this->model = new Property();
         parent::__construct();
     }
 }

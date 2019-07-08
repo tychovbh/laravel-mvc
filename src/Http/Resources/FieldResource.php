@@ -16,12 +16,9 @@ class FieldResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'label' => $this->label,
-            'name' => $this->name,
-            'description' => $this->description,
-            'placeholder' => $this->placeholder,
-            'required' => $this->required,
-            'input' => $this->input ? new InputResource($this->input) : [],
+            'id' => $this->id,
+            'properties' => $this->properties,
+            'input' => new ElementResource($this->input),
         ];
     }
 }

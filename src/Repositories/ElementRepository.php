@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Tychovbh\Mvc\Input;
+use Tychovbh\Mvc\Element;
 
-class InputRepository extends AbstractRepository implements Repository
+class ElementRepository extends AbstractRepository implements Repository
 {
     /**
-     * InputRepository constructor.
+     * ElementRepository constructor.
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->model = new Input();
+        $this->model = new Element();
         parent::__construct();
     }
 }

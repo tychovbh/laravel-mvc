@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tychovbh\Tests\Mvc;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Tychovbh\Tests\Mvc\App\TestUserController;
@@ -17,11 +18,39 @@ class TestCase extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->setConfig('messages');
+        $this->setConfig('forms');
+        Config::set('forms.forms', [
+            [
+                'name' => 'test_users',
+                'fields' => [
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'email', 'type' => 'email', 'required' => true, 'placeholder' => 'test@example.com'],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'password', 'type' => 'password', 'required' => true],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'avatar', 'type' => 'file'],
+                    ],
+                ]
+            ]
+        ]);
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->artisan('mvc:update');
+    }
+
+    private function setConfig(string $name)
+    {
+        $config = require __DIR__ . '/../config/'. $name .'.php';
+        Config::set($name, $config);
     }
 
     /**
@@ -96,11 +125,12 @@ class TestCase extends BaseTestCase
      * Store resource
      * @param $uri
      * @param JsonResource $resource
+     * @param array $data
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function store($uri, JsonResource $resource)
+    public function store($uri, JsonResource $resource, array $data = [])
     {
-        $response = parent::post(route($uri), $resource->toArray($this->app['request']))
+        $response = parent::post(route($uri), $data)
             ->assertStatus(201)
             ->assertJson(
                 $resource->response($this->app['request'])->getData(true)

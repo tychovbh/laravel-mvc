@@ -10,23 +10,24 @@ class Field extends Model
     /**
      * @var array
      */
-    protected $fillable = ['label', 'name', 'description', 'placeholder', 'required', 'form_id', 'input_id'];
+    protected $fillable = ['properties', 'form_id', 'element'];
 
     /**
      * @var array
      */
     protected $associations = [
         [
-            'model' => Input::class,
-            'post_field' => 'input',
-            'table_field' => 'name'
+            'model' => Element::class,
+            'post_field' => 'element',
+            'table_field' => 'name',
+            'type' => BelongsTo::class
         ]
     ];
 
     /**
      * @var array
      */
-    protected $casts = ['required' => 'boolean'];
+    protected $casts = ['properties' => 'array'];
 
     /**
      * The Form
@@ -38,11 +39,11 @@ class Field extends Model
     }
 
     /**
-     * The Input
+     * The Element
      * @return BelongsTo
      */
-    public function input(): BelongsTo
+    public function element(): BelongsTo
     {
-        return $this->belongsTo(Input::class);
+        return $this->belongsTo(Element::class);
     }
 }

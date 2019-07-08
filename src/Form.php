@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Form extends Model
@@ -11,7 +10,18 @@ class Form extends Model
     /**
      * @var array
      */
-    protected $fillable = ['label', 'name', 'description', 'table'];
+    protected $fillable = ['label', 'name', 'description', 'table', 'fields'];
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        [
+            'model' => Field::class,
+            'post_field' => 'fields',
+            'type' => HasMany::class
+        ]
+    ];
 
     /**
      * The Fields

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AbstractRepository
 {
@@ -188,6 +189,22 @@ abstract class AbstractRepository
     }
 
     /**
+     * Save new resource when not found or update existing resource.
+     * @param string $field
+     * @param string $search
+     * @param array $data
+     */
+    public function saveOrUpdate(string $field, string $search, array $data = [])
+    {
+        try {
+            $property = $this->findBy($field, $search);
+            $this->update($data, $property->id);
+        } catch (ModelNotFoundException $exception) {
+            $this->save($data);
+        }
+    }
+
+    /**
      * Destroy resources
      * @param array $ids
      * @return bool
@@ -199,9 +216,8 @@ abstract class AbstractRepository
 
     /**
      * Add param random
-     * @param $value
      */
-    public function indexRandomParam($value)
+    public function indexRandomParam()
     {
         $this->query->orderByRaw('RAND()');
     }

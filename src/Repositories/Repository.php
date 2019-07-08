@@ -70,6 +70,14 @@ interface Repository
     public function update(array $data, int $id);
 
     /**
+     * Save new resource when not found or update existing resource.
+     * @param string $field
+     * @param string $search
+     * @param array $data
+     */
+    public function saveOrUpdate(string $field, string $search, array $data = []);
+
+    /**
      * Destroy resources.
      * @param array $ids
      * @return bool

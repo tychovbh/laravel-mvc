@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-$factory->define(Tychovbh\Mvc\Input::class, function (Faker $faker) {
-    $randInput = DB::table('inputs')->inRandomOrder()->first();
+$factory->define(Tychovbh\Mvc\Element::class, function (Faker $faker) {
+    $randInput = DB::table('elements')->inRandomOrder()->first();
     return [
         'label' => $randInput->label,
         'name' => $randInput->name,

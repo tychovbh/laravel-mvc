@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Tychovbh\Mvc\Field;
 use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
+use Tychovbh\Mvc\Element;
+use Tychovbh\Mvc\Property;
 use Tychovbh\Tests\Mvc\App\TestUser;
 use Tychovbh\Tests\Mvc\App\TestUserResource;
 use Tychovbh\Tests\Mvc\TestCase;
@@ -34,21 +36,18 @@ class ControllerTest extends TestCase
      */
     public function itCanCreateForm()
     {
-        $form = factory(Form::class)->create([
-            'name' => 'test_users'
-        ]);
-        factory(Field::class, 2)->create([
-            'form_id' => $form->id,
-        ]);
+        $form = new FormResource(Form::where('name', 'test_users')->first());
 
-        $form = new FormResource($form);
-
-        $this->get(route('test_users.create'))
+        $response = $this->get(route('test_users.create'))
             ->assertStatus(200)
             ->assertJson(
                 $form->response($this->app['request'])
                     ->getData(true)
             );
+
+        $form = json_decode($response->getContent(), true)['data'];
+
+        return $form;
     }
 
     /**
@@ -94,65 +93,28 @@ class ControllerTest extends TestCase
 
     /**
      * @test
+     * @depends itCanCreateForm
+     * @param array $form
      */
-    public function storeFromCreate()
+    public function storeFromCreate(array $form)
     {
-        $this->seedTestForm();
-
-        $form = $this->get(route('test_users.create'));
-        $content = json_decode($form->baseResponse->getContent());
-
         $user = factory(TestUser::class)->make([
             'password' => uniqid(),
             'id' => 1,
         ]);
 
         $store = [];
-        foreach ($content->data->fields as $field) {
-            $store[$field->name] = $user->{$field->name};
+        foreach ($form['fields'] as $field) {
+            $store[$field['properties']['name']] = $user->{$field['properties']['name']};
         }
 
         $user = new TestUserResource($user);
 
-        $this->post($content->data->route, $store)
+        $this->post($form['route'], $store)
             ->assertStatus(201)
             ->assertJson(
                 $user->response($this->app['request'])
                     ->getData(true)
             );
-    }
-
-    /**
-     * Seed a test form
-     */
-    private function seedTestForm()
-    {
-        $form = factory(Form::class)->create([
-            'name' => 'test_users'
-        ]);
-        factory(Field::class)->create([
-            'label' => 'email',
-            'name' => 'email',
-            'description' => 'email',
-            'placeholder' => 'test@example.com',
-            'required' => 'true',
-            'form_id' => $form->id,
-        ]);
-        factory(Field::class)->create([
-            'label' => 'password',
-            'name' => 'password',
-            'description' => 'password',
-            'placeholder' => '',
-            'required' => 'true',
-            'form_id' => $form->id,
-        ]);
-        factory(Field::class)->create([
-            'label' => 'avatar',
-            'name' => 'avatar',
-            'description' => 'avatar',
-            'placeholder' => '',
-            'required' => 'true',
-            'form_id' => $form->id,
-        ]);
     }
 }

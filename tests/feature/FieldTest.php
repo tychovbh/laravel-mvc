@@ -6,7 +6,7 @@ namespace Tychovbh\Tests\Mvc\Feature;
 use Tychovbh\Mvc\Field;
 use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FieldResource;
-use Tychovbh\Mvc\Input;
+use Tychovbh\Mvc\Element;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class FieldTest extends TestCase
@@ -20,19 +20,19 @@ class FieldTest extends TestCase
             'name' => 'testname'
         ]);
 
-        $input = factory(Input::class)->create([
+        $element = factory(Element::class)->create([
             'name' => 'testname'
         ]);
 
         $field = factory(Field::class)->create([
             'form_id' => $form->id,
-            'input_id' => $input->id
+            'element_id' => $element->id
         ]);
 
-        $field->input = $input;
+        $field->element = $element;
         $this->update('fields.update', (new FieldResource($field)), [
             'form_id' => $form->id,
-            'input' => $input->name
+            'input' => $element->name
         ]);
 
         $this->assertEquals($field->form->name, $form->name);

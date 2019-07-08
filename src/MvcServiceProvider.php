@@ -7,6 +7,7 @@ use Laravelista\LumenVendorPublish\VendorPublishCommand;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
+use Tychovbh\Mvc\Console\Commands\MvcUpdate;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 
 class MvcServiceProvider extends ServiceProvider
@@ -26,10 +27,12 @@ class MvcServiceProvider extends ServiceProvider
             MvcRepository::class,
             MvcController::class,
             MvcRequest::class,
+            MvcUpdate::class
         ]);
 
-        $source = __DIR__ . '/../config/messages.php';
-        $this->publishes([$source => config_path('messages.php')], 'laravel-mvc-config');
+        $this->config('messages');
+        $this->config('forms');
+
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
@@ -38,6 +41,7 @@ class MvcServiceProvider extends ServiceProvider
 
         if (is_application() === 'lumen') {
             $this->app->configure('messages');
+            $this->app->configure('forms');
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
             $this->app->routeMiddleware([
                 'validate' => ValidateMiddleware::class
@@ -56,5 +60,15 @@ class MvcServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    /**
+     * Publish config file
+     * @param string $name
+     */
+    private function config(string $name)
+    {
+        $source = __DIR__ . '/../config/'. $name .'.php';
+        $this->publishes([$source => config_path($name . '.php')], 'laravel-mvc-config-' . $name);
     }
 }
