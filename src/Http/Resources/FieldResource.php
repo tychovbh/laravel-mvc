@@ -18,7 +18,7 @@ class FieldResource extends JsonResource
         return [
             'id' => $this->id,
             'properties' => $this->properties,
-            'input' => new ElementResource($this->input),
+            'element' => new ElementResource($this->element),
         ];
     }
 }
