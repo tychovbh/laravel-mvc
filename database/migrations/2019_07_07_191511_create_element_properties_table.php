@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInputPropertiesTable extends Migration
+class CreateElementPropertiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateInputPropertiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('input_properties', function (Blueprint $table) {
-            $table->unsignedBigInteger('input_id');
-            $table->foreign('input_id')->references('id')->on('inputs')->onDelete('cascade');
+        Schema::create('element_properties', function (Blueprint $table) {
+            $table->unsignedBigInteger('element_id');
+            $table->foreign('element_id')->references('id')->on('elements')->onDelete('cascade');
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
@@ -28,6 +28,6 @@ class CreateInputPropertiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('input_properties');
+        Schema::dropIfExists('element_properties');
     }
 }
