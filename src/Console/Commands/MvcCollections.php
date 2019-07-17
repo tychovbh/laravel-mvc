@@ -54,10 +54,12 @@ class MvcCollections extends Command
     public function saveCollection(array $collection)
     {
         $repository = $this->repository($collection);
-        foreach ($collection['relations'] as $relation) {
-            DB::table($relation)->truncate();
+        if (Arr::has($collection, 'relations')) {
+            foreach ($collection['relations'] as $relation) {
+                DB::table($relation)->truncate();
+            }
         }
-        
+
         foreach ($collection['items'] as $item) {
             $repository->saveOrUpdate($collection['update_by'], $item[$collection['update_by']], $item);
         }
