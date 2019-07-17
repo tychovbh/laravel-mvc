@@ -2,10 +2,9 @@
 declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature\Commands;
-;
 use Tychovbh\Tests\Mvc\TestCase;
 
-class MvcCollections extends TestCase
+class MvcCollectionsTest extends TestCase
 {
     /**
      * @test
