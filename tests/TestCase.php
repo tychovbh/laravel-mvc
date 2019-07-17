@@ -8,7 +8,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
+use Faker\Factory;
 use Tychovbh\Tests\Mvc\App\TestUserController;
+use Tychovbh\Tests\Mvc\App\TestUserRepository;
 
 class TestCase extends BaseTestCase
 {
@@ -37,6 +39,29 @@ class TestCase extends BaseTestCase
                         'properties' => ['name' => 'avatar', 'type' => 'file'],
                     ],
                 ]
+            ]
+        ]);
+
+        $faker = Factory::create();
+        Config::set('collections', [
+            [
+                'table' => 'test_users',
+                'repository' => TestUserRepository::class,
+                'update_by' => 'email',
+                'items' => [
+                    [
+                        'email' => $faker->email,
+                        'password' => $faker->password
+                    ],
+                    [
+                        'email' => $faker->email,
+                        'password' => $faker->password
+                    ],
+                    [
+                        'email' => $faker->email,
+                        'password' => $faker->password
+                    ],
+                ],
             ]
         ]);
         $this->withFactories(__DIR__ . '/database/factories');
@@ -176,5 +201,17 @@ class TestCase extends BaseTestCase
         ]);
 
         return $response;
+    }
+
+    /**
+     * Assert that for each item in a collection, a given where condition exists in the database.
+     * @param string $table
+     * @param array $collection
+     */
+    public function assertDatabaseHasCollection(string $table, array $collection)
+    {
+        foreach ($collection as $item) {
+            $this->assertDatabaseHas($table, $item);
+        }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'inputs' => [
+    'elements' => [
         [
             'label' => 'Input Field',
             'name' => 'input',
@@ -73,6 +73,11 @@ return [
         [
             'name' => 'route',
             'label' => 'Route endpoint',
+            'options' => null,
+        ],
+        [
+            'name' => 'hidden',
+            'label' => 'Not visible',
             'options' => null,
         ],
     ]

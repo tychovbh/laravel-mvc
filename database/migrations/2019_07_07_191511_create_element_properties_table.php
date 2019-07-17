@@ -18,6 +18,8 @@ class CreateElementPropertiesTable extends Migration
             $table->foreign('element_id')->references('id')->on('elements')->onDelete('cascade');
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+
+            $table->unique(['element_id', 'property_id']);
         });
     }
 

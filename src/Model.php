@@ -69,6 +69,12 @@ class Model extends BaseModel
         }
     }
 
+    /**
+     * Save belongs to relation
+     * @param array $association
+     * @param string $relation
+     * @param array $options
+     */
     private function saveBelongsTo(array $association, string $relation, array $options = [])
     {
         $this->attributes[$association['post_field'] . '_id'] = $association['model']::where(
@@ -79,21 +85,31 @@ class Model extends BaseModel
             ->id;
     }
 
+    /**
+     * Save belongs to many relation
+     * @param array $association
+     * @param array $relations
+     * @param array $options
+     */
     private function saveBelongsToMany(array $association, array $relations, array $options = [])
     {
+        parent::save($options);
         foreach ($relations as $value) {
             $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
             $this->{$association['post_field']}()->save($model);
         }
     }
 
+    /**
+     * Save has many relation
+     * @param array $association
+     * @param array $relations
+     * @param array $options
+     */
     private function saveHasMany(array $association, array $relations, array $options = [])
     {
         parent::save($options);
         $this->{$association['post_field']}()->createMany($relations);
-//        foreach ($associations[$association['post_field']] as $value) {
-//            $this->{$association['post_field']}()->save(new $association['model']($value));
-//        }
     }
 
     /**

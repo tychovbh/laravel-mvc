@@ -10,7 +10,7 @@ class Element extends Model
     /**
      * @var array
      */
-    protected $fillable = ['label', 'name', 'description'];
+    protected $fillable = ['label', 'name', 'description', 'properties'];
 
     /**
      * @var array
@@ -29,6 +29,6 @@ class Element extends Model
      */
     public function properties(): BelongsToMany
     {
-        return $this->belongsToMany(Property::class);
+        return $this->belongsToMany(Property::class, 'element_properties');
     }
 }

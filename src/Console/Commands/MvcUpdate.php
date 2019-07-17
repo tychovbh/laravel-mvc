@@ -3,13 +3,14 @@
 namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Tychovbh\Mvc\Repositories\FormRepository;
 use Tychovbh\Mvc\Repositories\ElementRepository;
 use Tychovbh\Mvc\Repositories\PropertyRepository;
 
 /**
  * @property PropertyRepository properties
- * @property ElementRepository inputs
+ * @property ElementRepository elements
  * @property FormRepository forms
  */
 class MvcUpdate extends Command
@@ -31,13 +32,14 @@ class MvcUpdate extends Command
     /**
      * Create a new command instance.
      *
-     * @param ElementRepository $inputs
+     * @param ElementRepository $elements
      * @param PropertyRepository $properties
+     * @param FormRepository $forms
      */
-    public function __construct(ElementRepository $inputs, PropertyRepository $properties, FormRepository $forms)
+    public function __construct(ElementRepository $elements, PropertyRepository $properties, FormRepository $forms)
     {
         parent::__construct();
-        $this->inputs = $inputs;
+        $this->elements = $elements;
         $this->properties = $properties;
         $this->forms = $forms;
     }
@@ -49,18 +51,17 @@ class MvcUpdate extends Command
      */
     public function handle()
     {
-        $properties = config('forms.properties');
-        foreach ($properties as $property) {
+        foreach (config('forms.properties') as $property) {
             $this->properties->saveOrUpdate('name', $property['name'], $property);
         }
 
-        $inputs = config('forms.inputs');
-        foreach ($inputs as $input) {
-            $this->inputs->saveOrUpdate('name', $input['name'], $input);
+        DB::table('element_properties')->truncate();
+        foreach (config('forms.elements') as $element) {
+            $this->elements->saveOrUpdate('name', $element['name'], $element);
         }
 
-        $forms = config('forms.forms');
-        foreach ($forms as $form) {
+        DB::table('fields')->truncate();
+        foreach (config('forms.forms') as $form) {
             $this->forms->saveOrUpdate('name', $form['name'], $form);
         }
     }

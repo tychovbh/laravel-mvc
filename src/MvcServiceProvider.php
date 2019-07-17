@@ -4,6 +4,7 @@ namespace Tychovbh\Mvc;
 
 use Illuminate\Support\ServiceProvider;
 use Laravelista\LumenVendorPublish\VendorPublishCommand;
+use Tychovbh\Mvc\Console\Commands\MvcCollections;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
@@ -27,11 +28,13 @@ class MvcServiceProvider extends ServiceProvider
             MvcRepository::class,
             MvcController::class,
             MvcRequest::class,
-            MvcUpdate::class
+            MvcUpdate::class,
+            MvcCollections::class
         ]);
 
         $this->config('messages');
         $this->config('forms');
+        $this->config('collections');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
