@@ -45,6 +45,7 @@ class MvcServiceProvider extends ServiceProvider
         if (is_application() === 'lumen') {
             $this->app->configure('messages');
             $this->app->configure('forms');
+            $this->app->configure('collections');
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
             $this->app->routeMiddleware([
                 'validate' => ValidateMiddleware::class
