@@ -6,7 +6,7 @@ return [
             'label' => 'Input Field',
             'name' => 'input',
             'description' => 'Create an Input Field',
-            'properties' => ['name', 'id', 'placeholder', 'type', 'default'],
+            'properties' => ['name', 'id', 'placeholder', 'type', 'default', 'alt'],
         ],
         [
             'label' => 'Dropdown Field',
@@ -78,6 +78,11 @@ return [
         [
             'name' => 'hidden',
             'label' => 'Not visible',
+            'options' => null,
+        ],
+        [
+            'name' => 'alt',
+            'label' => 'Alt value',
             'options' => null,
         ],
     ]
