@@ -88,12 +88,15 @@ class Model extends BaseModel
     /**
      * Save belongs to many relation
      * @param array $association
-     * @param array $relations
+     * @param mixed $relations
      * @param array $options
      */
-    private function saveBelongsToMany(array $association, array $relations, array $options = [])
+    private function saveBelongsToMany(array $association, $relations, array $options = [])
     {
         parent::save($options);
+        if (!is_array($relations)) {
+            $relations = [$relations];
+        }
         foreach ($relations as $value) {
             $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
             $this->{$association['post_field']}()->save($model);
@@ -103,12 +106,15 @@ class Model extends BaseModel
     /**
      * Save has many relation
      * @param array $association
-     * @param array $relations
+     * @param mixed $relations
      * @param array $options
      */
-    private function saveHasMany(array $association, array $relations, array $options = [])
+    private function saveHasMany(array $association, $relations, array $options = [])
     {
         parent::save($options);
+        if (!is_array($relations)) {
+            $relations = [$relations];
+        }
         $this->{$association['post_field']}()->createMany($relations);
     }
 
