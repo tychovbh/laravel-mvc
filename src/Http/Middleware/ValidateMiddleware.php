@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc\Http\Middleware;
 
 use Closure;
+use Tychovbh\Mvc\Http\Requests\Lumen\FormRequest;
 
 class ValidateMiddleware
 {
@@ -16,14 +17,35 @@ class ValidateMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $uses = explode('@', str_replace(['App\\Http\\Controllers\\', 'Controller'], ['', ''], get_route_info($request, 'uses')));
-        $name = '\\App\\Http\\Requests\\' . ucfirst($uses[1]) . $uses[0];
-        $formRequest = $name::createFrom($request);
+        $formRequest = $this->createFormRequest($request);
+//        $formRequest->setContainer(app())->setRedirector(app()->make(Redirector::class)); // TODO fix this for Laravel
         $formRequest->setContainer(app());
         $formRequest->validateResolved();
 
         $response = $next($request);
 
         return $response;
+    }
+
+    /**
+     * Create Form Request
+     * @param $request
+     * @return FormRequest
+     */
+    private function createFormRequest($request): FormRequest
+    {
+        $name = get_route_info($request, 'request');
+
+        if ($name) {
+            return $name::createFrom($request);
+        }
+
+        $pieces = explode('\\', get_route_info($request, 'uses'));
+        $action = array_pop($pieces);
+        $namespace = str_replace('Controllers', 'Requests', implode('\\', $pieces));
+        $uses = explode('@', $action);
+        $name  = $namespace . '\\' . ucfirst($uses[1]) . str_replace('Controller', '', $uses[0]);
+
+        return $name::createFrom($request);
     }
 }

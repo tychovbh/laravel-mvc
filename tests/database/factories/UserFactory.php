@@ -24,6 +24,7 @@ $factory->define(\Tychovbh\Tests\Mvc\App\TestUser::class, function (Faker $faker
     return [
         'password' => Hash::make(Str::random(10)),
         'email' => $faker->unique()->safeEmail,
+        'name' => $faker->name,
         'avatar' => str_replace('public/', '', $file->store('avatars'))
     ];
 });

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
+use Tychovbh\Mvc\Routes\Invite;
 use Tychovbh\Tests\Mvc\App\TestUserController;
 use Tychovbh\Tests\Mvc\App\TestUserRepository;
 
@@ -20,8 +21,6 @@ class TestCase extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->setConfig('messages');
-        $this->setConfig('forms');
         Config::set('forms.forms', [
             [
                 'name' => 'test_users',
@@ -33,6 +32,10 @@ class TestCase extends BaseTestCase
                     [
                         'element' => 'input',
                         'properties' => ['name' => 'password', 'type' => 'password', 'required' => true],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'name', 'type' => 'text', 'required' => true],
                     ],
                     [
                         'element' => 'input',
@@ -51,15 +54,18 @@ class TestCase extends BaseTestCase
                 'items' => [
                     [
                         'email' => $faker->email,
-                        'password' => $faker->password
+                        'password' => $faker->password,
+                        'name' => $faker->name
                     ],
                     [
                         'email' => $faker->email,
-                        'password' => $faker->password
+                        'password' => $faker->password,
+                        'name' => $faker->name
                     ],
                     [
                         'email' => $faker->email,
-                        'password' => $faker->password
+                        'password' => $faker->password,
+                        'name' => $faker->name
                     ],
                 ],
             ]
@@ -86,6 +92,10 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $this->setConfig('messages');
+        $this->setConfig('forms');
+        $this->setConfig('auth');
+        $this->setConfig('mail');
         $app['config']->set('env', 'testing');
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -94,12 +104,16 @@ class TestCase extends BaseTestCase
             'prefix' => '',
         ]);
         $app['config']->set('filesystems.disks.local.root', storage_path('framework/testing/disks/app'));
+        $app['config']->set('auth.secret', 'sec!ReT423*&');
+        $app['config']->set('auth.id', '1');
+        $app['config']->set('auth.url', 'https://localhost:3000/users/create');
 
 
         $app['router']->get('users', TestUserController::class . '@index')->name('test_users.index');
         $app['router']->get('users/create', TestUserController::class . '@create')->name('test_users.create');
         $app['router']->post('users', TestUserController::class . '@store')->name('test_users.store');
         $app['router']->put('users/{id}', TestUserController::class . '@update')->name('test_users.update');
+        Invite::routes();
     }
 
     /**

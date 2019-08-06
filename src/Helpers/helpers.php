@@ -4,8 +4,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use ReallySimpleJWT\Token;
 use Tychovbh\Mvc\Repositories\Repository;
 
 if (!function_exists('repository')) {
@@ -255,16 +257,65 @@ if (!function_exists('config_path')) {
     }
 }
 
-if (!function_exists('file_from_data')) {
-    // Is this function necessary? TODO
+if (!function_exists('random_string')) {
     /**
-     * Return file from data
-     * @param array $data
-     * @param string $name
-     * @return UploadedFile
+     * Random string
+     * @param int $length
+     * @return string
      */
-    function file_from_data(array $data, string $name) : UploadedFile
+    function random_string(int $length = 10): string
     {
-        return $data[$name];
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $string = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $string .= $characters[$index];
+        }
+
+        return $string;
+    }
+}
+
+if (!function_exists('token')) {
+    /**
+     * Generate token
+     * TODO fix front-end login issue token expired and set addMonth to addDay
+     * @param mixed $data
+     * @return string
+     */
+    function token($data): string
+    {
+        return Token::create(
+            $data,
+            config('auth.secret'),
+            time() + config('auth.expiration'),
+            config('auth.id')
+        );
+    }
+}
+
+
+if (!function_exists('token_validate')) {
+    /**
+     * validate token
+     * @param string $token
+     * @return bool
+     */
+    function token_validate(string $token)
+    {
+        return Token::validate($token, config('auth.secret'));
+    }
+}
+
+if (!function_exists('token_value')) {
+    /**
+     * Get token value
+     * @param string $token
+     * @return mixed
+     */
+    function token_value(string $token)
+    {
+        return json_decode(Token::getPayload($token))->user_id;
     }
 }

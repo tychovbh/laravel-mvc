@@ -28,6 +28,11 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->configure('messages');
             $this->app->configure('forms');
             $this->app->configure('collections');
+            $this->app->configure('auth');
+            $this->app->configure('mail');
+        } else {
+            $router = $this->app['router'];
+            $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
         }
 
         if (!$this->app->runningInConsole()) {
@@ -45,6 +50,8 @@ class MvcServiceProvider extends ServiceProvider
         $this->config('messages');
         $this->config('forms');
         $this->config('collections');
+        $this->config('auth');
+        $this->config('mail');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),

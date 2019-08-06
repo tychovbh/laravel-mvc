@@ -17,6 +17,7 @@ class CreateTestUsersTable extends Migration
         Schema::create('test_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
+            $table->string('name');
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->timestamps();
