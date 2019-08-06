@@ -25,11 +25,11 @@ class MvcServiceProvider extends ServiceProvider
                 'validate' => ValidateMiddleware::class
             ]);
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
-            $this->app->configure('messages');
-            $this->app->configure('forms');
-            $this->app->configure('collections');
-            $this->app->configure('auth');
-            $this->app->configure('mail');
+            $this->app->configure('mvc-messages');
+            $this->app->configure('mvc-forms');
+            $this->app->configure('mvc-collections');
+            $this->app->configure('mvc-auth');
+            $this->app->configure('mvc-mail');
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
@@ -47,11 +47,11 @@ class MvcServiceProvider extends ServiceProvider
             MvcCollections::class
         ]);
 
-        $this->config('messages');
-        $this->config('forms');
-        $this->config('collections');
-        $this->config('auth');
-        $this->config('mail');
+        $this->config('mvc-messages');
+        $this->config('mvc-forms');
+        $this->config('mvc-collections');
+        $this->config('mvc-auth');
+        $this->config('mvc-mail');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),

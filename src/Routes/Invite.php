@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tychovbh\Mvc\Routes;
 
 use Illuminate\Support\Arr;
-use Tychovbh\Mvc\Http\Controllers\InviteController;
-use Tychovbh\Mvc\Http\Requests\StoreInvite;
 
 class Invite implements Routes
 {
@@ -18,17 +16,19 @@ class Invite implements Routes
         $app = app();
 
         if (is_application() === 'lumen') {
-            $app->router->post('/invites', array_merge([
-                    'as' => 'invites.store',
-                    'middleware' => ['validate'],
-                    'uses' => StoreInvite::class . '@store'
-                ], Arr::get($options, 'store', []))
-            );
+            $attributes = array_merge([
+                'as' => 'invites.store',
+                'namespace' => 'Tychovbh\Mvc\Http\Controllers',
+                'uses' => 'InviteController@store'
+            ], Arr::get($options, 'store', []));
+
+            $attributes['middleware'] = array_merge(Arr::get($attributes, 'middleware'), ['validate']);
+            $app->router->post('/invites', $attributes);
         }
 
         if (is_application() === 'laravel') {
             $app['router']
-                ->resource('invites', InviteController::class)
+                ->resource('invites', 'InviteController')
                 ->only(['store'])
                 ->middleware('validate');
         }
