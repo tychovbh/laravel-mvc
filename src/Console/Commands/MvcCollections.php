@@ -41,7 +41,7 @@ class MvcCollections extends Command
      */
     public function handle()
     {
-        $collections = config('collections');
+        $collections = config('mvc-collections');
         foreach ($collections as $collection) {
             $this->saveCollection($collection);
         }

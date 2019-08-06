@@ -16,7 +16,7 @@ class MvcUpdateTest extends TestCase
     {
         $this->artisan('mvc:update');
 
-        foreach (config('forms') as $table => $items) {
+        foreach (config('mvc-forms') as $table => $items) {
             $forget = [];
             switch ($table) {
                 case 'properties':
@@ -36,7 +36,7 @@ class MvcUpdateTest extends TestCase
             }, $items));
         }
 
-        foreach (config('forms.elements') as $element) {
+        foreach (config('mvc-forms.elements') as $element) {
             $this->assertDatabaseHasCollection('element_properties', array_map(function ($property) use ($element) {
                 return [
                     'element_id' => DB::table('elements')->where('name', $element['name'])->first()->id,
@@ -45,7 +45,7 @@ class MvcUpdateTest extends TestCase
             }, $element['properties']));
         }
 
-        foreach (config('forms.forms') as $form) {
+        foreach (config('mvc-forms.forms') as $form) {
             $this->assertDatabaseHasCollection('fields', array_map(function ($field) use ($form) {
                 return [
                     'form_id' => DB::table('forms')->where('name', $form['name'])->first()->id,

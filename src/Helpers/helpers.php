@@ -288,9 +288,9 @@ if (!function_exists('token')) {
     {
         return Token::create(
             $data,
-            config('auth.secret'),
-            time() + config('auth.expiration'),
-            config('auth.id')
+            config('mvc-auth.secret'),
+            time() + config('mvc-auth.expiration'),
+            config('mvc-auth.id')
         );
     }
 }
@@ -304,7 +304,7 @@ if (!function_exists('token_validate')) {
      */
     function token_validate(string $token)
     {
-        return Token::validate($token, config('auth.secret'));
+        return Token::validate($token, config('mvc-auth.secret'));
     }
 }
 

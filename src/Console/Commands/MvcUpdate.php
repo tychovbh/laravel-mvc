@@ -51,17 +51,18 @@ class MvcUpdate extends Command
      */
     public function handle()
     {
-        foreach (config('forms.properties') as $property) {
+        foreach (config('mvc-forms.properties') as $property) {
             $this->properties->saveOrUpdate('name', $property['name'], $property);
         }
 
         DB::table('element_properties')->truncate();
-        foreach (config('forms.elements') as $element) {
+        foreach (config('mvc-forms.elements') as $element) {
             $this->elements->saveOrUpdate('name', $element['name'], $element);
         }
 
         DB::table('fields')->truncate();
-        foreach (config('forms.forms') as $form) {
+
+        foreach (config('mvc-forms.forms') as $form) {
             $this->forms->saveOrUpdate('name', $form['name'], $form);
         }
     }

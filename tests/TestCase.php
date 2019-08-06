@@ -21,7 +21,7 @@ class TestCase extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::set('forms.forms', [
+        Config::set('mvc-forms.forms', [
             [
                 'name' => 'test_users',
                 'fields' => [
@@ -46,7 +46,7 @@ class TestCase extends BaseTestCase
         ]);
 
         $faker = Factory::create();
-        Config::set('collections', [
+        Config::set('mvc-collections', [
             [
                 'table' => 'test_users',
                 'repository' => TestUserRepository::class,
@@ -92,10 +92,10 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $this->setConfig('messages');
-        $this->setConfig('forms');
-        $this->setConfig('auth');
-        $this->setConfig('mail');
+        $this->setConfig('mvc-messages');
+        $this->setConfig('mvc-forms');
+        $this->setConfig('mvc-auth');
+        $this->setConfig('mvc-mail');
         $app['config']->set('env', 'testing');
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -104,9 +104,9 @@ class TestCase extends BaseTestCase
             'prefix' => '',
         ]);
         $app['config']->set('filesystems.disks.local.root', storage_path('framework/testing/disks/app'));
-        $app['config']->set('auth.secret', 'sec!ReT423*&');
-        $app['config']->set('auth.id', '1');
-        $app['config']->set('auth.url', 'https://localhost:3000/users/create');
+        $app['config']->set('mvc-auth.secret', 'sec!ReT423*&');
+        $app['config']->set('mvc-auth.id', '1');
+        $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create');
 
 
         $app['router']->get('users', TestUserController::class . '@index')->name('test_users.index');

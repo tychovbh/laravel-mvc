@@ -28,7 +28,7 @@ class Invite implements Routes
 
         if (is_application() === 'laravel') {
             $app['router']
-                ->resource('invites', 'InviteController')
+                ->resource('invites', 'Tychovbh\Mvc\Http\Controllers\InviteController')
                 ->only(['store'])
                 ->middleware('validate');
         }

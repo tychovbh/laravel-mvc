@@ -13,7 +13,7 @@ class MvcCollectionsTest extends TestCase
     {
         $this->artisan('mvc:collections');
 
-        foreach (config('collections') as $collection) {
+        foreach (config('mvc-collections') as $collection) {
             $this->assertDatabaseHasCollection($collection['table'], $collection['items']);
         }
     }
