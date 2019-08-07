@@ -316,6 +316,6 @@ if (!function_exists('token_value')) {
      */
     function token_value(string $token)
     {
-        return json_decode(Token::getPayload($token))->user_id;
+        return Token::getPayload($token, config('mvc-auth.secret'))['user_id'];
     }
 }

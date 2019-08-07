@@ -106,7 +106,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('filesystems.disks.local.root', storage_path('framework/testing/disks/app'));
         $app['config']->set('mvc-auth.secret', 'sec!ReT423*&');
         $app['config']->set('mvc-auth.id', '1');
-        $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create');
+        $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
 
 
         $app['router']->get('users', TestUserController::class . '@index')->name('test_users.index');

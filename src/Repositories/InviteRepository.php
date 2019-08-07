@@ -32,7 +32,7 @@ class InviteRepository extends AbstractRepository implements Repository
             'token' => token($data)
         ]);
 
-        $data['link'] = config('mvc-auth.url') . $invite->reference;
+        $data['link'] = str_replace('{reference}', $invite->reference, config('mvc-auth.url'));
         Mail::to($email)->send(new UserInvite($data));
 
         return $invite;

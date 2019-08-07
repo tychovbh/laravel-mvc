@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use App\Team;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -19,7 +20,10 @@ class Model extends BaseModel
      */
     protected $associations = [];
 
-    protected $saveAssociations = [];
+    /**
+     * @var array
+     */
+    protected $unique = [];
 
     /**
      * Return files
@@ -49,6 +53,11 @@ class Model extends BaseModel
         $this->saveFiles();
 
         $this->saveAssociation([], $options);
+
+        if ($this->unique) {
+            $this->updateIfNotUnique();
+        }
+
         return parent::save($options);
     }
 
@@ -57,14 +66,16 @@ class Model extends BaseModel
      * @param array $associations
      * @param array $options
      */
-    public function saveAssociation(array $associations, array $options = [])
+    protected function saveAssociation(array $associations, array $options = [])
     {
         foreach ($this->associations() as $association) {
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $relations = $this->attributes[$association['post_field']];
                 Arr::forget($this->attributes, $association['post_field']);
-                $this->{$type}($association, $relations, $options);
+                if ($relations) {
+                    $this->{$type}($association, $relations, $options);
+                }
             }
         }
     }
@@ -75,7 +86,7 @@ class Model extends BaseModel
      * @param string $relation
      * @param array $options
      */
-    private function saveBelongsTo(array $association, string $relation, array $options = [])
+    protected function saveBelongsTo(array $association, string $relation, array $options = [])
     {
         $this->attributes[$association['post_field'] . '_id'] = $association['model']::where(
             $association['table_field'],
@@ -91,7 +102,7 @@ class Model extends BaseModel
      * @param mixed $relations
      * @param array $options
      */
-    private function saveBelongsToMany(array $association, $relations, array $options = [])
+    protected function saveBelongsToMany(array $association, $relations, array $options = [])
     {
         parent::save($options);
         if (!is_array($relations)) {
@@ -109,7 +120,7 @@ class Model extends BaseModel
      * @param mixed $relations
      * @param array $options
      */
-    private function saveHasMany(array $association, $relations, array $options = [])
+    protected function saveHasMany(array $association, $relations, array $options = [])
     {
         parent::save($options);
         if (!is_array($relations)) {
@@ -121,7 +132,7 @@ class Model extends BaseModel
     /**
      * Save files
      */
-    private function saveFiles()
+    protected function saveFiles()
     {
         foreach ($this->files() as $name => $path) {
             if (Arr::has($this->attributes, $name) && is_a($this->attributes[$name], UploadedFile::class)) {
@@ -131,6 +142,25 @@ class Model extends BaseModel
                     Storage::delete($this->original[$name]);
                 }
             }
+        }
+    }
+
+    /**
+     * Update model if not Unique (this is commonly used for saving hasMany relations.
+     */
+    protected function updateIfNotUnique()
+    {
+        $query = self::query();
+
+        foreach ($this->unique as $unique) {
+            $query->where($unique, $this->attributes[$unique]);
+        }
+
+        $model = $query->first();
+
+        if ($model) {
+            $this->id = $model->id;
+            $this->exists = true;
         }
     }
 }
