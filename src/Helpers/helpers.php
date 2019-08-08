@@ -189,6 +189,34 @@ if (!function_exists('info')) {
     }
 }
 
+if (!function_exists('emergency')) {
+    /**
+     * Log emergency
+     * @param string $message
+     * @param Exception $exception
+     */
+    function emergency(string $message, Exception $exception)
+    {
+        $data = [];
+
+        $request = Arr::get($exception->getTrace(), '0.args.0');
+        if (is_a($request, Request::class)) {
+            $data['request'] = $request->fullUrl();
+        }
+
+        if (method_exists($exception, 'getStatusCode')) {
+            $data['status'] = $exception->getStatusCode();
+        }
+
+        Log::emergency($message, array_merge($data, [
+            'website' => config('app.url'),
+            'exception' => $exception->getMessage(),
+            'file' => str_replace(base_path(), '', $exception->getFile()),
+            'line' => $exception->getLine()
+        ]));
+    }
+}
+
 if (!function_exists('message')) {
 
     /**
@@ -199,7 +227,7 @@ if (!function_exists('message')) {
      */
     function message(string $message, ...$params)
     {
-        $config = config('messages');
+        $config = config('mvc-messages');
         $message = Arr::get($config, $message) ?? Arr::get($config, 'server.error');
 
         return $params ? sprintf($message, ...$params) : $message;

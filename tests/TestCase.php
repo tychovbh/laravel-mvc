@@ -10,6 +10,7 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\Invite;
+use Tychovbh\Mvc\Routes\User;
 use Tychovbh\Tests\Mvc\App\TestUserController;
 use Tychovbh\Tests\Mvc\App\TestUserRepository;
 
@@ -109,11 +110,12 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
 
 
-        $app['router']->get('users', TestUserController::class . '@index')->name('test_users.index');
-        $app['router']->get('users/create', TestUserController::class . '@create')->name('test_users.create');
-        $app['router']->post('users', TestUserController::class . '@store')->name('test_users.store');
-        $app['router']->put('users/{id}', TestUserController::class . '@update')->name('test_users.update');
+        $app['router']->get('test_users', TestUserController::class . '@index')->name('test_users.index');
+        $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
+        $app['router']->post('test_users', TestUserController::class . '@store')->name('test_users.store');
+        $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
         Invite::routes();
+        User::routes();
     }
 
     /**
@@ -147,14 +149,16 @@ class TestCase extends BaseTestCase
      * Show resource
      * @param $uri
      * @param JsonResource $resource
+     * @param int $status
+     * @param mixed $assert
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function show($uri, JsonResource $resource)
+    public function show($uri, JsonResource $resource, int $status = 200, array $assert = [])
     {
         $response = parent::get(route($uri, ['id' => $resource->id]))
-            ->assertStatus(200)
+            ->assertStatus($status)
             ->assertJson(
-                $resource->response($this->app['request'])->getData(true)
+                $assert ?? $resource->response($this->app['request'])->getData(true)
             );
 
         return $response;
@@ -165,14 +169,16 @@ class TestCase extends BaseTestCase
      * @param $uri
      * @param JsonResource $resource
      * @param array $data
+     * @param int $status
+     * @param array $assert
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function store($uri, JsonResource $resource, array $data = [])
+    public function store($uri, JsonResource $resource, array $data = [], int $status = 201, array $assert = [])
     {
         $response = parent::post(route($uri), $data)
-            ->assertStatus(201)
+            ->assertStatus($status)
             ->assertJson(
-                $resource->response($this->app['request'])->getData(true)
+                $assert ?? $resource->response($this->app['request'])->getData(true)
             );
 
         return $response;

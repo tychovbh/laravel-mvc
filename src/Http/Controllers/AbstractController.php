@@ -9,6 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
+use Tychovbh\Mvc\Exceptions\Handler;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Repositories\FormRepository;
 use Tychovbh\Mvc\Repositories\Repository;
@@ -40,6 +42,10 @@ abstract class AbstractController implements ControllerInterface
      */
     public function __construct()
     {
+        App::singleton(
+            \Illuminate\Contracts\Debug\ExceptionHandler::class,
+            Handler::class
+        );
         $this->repository = $this->repository ?? repository(get_called_class());
         $this->resource = $this->resource ?? resource(get_called_class());
         $this->controller = controller(get_called_class());

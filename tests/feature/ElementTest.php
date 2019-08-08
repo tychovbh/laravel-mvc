@@ -15,6 +15,6 @@ class ElementTest extends TestCase
     public function itCanIndex()
     {
         $forms = Element::all();
-        $this->index('elements.index', (ElementResource::collection($forms)));
+        $this->index('elements.index', ElementResource::collection($forms));
     }
 }

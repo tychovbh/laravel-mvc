@@ -6,31 +6,14 @@ namespace Tychovbh\Mvc\Routes;
 
 use Illuminate\Support\Arr;
 
-class Invite implements Routes
+class Invite extends AbstractRoutes implements Routes
 {
     /**
      * @param array $options
      */
     public static function routes(array $options = [])
     {
-        $app = app();
-
-        if (is_application() === 'lumen') {
-            $attributes = array_merge([
-                'as' => 'invites.store',
-                'namespace' => 'Tychovbh\Mvc\Http\Controllers',
-                'uses' => 'InviteController@store'
-            ], Arr::get($options, 'store', []));
-
-            $attributes['middleware'] = array_merge(Arr::get($attributes, 'middleware'), ['validate']);
-            $app->router->post('/invites', $attributes);
-        }
-
-        if (is_application() === 'laravel') {
-            $app['router']
-                ->resource('invites', 'Tychovbh\Mvc\Http\Controllers\InviteController')
-                ->only(['store'])
-                ->middleware('validate');
-        }
+        $instance = self::instance();
+        $instance->store('invites', $options, ['validate']);
     }
 }

@@ -5,7 +5,7 @@ namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserInvite;
-use Tychovbh\Tests\Mvc\App\TestUser;
+use Tychovbh\Mvc\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class InviteTest extends TestCase
@@ -16,7 +16,7 @@ class InviteTest extends TestCase
     public function itCanInviteUser()
     {
         Mail::fake();
-        $user = factory(TestUser::class)->make();
+        $user = factory(User::class)->make();
 
         $this->invite([
             'name' => $user->name,
@@ -34,7 +34,7 @@ class InviteTest extends TestCase
      */
     public function itCannotInviteUserFieldMissing()
     {
-        $user = factory(TestUser::class)->make();
+        $user = factory(User::class)->make();
 
         $this->invite([
             'email' => $user->email,
@@ -51,7 +51,7 @@ class InviteTest extends TestCase
     public function itCannotInviteUserForbidden()
     {
         $this->markTestSkipped('TODO implement test when authentication works');
-        $user = factory(TestUser::class)->make();
+        $user = factory(User::class)->make();
         $this->invite([
             'name' => $user->name,
             'email' => $user->email,
