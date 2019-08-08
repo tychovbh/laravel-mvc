@@ -27,8 +27,7 @@
         "rbdwllr/reallysimplejwt": "^2.0",
         "tychovbh/laravel-package-skeleton": "^1.3",
         "urameshibr/lumen-form-request": "^1.5",
-        "ext-json": "*",
-        "ext-http": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
