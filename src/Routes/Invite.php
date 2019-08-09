@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Routes;
 
-use Illuminate\Support\Arr;
-
 class Invite extends AbstractRoutes implements Routes
 {
     /**
