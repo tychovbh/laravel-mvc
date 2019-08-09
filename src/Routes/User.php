@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Routes;
 
-use Illuminate\Support\Arr;
-
 class User extends AbstractRoutes implements Routes
 {
     /**
@@ -13,8 +11,6 @@ class User extends AbstractRoutes implements Routes
      */
     public static function routes(array $options = [])
     {
-        $options['store']['middleware'] = array_merge(Arr::get($options, 'middleware', []), ['validate']);
-
         $instance = self::instance();
         $instance->show('users', $options);
         $instance->store('users', $options, ['validate']);
