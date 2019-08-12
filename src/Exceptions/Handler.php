@@ -68,6 +68,10 @@ class Handler extends AbstractHandler
             $status = $exception->getStatusCode();
         }
 
+        if ($status === 500) {
+            $message = message('server.error');
+        }
+
         return response()->json(['message' => $message], $status);
     }
 }

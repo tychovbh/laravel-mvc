@@ -347,3 +347,16 @@ if (!function_exists('token_value')) {
         return Token::getPayload($token, config('mvc-auth.secret'))['user_id'];
     }
 }
+
+if (!function_exists('request')) {
+    /**
+     * Get Request attribute
+     * @param string $item
+     * @return mixed
+     */
+    function request(string $item = '')
+    {
+        $request = app('request');
+        return $request->get($item);
+    }
+}
