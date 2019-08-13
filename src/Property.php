@@ -5,12 +5,14 @@ namespace Tychovbh\Mvc;
 class Property extends Model
 {
     /**
-     * @var array
+     * Property constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['name', 'label', 'options'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('name', 'label', 'options');
+        $this->casts(['options' => 'array']);
 
-    /**
-     * @var array
-     */
-    protected $casts = ['options' => 'array'];
+        parent::__construct($attributes);
+    }
 }

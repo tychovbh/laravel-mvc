@@ -8,21 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Element extends Model
 {
     /**
-     * @var array
+     * Element constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['label', 'name', 'description', 'properties'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('label', 'name', 'description', 'properties');
+        $this->associations([
+            'properties' => [
+                'model' => Property::class,
+                'post_field' => 'properties',
+                'table_field' => 'name',
+                'type' => BelongsToMany::class
+            ]
+        ]);
 
-    /**
-     * @var array
-     */
-    protected $associations = [
-        'properties' => [
-            'model' => Property::class,
-            'post_field' => 'properties',
-            'table_field' => 'name',
-            'type' => BelongsToMany::class
-        ]
-    ];
+        parent::__construct($attributes);
+    }
 
     /**
      * @return BelongsToMany

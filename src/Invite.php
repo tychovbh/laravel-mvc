@@ -5,7 +5,12 @@ namespace Tychovbh\Mvc;
 class Invite extends Model
 {
     /**
-     * @var array
+     * Invite constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['reference', 'token'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('reference', 'token');
+        parent::__construct($attributes);
+    }
 }

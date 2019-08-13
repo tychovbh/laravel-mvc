@@ -231,11 +231,20 @@ class Model extends BaseModel
 
     /**
      * Add Associations
-     * @param mixed ...$associations
+     * @param array $associations
      */
-    public function associations(...$associations)
+    public function associations(array $associations)
     {
         $this->associations = array_merge($this->associations, $associations);
+    }
+
+    /**
+     * Add Associations
+     * @param array $casts
+     */
+    public function casts(array $casts)
+    {
+        $this->casts = array_merge($this->casts, $casts);
     }
 
     /**

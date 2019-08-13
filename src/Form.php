@@ -8,20 +8,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Form extends Model
 {
     /**
-     * @var array
+     * Form constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['label', 'name', 'description', 'table', 'fields'];
-
-    /**
-     * @var array
-     */
-    protected $associations = [
-        'fields' => [
-            'model' => Field::class,
-            'post_field' => 'fields',
-            'type' => HasMany::class
-        ]
-    ];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('label', 'name', 'description', 'table', 'fields');
+        $this->associations([
+            'fields' => [
+                'model' => Field::class,
+                'post_field' => 'fields',
+                'type' => HasMany::class
+            ]
+        ]);
+        parent::__construct($attributes);
+    }
 
     /**
      * The Fields

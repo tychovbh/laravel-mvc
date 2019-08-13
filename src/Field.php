@@ -8,26 +8,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Field extends Model
 {
     /**
-     * @var array
+     * Field constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['properties', 'form_id', 'element'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('properties', 'form_id', 'element');
+        $this->casts(['properties' => 'array']);
+        $this->associations([
+            'element' => [
+                'model' => Element::class,
+                'table_field' => 'name',
+                'post_field' => 'element',
+                'type' => BelongsTo::class
+            ]
+        ]);
 
-    /**
-     * @var array
-     */
-    protected $associations = [
-        'element' => [
-            'model' => Element::class,
-            'table_field' => 'name',
-            'post_field' => 'element',
-            'type' => BelongsTo::class
-        ]
-    ];
-
-    /**
-     * @var array
-     */
-    protected $casts = ['properties' => 'array'];
+        parent::__construct($attributes);
+    }
 
     /**
      * The Form

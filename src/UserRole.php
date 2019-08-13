@@ -5,9 +5,15 @@ namespace Tychovbh\Mvc;
 class UserRole extends Model
 {
     /**
-     * @var array
+     * UserRole constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['role_id', 'user_id'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('role_id', 'user_id');
+
+        parent::__construct($attributes);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

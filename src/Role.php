@@ -5,7 +5,13 @@ namespace Tychovbh\Mvc;
 class Role extends Model
 {
     /**
-     * @var array
+     * Role constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['name', 'label'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('name', 'label');
+
+        parent::__construct($attributes);
+    }
 }
