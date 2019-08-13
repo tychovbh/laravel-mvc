@@ -48,6 +48,11 @@ class UserTest extends TestCase
         $user = $this->user();
         $this->storeUser($user);
 
+        $this->assertDatabaseHas('user_roles', [
+            'role_id' => $user['data']['role_id'],
+            'user_id' => $user['resource']->id,
+        ]);
+
         Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($user) {
             return $mail->email = $user['data']['email'];
         });
@@ -151,8 +156,8 @@ class UserTest extends TestCase
     {
         $faker = Factory::create();
         $user = factory(User::class)->make();
-        $user->role_id = factory(Role::class)->create()->id;
         $data = $user->toArray();
+        $data['role_id'] = factory(Role::class)->create()->id;
         $data['password'] = $faker->password(8);
         $user->id = 1;
 

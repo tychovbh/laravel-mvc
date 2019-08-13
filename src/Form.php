@@ -16,7 +16,7 @@ class Form extends Model
      * @var array
      */
     protected $associations = [
-        [
+        'fields' => [
             'model' => Field::class,
             'post_field' => 'fields',
             'type' => HasMany::class

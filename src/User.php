@@ -14,7 +14,7 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'email_verified_at', 'avatar', 'is_admin',
+        'name', 'email', 'password', 'email_verified_at', 'avatar', 'is_admin', 'role_id', 'channel_id',
     ];
 
     /**
@@ -24,6 +24,18 @@ class User extends Model
      */
     protected $hidden = [
         'password',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        'roles' => [
+            'model' => Role::class,
+            'post_field' => 'role_id',
+            'table_field' => 'id',
+            'type' => BelongsToMany::class,
+        ]
     ];
 
     /**

@@ -16,10 +16,10 @@ class Field extends Model
      * @var array
      */
     protected $associations = [
-        [
+        'element' => [
             'model' => Element::class,
-            'post_field' => 'element',
             'table_field' => 'name',
+            'post_field' => 'element',
             'type' => BelongsTo::class
         ]
     ];

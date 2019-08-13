@@ -16,7 +16,7 @@ class Element extends Model
      * @var array
      */
     protected $associations = [
-        [
+        'properties' => [
             'model' => Property::class,
             'post_field' => 'properties',
             'table_field' => 'name',

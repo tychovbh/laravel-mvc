@@ -45,6 +45,7 @@ class UserController extends AbstractController
         }
 
         $user = parent::store($request);
+        // TODO make this configurable
         Mail::send(new UserCreated($user->email));
         return $user;
     }

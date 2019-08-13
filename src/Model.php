@@ -44,6 +44,15 @@ class Model extends BaseModel
     }
 
     /**
+     * @param string $name
+     * @param array $association
+     */
+    public function modifyAssociations(string $name, array $association)
+    {
+        $this->associations[$name] = array_merge($this->associations[$name], $association);
+    }
+
+    /**
      * Save the model
      * @param array $options
      * @return bool
@@ -67,13 +76,13 @@ class Model extends BaseModel
      */
     protected function saveAssociations(array $options = [])
     {
-        foreach ($this->getAssociations() as $association) {
+        foreach ($this->getAssociations() as $relation => $association) {
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
-                $relations = $this->attributes[$association['post_field']];
+                $values = $this->attributes[$association['post_field']];
                 Arr::forget($this->attributes, $association['post_field']);
-                if ($relations) {
-                    $this->{$type}($association, $relations, $options);
+                if ($values) {
+                    $this->{$type}($association, $relation, $values, $options);
                 }
             }
         }
@@ -83,13 +92,14 @@ class Model extends BaseModel
      * Save belongs to relation
      * @param array $association
      * @param string $relation
+     * @param string $value
      * @param array $options
      */
-    protected function saveBelongsTo(array $association, string $relation, array $options = [])
+    protected function saveBelongsTo(array $association, string $relation, string $value, array $options = [])
     {
-        $this->attributes[$association['post_field'] . '_id'] = $association['model']::where(
+        $this->attributes[$relation . '_id'] = $association['model']::where(
             $association['table_field'],
-            $relation
+            $value
         )
             ->firstOrFail()
             ->id;
@@ -98,34 +108,60 @@ class Model extends BaseModel
     /**
      * Save belongs to many relation
      * @param array $association
-     * @param mixed $relations
+     * @param string $relation
+     * @param mixed $values
      * @param array $options
      */
-    protected function saveBelongsToMany(array $association, $relations, array $options = [])
+    protected function saveBelongsToMany(array $association, string $relation, $values, array $options = [])
     {
+        $pivot = [];
+        if (Arr::has($association, 'pivots')) {
+            $pivot = $this->pivots($association['pivots']);
+        }
+
         parent::save($options);
-        if (!is_array($relations)) {
-            $relations = [$relations];
+
+        if (!is_array($values)) {
+            $values = [$values];
         }
-        foreach ($relations as $value) {
+
+        foreach ($values as $value) {
             $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
-            $this->{$association['post_field']}()->save($model);
+
+            $this->{$relation}()->save($model, $pivot);
         }
+    }
+
+    /**
+     * Get relation pivots
+     * @param array $pivots
+     * @return array
+     */
+    private function pivots(array $pivots = [])
+    {
+        $pivot = [];
+        foreach ($pivots as $name) {
+            $pivot[$name] = Arr::get($this->attributes, $name);
+            Arr::forget($this->attributes, $name);
+        }
+
+        return $pivot;
     }
 
     /**
      * Save has many relation
      * @param array $association
-     * @param mixed $relations
+     * @param string $relation
+     * @param mixed $values
      * @param array $options
      */
-    protected function saveHasMany(array $association, $relations, array $options = [])
+    protected function saveHasMany(array $association, string $relation, $values, array $options = [])
     {
         parent::save($options);
-        if (!is_array($relations)) {
-            $relations = [$relations];
+        if (!is_array($values)) {
+            $values = [$values];
         }
-        $this->{$association['post_field']}()->createMany($relations);
+        $this->{$relation}()->createMany($values);
     }
 
     /**

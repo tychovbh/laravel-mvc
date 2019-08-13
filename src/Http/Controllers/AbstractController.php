@@ -42,13 +42,58 @@ abstract class AbstractController implements ControllerInterface
      */
     public function __construct()
     {
+        $request = app('request');
+        $repository = get_route_info($request, 'repository');
+
         App::singleton(
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
             Handler::class
         );
+
+        $this->repository = $this->setRepository($request);
+        $this->resource = $this->setResource($request);
+        $this->setModel($request);
         $this->repository = $this->repository ?? repository(get_called_class());
         $this->resource = $this->resource ?? resource(get_called_class());
         $this->controller = controller(get_called_class());
+    }
+
+    /**
+     * Set repository
+     * @return Repository
+     * @throws Exception
+     */
+    private function setRepository($request): Repository
+    {
+        $repository = get_route_info($request, 'repository');
+        if ($repository) {
+            return new $repository;
+        }
+
+        return $this->repository ?? repository(get_called_class());
+    }
+
+    /**
+     * Set repository model
+     */
+    private function setModel($request)
+    {
+        $model = get_route_info($request, 'model');
+
+        if ($model) {
+            $this->repository->model = new $model;
+        }
+    }
+
+    /**
+     * Set resource
+     * @return string
+     * @throws Exception
+     */
+    private function setResource($request): string
+    {
+        $resource = get_route_info($request, 'resource');
+        return $resource ?? $this->resource ?? resource(get_called_class());
     }
 
     /**
@@ -148,3 +193,4 @@ abstract class AbstractController implements ControllerInterface
         return new FormResource($form);
     }
 }
+
