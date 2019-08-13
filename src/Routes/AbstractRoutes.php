@@ -72,10 +72,10 @@ abstract class AbstractRoutes
         $app = app();
         $singular = Str::singular($name);
         $as = $name . '.' . $action;
-        $namespace = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers\\');
-        $uses = Arr::get($options, 'uses', $namespace . ucfirst($singular) . 'Controller@' . $action);
-        $middleware = array_merge(Arr::get($options, $action . 'middleware', []), $middleware);
-        Arr::forget($options, $action . 'middleware');
+        $namespace = Arr::get($options, $action . '.namespace', 'Tychovbh\Mvc\Http\Controllers') . '\\';
+        $uses = Arr::get($options, $action . '.uses', $namespace . ucfirst($singular) . 'Controller@' . $action);
+        $middleware = array_merge(Arr::get($options, $action . '.middleware', []), $middleware);
+        Arr::forget($options, $action . '.middleware');
 
         if (is_application() === 'lumen') {
             $app->router->{$method}($url, array_merge([
