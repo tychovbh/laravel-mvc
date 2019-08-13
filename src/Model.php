@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc;
 
-use App\Team;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
