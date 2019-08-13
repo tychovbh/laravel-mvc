@@ -36,6 +36,18 @@ abstract class AbstractRoutes
     }
 
     /**
+     * Define index route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function index(string $name, array $options = [], array $middleware = [])
+    {
+
+        $this->route('get', $name, 'index', '/' . $name, $options, $middleware);
+    }
+
+    /**
      * Define show route
      * @param string $name
      * @param array $options

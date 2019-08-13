@@ -20,7 +20,16 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCanShowUser()
+    public function itCanIndex()
+    {
+        $users = factory(User::class, 3)->create();
+        $this->index('users.index', UserResource::collection($users));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShow()
     {
         $user = factory(User::class)->create();
         $this->show('users.show', UserResource::make($user));
@@ -29,7 +38,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCannotFindUser()
+    public function itCannotFind()
     {
         $user = factory(User::class)->create();
         $user->id = -1;
@@ -41,7 +50,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCanStoreUser()
+    public function itCanStore()
     {
         Mail::fake();
 
@@ -61,7 +70,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCanStoreUserViaToken()
+    public function itCanStoreViaToken()
     {
         $user = $this->user();
         $email = $user['data']['email'];
@@ -87,7 +96,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCannotStoreUserTokenNotFound()
+    public function itCannotStoreTokenNotFound()
     {
         $user = $this->user();
         $user['data']['token'] = random_string();
@@ -99,7 +108,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCannotStoreUserDuplicateEmail()
+    public function itCannotStoreDuplicateEmail()
     {
         $user = $this->user();
         factory(User::class)->create([
@@ -114,7 +123,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCannotStoreUserMissingField()
+    public function itCannotStoreMissingField()
     {
         $user = $this->user();
         $this->storeUserMissingField($user, 'password', 'password');
@@ -138,7 +147,7 @@ class UserTest extends TestCase
     /**
      * @test
      */
-    public function itCannotStoreUserPasswordToShort()
+    public function itCannotStorePasswordToShort()
     {
         $user = $this->user();
         $user['data']['password'] = 1234567;

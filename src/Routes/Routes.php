@@ -19,6 +19,14 @@ interface Routes
     public static function instance(): Routes;
 
     /**
+     * Define index route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function index(string $name, array $options = [], array $middleware = []);
+
+    /**
      * Define show route
      * @param string $name
      * @param array $options
