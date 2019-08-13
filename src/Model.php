@@ -29,7 +29,7 @@ class Model extends BaseModel
      * Return files
      * @return array
      */
-    public function files()
+    public function getFiles()
     {
         return $this->files;
     }
@@ -38,7 +38,7 @@ class Model extends BaseModel
      * Return associations
      * @return array
      */
-    public function associations()
+    public function getAssociations()
     {
         return $this->associations;
     }
@@ -52,7 +52,7 @@ class Model extends BaseModel
     {
         $this->saveFiles();
 
-        $this->saveAssociation([], $options);
+        $this->saveAssociations($options);
 
         if ($this->unique) {
             $this->updateIfNotUnique();
@@ -62,13 +62,12 @@ class Model extends BaseModel
     }
 
     /**
-     * Save association
-     * @param array $associations
+     * Save associations
      * @param array $options
      */
-    protected function saveAssociation(array $associations, array $options = [])
+    protected function saveAssociations(array $options = [])
     {
-        foreach ($this->associations() as $association) {
+        foreach ($this->getAssociations() as $association) {
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $relations = $this->attributes[$association['post_field']];
@@ -134,7 +133,7 @@ class Model extends BaseModel
      */
     protected function saveFiles()
     {
-        foreach ($this->files() as $name => $path) {
+        foreach ($this->getFiles() as $name => $path) {
             if (Arr::has($this->attributes, $name) && is_a($this->attributes[$name], UploadedFile::class)) {
                 $path_new = $this->{$name}->store($path);
                 $this->attributes[$name] = str_replace('public/', '', $path_new);
@@ -162,5 +161,54 @@ class Model extends BaseModel
             $this->id = $model->id;
             $this->exists = true;
         }
+    }
+
+    /**
+     * Add fillables
+     * @param mixed ...$fillables
+     */
+    public function fillables(...$fillables)
+    {
+        $this->fillable = array_merge($this->fillable, $fillables);
+    }
+
+    /**
+     * Add files
+     * @param mixed ...$files
+     */
+    public function files(...$files)
+    {
+        foreach ($files as $file) {
+            foreach ($file as $name => $path) {
+                $this->files[$name] = $path;
+            }
+        }
+    }
+
+    /**
+     * Add Hiddens
+     * @param array ...$hiddens
+     */
+    public function hiddens(...$hiddens)
+    {
+        $this->hidden = array_merge($this->hidden, $hiddens);
+    }
+
+    /**
+     * Add Associations
+     * @param mixed ...$associations
+     */
+    public function associations(...$associations)
+    {
+        $this->associations = array_merge($this->associations, $associations);
+    }
+
+    /**
+     * Add Uniques
+     * @param mixed ...$uniques
+     */
+    public function uniques(...$uniques)
+    {
+        $this->unique = array_merge($this->unique, $uniques);
     }
 }

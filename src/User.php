@@ -4,6 +4,7 @@ namespace Tychovbh\Mvc;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
@@ -41,5 +42,14 @@ class User extends Model
     public function user_roles(): HasMany
     {
         return $this->hasMany(UserRole::class);
+    }
+
+    /**
+     * Hash password.
+     * @param string $password
+     */
+    public function setPasswordAttribute(string $password)
+    {
+        $this->attributes['password'] = Hash::make($password);
     }
 }

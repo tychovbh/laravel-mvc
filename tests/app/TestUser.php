@@ -6,10 +6,15 @@ use Tychovbh\Mvc\Model;
 
 class TestUser extends Model
 {
-    protected $fillable = ['email', 'password', 'avatar', 'name'];
-    protected $hidden = ['password'];
-
-    protected $files = [
-        'avatar' => 'public/avatars'
-    ];
+    /**
+     * TestUser constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('email', 'password', 'avatar', 'name');
+        $this->files(['avatar' => 'public/avatars']);
+        $this->hiddens('password');
+        parent::__construct($attributes);
+    }
 }

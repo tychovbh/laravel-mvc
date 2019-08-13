@@ -72,22 +72,21 @@ abstract class AbstractRoutes
         $app = app();
         $singular = Str::singular($name);
         $as = $name . '.' . $action;
-        $namespace = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers');
-        $uses = Arr::get($options, 'uses', ucfirst($singular) . 'Controller@' . $action);
+        $namespace = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers\\');
+        $uses = Arr::get($options, 'uses', $namespace . ucfirst($singular) . 'Controller@' . $action);
         $middleware = array_merge(Arr::get($options, $action . 'middleware', []), $middleware);
         Arr::forget($options, $action . 'middleware');
 
         if (is_application() === 'lumen') {
             $app->router->{$method}($url, array_merge([
                 'as' => $as,
-                'namespace' => $namespace,
                 'uses' => $uses,
                 'middleware' => $middleware
             ], Arr::get($options, $action, [])));
         }
 
         if (is_application() === 'laravel') {
-            $route = $app['router']->{$method}($url, $namespace . '\\' . $uses)
+            $route = $app['router']->{$method}($url, $uses)
                 ->name($as);
 
             if ($middleware) {
