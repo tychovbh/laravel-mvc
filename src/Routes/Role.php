@@ -12,6 +12,6 @@ class Role extends AbstractRoutes implements Routes
     public static function routes(array $options = [])
     {
         $instance = self::instance();
-        $instance->index('roles');
+        $instance->index('roles', $options);
     }
 }

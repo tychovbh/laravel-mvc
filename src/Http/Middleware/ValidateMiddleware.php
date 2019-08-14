@@ -14,6 +14,7 @@ class ValidateMiddleware
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
      * @return mixed
+     * @throws \Exception
      */
     public function handle($request, Closure $next)
     {
@@ -43,7 +44,7 @@ class ValidateMiddleware
 
         $pieces = explode('\\', get_route_info($request, 'uses'));
         $action = array_pop($pieces);
-        $namespace = str_replace('Controllers', 'Requests', implode('\\', $pieces));
+        $namespace = str_replace(['Tychovbh\Mvc', 'Controllers'], ['App', 'Requests'], implode('\\', $pieces));
         $uses = explode('@', $action);
         $name  = $namespace . '\\' . ucfirst($uses[1]) . str_replace('Controller', '', $uses[0]);
         $name = project_or_package_class('Request', $name);
