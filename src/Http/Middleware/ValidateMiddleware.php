@@ -31,6 +31,7 @@ class ValidateMiddleware
      * Create Form Request
      * @param $request
      * @return FormRequest
+     * @throws \Exception
      */
     private function createFormRequest($request): FormRequest
     {
@@ -45,6 +46,7 @@ class ValidateMiddleware
         $namespace = str_replace('Controllers', 'Requests', implode('\\', $pieces));
         $uses = explode('@', $action);
         $name  = $namespace . '\\' . ucfirst($uses[1]) . str_replace('Controller', '', $uses[0]);
+        $name = project_or_package_class('Request', $name);
 
         return $name::createFrom($request);
     }

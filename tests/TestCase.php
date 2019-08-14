@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
+use Tychovbh\Mvc\Routes\Role;
 use Tychovbh\Mvc\Routes\Invite;
 use Tychovbh\Mvc\Routes\User;
 use Tychovbh\Tests\Mvc\App\TestUserController;
@@ -116,6 +117,7 @@ class TestCase extends BaseTestCase
         $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
         Invite::routes();
         User::routes();
+        Role::routes();
     }
 
     /**
