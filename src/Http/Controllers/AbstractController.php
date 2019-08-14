@@ -43,7 +43,6 @@ abstract class AbstractController implements ControllerInterface
     public function __construct()
     {
         $request = app('request');
-        $repository = get_route_info($request, 'repository');
 
         App::singleton(
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -53,8 +52,6 @@ abstract class AbstractController implements ControllerInterface
         $this->repository = $this->setRepository($request);
         $this->resource = $this->setResource($request);
         $this->setModel($request);
-        $this->repository = $this->repository ?? repository(get_called_class());
-        $this->resource = $this->resource ?? resource(get_called_class());
         $this->controller = controller(get_called_class());
     }
 

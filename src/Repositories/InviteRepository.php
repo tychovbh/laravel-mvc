@@ -11,16 +11,6 @@ use Tychovbh\Mvc\Mail\UserInvite;
 class InviteRepository extends AbstractRepository implements Repository
 {
     /**
-     * InviteRepository constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->model = new Invite();
-        parent::__construct();
-    }
-
-    /**
      * @param array $data
      * @return Invite
      */

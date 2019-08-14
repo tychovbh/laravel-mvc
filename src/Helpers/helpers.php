@@ -33,11 +33,32 @@ if (!function_exists('repository')) {
             'Repository'
         ], $repository);
 
-        if (!class_exists($class)) {
-            throw new \Exception('Repository ' . $class . ' not found!');
+        $class = project_or_package_class('Repositories', $class);
+        return new $class;
+    }
+}
+
+if (!function_exists('project_or_package_class')) {
+    /**
+     * Get class from project if not exists try package.
+     * @param string $type
+     * @param string $class
+     * @return string
+     * @throws Exception
+     */
+    function project_or_package_class(string $type, string $class): string
+    {
+        if (class_exists($class)) {
+            return $class;
         }
 
-        return new $class;
+        $class = str_replace('App', 'Tychovbh\Mvc', $class);
+
+        if (class_exists($class)) {
+            return $class;
+        }
+
+        throw new \Exception($type . $class . ' not found!');
     }
 }
 
@@ -65,9 +86,7 @@ if (!function_exists('model')) {
             '',
         ], $model);
 
-        if (!class_exists($class)) {
-            throw new \Exception('Model ' . $class . ' not found!');
-        }
+        $class = project_or_package_class('Model', $class);
         return new $class;
 
     }
@@ -127,10 +146,8 @@ if (!function_exists('resource')) {
             'Resource'
         ], $resource);
 
-        if (!class_exists($class)) {
-            throw new \Exception('Resource not found: ' . $class);
-        }
-        return $class;
+        return project_or_package_class('Resource', $class);
+
     }
 }
 

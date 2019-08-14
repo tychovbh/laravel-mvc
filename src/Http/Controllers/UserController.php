@@ -6,10 +6,8 @@ namespace Tychovbh\Mvc\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
-use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Repositories\InviteRepository;
-use Tychovbh\Mvc\Repositories\UserRepository;
 
 /**
  * @property InviteRepository invites
@@ -17,18 +15,12 @@ use Tychovbh\Mvc\Repositories\UserRepository;
 class UserController extends AbstractController
 {
     /**
-     * @var string
-     */
-    public $resource = UserResource::class;
-
-    /**
      * FieldController constructor.
      * @param InviteRepository $invites
      * @throws \Exception
      */
     public function __construct(InviteRepository $invites)
     {
-        $this->repository = new UserRepository();
         $this->invites = $invites;
         parent::__construct();
     }

@@ -11,16 +11,6 @@ use Tychovbh\Mvc\User;
 class UserRepository extends AbstractRepository implements Repository
 {
     /**
-     * InviteRepository constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->model = new User();
-        parent::__construct();
-    }
-
-    /**
      * Override save to store channel
      * @param array $data
      * @return User
