@@ -32,13 +32,12 @@ class UserController extends AbstractController
      */
     public function store(Request $request): JsonResource
     {
-        if ($request->input('token')) {
-            return $this->storeFromInvite($request);
+        $user = $request->input('token') ? $this->storeFromInvite($request) : parent::store($request);
+
+        if (config('mvc-mail.messages.user.store')) {
+            Mail::send(new UserCreated($user->email));
         }
 
-        $user = parent::store($request);
-        // TODO make this configurable
-        Mail::send(new UserCreated($user->email));
         return $user;
     }
 
@@ -50,6 +49,7 @@ class UserController extends AbstractController
     private function storeFromInvite(Request $request)
     {
         $reference = $request->input('token');
+
         try {
             $invite = $this->invites->findBy('reference', $reference);
             $request->merge(['token' => $invite->token]);
@@ -57,7 +57,9 @@ class UserController extends AbstractController
             $this->invites->model::where('reference', $reference)->delete();
             return $user;
         } catch (\Exception $exception) {
-            abort(404, message('model.notfound', 'Invite', 'Reference', $reference));
+            //
         }
+
+        return abort(404, message('model.notfound', 'Invite', 'Reference', $reference));
     }
 }

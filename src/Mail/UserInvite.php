@@ -27,7 +27,7 @@ class UserInvite extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $config = config('mvc-mail.templates.invite.store');
+        $config = config('mvc-mail.messages.invite.store');
         return $this->view($config['template'])->subject($config['subject']);
     }
 }

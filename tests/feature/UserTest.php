@@ -72,6 +72,8 @@ class UserTest extends TestCase
      */
     public function itCanStoreViaToken()
     {
+        Mail::fake();
+
         $user = $this->user();
         $email = $user['data']['email'];
 
@@ -91,6 +93,10 @@ class UserTest extends TestCase
         $this->assertDatabaseMissing('invites', [
             'reference' => $invite->reference
         ]);
+
+        Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($email) {
+            return $mail->email = $email;
+        });
     }
 
     /**

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 return [
     'headers' => [
-//        'company:bespoke web'
+//        'company:Bespoke Web'
     ],
-    'templates' => [
+    'messages' => [
         'invite' => [
             'store' => [
                 'template' => 'emails.invite.store',

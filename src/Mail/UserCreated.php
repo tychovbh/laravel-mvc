@@ -32,7 +32,7 @@ class UserCreated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $config = config('mvc-mail.templates.user.store');
+        $config = config('mvc-mail.messages.user.store');
         return $this
             ->to($config['to'])
             ->from($config['from'])
