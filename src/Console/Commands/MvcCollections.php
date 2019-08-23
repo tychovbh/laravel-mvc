@@ -45,6 +45,8 @@ class MvcCollections extends Command
         foreach ($collections as $collection) {
             $this->saveCollection($collection);
         }
+
+        $this->info('MVC Collections updated!');
     }
 
     /**
@@ -53,7 +55,13 @@ class MvcCollections extends Command
      */
     public function saveCollection(array $collection)
     {
-        $repository = $this->repository($collection);
+        try {
+            $repository = $this->repository($collection);
+        } catch (\Exception $exception) {
+            $this->error($exception->getMessage());
+            return;
+        }
+
         if (Arr::has($collection, 'relations')) {
             foreach ($collection['relations'] as $relation) {
                 DB::table($relation)->truncate();
@@ -69,13 +77,18 @@ class MvcCollections extends Command
      * Get repository by table name
      * @param array $collection
      * @return Repository
+     * @throws \Exception
      */
     private function repository(array $collection): Repository
     {
         if (Arr::has($collection, 'repository')) {
             return new $collection['repository'];
         }
-        $resourceRepository = 'App\Repositories\\' . Str::studly(Str::singular($collection['table'])) . 'Repository';
+        $resourceRepository = project_or_package_class(
+            'Repository',
+            'App\Repositories\\' . Str::studly(Str::singular($collection['table'])) . 'Repository'
+        );
+
         return new $resourceRepository;
     }
 }
