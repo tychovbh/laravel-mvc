@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Laravelista\LumenVendorPublish\VendorPublishCommand;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
@@ -73,7 +74,9 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(
+            OffsetPaginationServiceProvider::class
+        );
     }
 
     /**

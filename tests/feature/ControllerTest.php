@@ -31,6 +31,40 @@ class ControllerTest extends TestCase
     /**
      * @test
      */
+    public function itCanOffsetPaginate()
+    {
+        $users = factory(TestUser::class, 20)->create();
+        $users->forget(range(0, 4));
+        $users->forget(range(9, 29));
+
+        $test = TestUserResource::collection($users)->response($this->app['request'])->getData(true);
+        $expected = array_merge($test, [
+            'links' => [
+                'first' => null,
+                'last' => null,
+                'next' => route('test_users.index', ['paginate' => 5, 'offset' => 10]),
+                'prev' => route('test_users.index', ['paginate' => 5, 'offset' => 0]),
+            ],
+            'meta' => [
+                'limit' => 5,
+                'next' => 10,
+                'offset' => 5,
+                'prev' => 0,
+                'total' => 20,
+            ]
+        ]);
+
+        $this->get(route('test_users.index', [
+            'paginate' => 5,
+            'offset' => 5
+        ]))
+            ->assertStatus(200)
+            ->assertJson($expected);
+    }
+
+    /**
+     * @test
+     */
     public function itCanCreateForm()
     {
         $form = new FormResource(Form::where('name', 'test_users')->first());

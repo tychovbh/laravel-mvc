@@ -100,11 +100,27 @@ abstract class AbstractController implements ControllerInterface
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $query = $this->repository::withParams($request->toArray());
+        return $this->resource::collection(
+            $this->collection($request, $this->repository::withParams($request->toArray()))
+        );
+    }
 
-        return $this->resource::collection($request->has('paginate') ?
-            $query->paginate((int)$request->get('paginate')) :
-            $query->get());
+    /**
+     * @param Request $request
+     * @param Repository $repository
+     * @return \Chelout\OffsetPagination\OffsetPaginator|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    private function collection(Request $request, Repository $repository)
+    {
+        if ($request->has('offset')) {
+            return $repository->offsetPaginate((int)$request->get('paginate'));
+        }
+
+        if ($request->has('paginate')) {
+            return $repository->paginate((int)$request->get('paginate'));
+        }
+
+        return $repository->get();
     }
 
     /**
