@@ -374,6 +374,6 @@ if (!function_exists('request')) {
     function request(string $item = '')
     {
         $request = app('request');
-        return $request->get($item);
+        return $item ? $request->get($item) : $request;
     }
 }
