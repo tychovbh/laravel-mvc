@@ -46,6 +46,10 @@ class ControllerTest extends TestCase
                 'prev' => route('test_users.index', ['paginate' => 5, 'offset' => 0]),
             ],
             'meta' => [
+                'current_page' => 1,
+                'last_page' => 3,
+                'from' => 1,
+                'to' => 5,
                 'limit' => 5,
                 'next' => 10,
                 'offset' => 5,
