@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tychovbh/laravel-offset-pagination.git",
-                "reference": "6234f5519fb247831e7a4dd9d8eb7300f7667672"
+                "reference": "705dcf3648fecb1c7d0351c7f899dafa52446f10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tychovbh/laravel-offset-pagination/zipball/6234f5519fb247831e7a4dd9d8eb7300f7667672",
-                "reference": "6234f5519fb247831e7a4dd9d8eb7300f7667672",
+                "url": "https://api.github.com/repos/tychovbh/laravel-offset-pagination/zipball/705dcf3648fecb1c7d0351c7f899dafa52446f10",
+                "reference": "705dcf3648fecb1c7d0351c7f899dafa52446f10",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
             "support": {
                 "source": "https://github.com/tychovbh/laravel-offset-pagination/tree/master"
             },
-            "time": "2019-09-02T13:52:23+00:00"
+            "time": "2019-09-02T15:17:04+00:00"
         },
         {
             "name": "doctrine/inflector",

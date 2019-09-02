@@ -40,10 +40,10 @@ class ControllerTest extends TestCase
         $test = TestUserResource::collection($users)->response($this->app['request'])->getData(true);
         $expected = array_merge($test, [
             'links' => [
-                'first' => null,
-                'last' => null,
-                'next' => route('test_users.index', ['paginate' => 5, 'offset' => 10]),
-                'prev' => route('test_users.index', ['paginate' => 5, 'offset' => 0]),
+                'first' => route('test_users.index', ['paginate' => 5, 'offset' => 5, 'page' => 1]),
+                'last' => route('test_users.index', ['paginate' => 5, 'offset' => 5, 'page' => 3]),
+                'next' => route('test_users.index', ['paginate' => 5, 'offset' => 5, 'page' => 2]),
+                'prev' => null,
             ],
             'meta' => [
                 'current_page' => 1,
@@ -51,9 +51,7 @@ class ControllerTest extends TestCase
                 'from' => 1,
                 'to' => 5,
                 'limit' => 5,
-                'next' => 10,
                 'offset' => 5,
-                'prev' => 0,
                 'total' => 20,
             ]
         ]);
