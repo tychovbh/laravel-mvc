@@ -50,6 +50,9 @@ class PasswordResetTest extends TestCase
 
         $newUser = DB::table('users')->where('id', $passwordReset->user->id)->first();
 
+        $this->assertDatabaseMissing('password_resets', [
+            'email' => $oldUser->email
+        ]);
         $this->assertNotTrue($newUser->password === $oldUser->password, 'Failed to reset user password');
 
         $this->store('users.login', UserResource::make($newUser), [

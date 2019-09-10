@@ -17,7 +17,6 @@ class User extends AbstractRoutes implements Routes
         $instance->index('users', $options);
         $instance->show('users', $options);
         $instance->store('users', $options, ['validate']);
-        $instance->update('users', $options);
         $instance->route('post', 'users.login', 'login', '/users/login', $options);
         $instance->update('users.password_reset', array_merge([
             'update' => [
@@ -25,6 +24,7 @@ class User extends AbstractRoutes implements Routes
                 'url' => '/users/password_reset',
             ]
         ], $options), ['validate']);
+        $instance->update('users', $options);
 
         // TODO make user create route
     }

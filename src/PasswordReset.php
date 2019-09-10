@@ -34,6 +34,7 @@ class PasswordReset extends Model
     public static function boot()
     {
         self::creating(function (PasswordReset $passwordReset) {
+            PasswordReset::where('email', $passwordReset->email)->delete();
             $passwordReset->token = random_string();
             $passwordReset->created_at = Carbon::now();
         });

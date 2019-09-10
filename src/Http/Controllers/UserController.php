@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserCreated;
+use Tychovbh\Mvc\PasswordReset;
 use Tychovbh\Mvc\Repositories\InviteRepository;
 use Tychovbh\Mvc\Repositories\PasswordResetRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
@@ -57,7 +58,9 @@ class UserController extends AbstractController
         $token = $request->input('token');
         try {
             $passwordReset = $this->passwordResets->findBy('token', $token);
-            return parent::update($request, $passwordReset->user->id);
+            $user = parent::update($request, $passwordReset->user->id);
+            PasswordReset::where('email', $passwordReset->email)->delete();
+            return $user;
         } catch (\Exception $exception) {
             //
         }
