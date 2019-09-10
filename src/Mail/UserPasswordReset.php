@@ -6,14 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserInvite extends Mailable implements ShouldQueue
+class UserPasswordReset extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      *
-     * @param array $mail
+     * @return void
      */
     public function __construct(array $mail)
     {
@@ -27,7 +27,7 @@ class UserInvite extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $config = config('mvc-mail.messages.invite.store');
+        $config = config('mvc-mail.messages.user.password_reset');
         return $this->view($config['template'])->subject($config['subject'])->from($config['from']);
     }
 }

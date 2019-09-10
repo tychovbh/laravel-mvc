@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
+use Tychovbh\Mvc\Routes\PasswordReset;
 use Tychovbh\Mvc\Routes\Role;
 use Tychovbh\Mvc\Routes\Invite;
 use Tychovbh\Mvc\Routes\User;
@@ -109,6 +110,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.secret', 'sec!ReT423*&');
         $app['config']->set('mvc-auth.id', '1');
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
+        $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
 
 
         $app['router']->get('test_users', TestUserController::class . '@index')->name('test_users.index');
@@ -118,6 +120,7 @@ class TestCase extends BaseTestCase
         Invite::routes();
         User::routes();
         Role::routes();
+        PasswordReset::routes();
     }
 
     /**

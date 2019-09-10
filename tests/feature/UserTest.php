@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Role;
@@ -191,6 +193,21 @@ class UserTest extends TestCase
     private function storeUser(array $user, int $status = 201, array $assert = [])
     {
         $this->store('users.store', UserResource::make($user['resource']), $user['data'], $status, $assert);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanLogin()
+    {
+        $password = random_string();
+        $user = factory(User::class)->create([
+            'password' => $password
+        ]);
+        $this->store('users.login', UserResource::make($user), [
+            'email' => $user->email,
+            'password' => $password
+        ], 200);
     }
 }
 

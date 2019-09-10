@@ -48,6 +48,8 @@ if (!function_exists('project_or_package_class')) {
      */
     function project_or_package_class(string $type, string $class): string
     {
+        $class = str_replace('Tychovbh\Mvc', 'App', $class);
+
         if (class_exists($class)) {
             return $class;
         }

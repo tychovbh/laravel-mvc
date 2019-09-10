@@ -41,4 +41,30 @@ interface Routes
      * @param array $middleware
      */
     public function store(string $name, array $options = [], array $middleware = []);
+
+    /**
+     * Define store route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function update(string $name, array $options = [], array $middleware = []);
+
+    /**
+     * Define route
+     * @param string $method
+     * @param string $as
+     * @param string $action
+     * @param string $url
+     * @param array $options
+     * @param array $middleware
+     */
+    public function route(
+        string $method,
+        string $as,
+        string $action,
+        string $url,
+        array $options = [],
+        array $middleware = []
+    );
 }
