@@ -13,7 +13,7 @@ class UserPasswordReset extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param array $mail
      */
     public function __construct(array $mail)
     {
@@ -27,7 +27,7 @@ class UserPasswordReset extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $config = config('mvc-mail.messages.user.password_reset');
+        $config = config('mvc-mail.messages.password_reset.store');
         return $this->view($config['template'])->subject($config['subject'])->from($config['from']);
     }
 }

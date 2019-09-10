@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tychovbh\Mvc\Http\Resources\UserResource;
@@ -67,6 +68,20 @@ class UserTest extends TestCase
         Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($user) {
             return $mail->email = $user['data']['email'];
         });
+    }
+
+    /**
+     * @test
+     */
+    public function itCanUpdate()
+    {
+        $user = factory(User::class)->create();
+        $update = factory(User::class)->make();
+        $params = $update->toArray();
+        $update->id = $user->id;
+        $update->updated_at = Carbon::now();
+
+        $this->update('users.update', UserResource::make($update), $params);
     }
 
     /**
