@@ -16,12 +16,12 @@ class PasswordResetTest extends TestCase
     /**
      * @test
      */
-    public function itCanStorePasswordReset()
+    public function itCanStore()
     {
         Mail::fake();
         $user = factory(User::class)->create();
 
-        $response = $this->post(route('password_resets.store'), [
+        $this->post(route('password_resets.store'), [
             'email' => $user->email
         ])->assertStatus(201)->assertJson([
             'data' => ['email' => $user->email]
@@ -30,8 +30,6 @@ class PasswordResetTest extends TestCase
         Mail::assertQueued(UserPasswordReset::class, function (UserPasswordReset $mail) use ($user) {
             return $mail->hasTo($user->email);
         });
-
-        return json_decode($response->getContent(), true)['data'];
     }
 
     /**
@@ -58,6 +56,22 @@ class PasswordResetTest extends TestCase
             'email' => $oldUser->email,
             'password' => $password
         ], 200);
+    }
+
+    /**
+     * @test
+     */
+    public function itCannotStoreUserNotFound()
+    {
+        $user = factory(User::class)->make();
+
+        $this->post(route('password_resets.store'), [
+            'email' => $user->email
+        ])->assertStatus(400)->assertJson([
+            'email' => [
+                message('field.exists', 'email')
+            ]
+        ]);
     }
 }
 

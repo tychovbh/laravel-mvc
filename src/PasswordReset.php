@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
-
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserPasswordReset;
 
@@ -35,12 +35,12 @@ class PasswordReset extends Model
     {
         self::creating(function (PasswordReset $passwordReset) {
             $passwordReset->token = random_string();
+            $passwordReset->created_at = Carbon::now();
         });
 
         self::created(function(PasswordReset $passwordReset) {
-            $user = $passwordReset->user;
             Mail::to($passwordReset->email)->send(new UserPasswordReset([
-                'user' => $user,
+                'user' => $passwordReset->user,
                 'link' => str_replace('{reference}', $passwordReset->token, config('mvc-auth.password_reset_url')),
             ]));
         });
