@@ -6,6 +6,8 @@ namespace Tychovbh\Tests\Mvc\Feature;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Role;
@@ -36,6 +38,15 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->show('users.show', UserResource::make($user));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanCreate()
+    {
+        $this->create('users.create', FormResource::make(Form::where('name', 'users')->first()));
+
     }
 
     /**

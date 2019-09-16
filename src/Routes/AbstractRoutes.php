@@ -72,6 +72,24 @@ abstract class AbstractRoutes
     }
 
     /**
+     * Define create route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function create(string $name, array $options = [], array $middleware = [])
+    {
+        $this->route(
+            'get',
+            $this->asFromName($name, 'create'),
+            'create',
+            '/' . $name . '/create',
+            $options,
+            $middleware
+        );
+    }
+
+    /**
      * Define store route
      * @param string $name
      * @param array $options

@@ -143,6 +143,19 @@ abstract class AbstractController implements ControllerInterface
     }
 
     /**
+     * Return the form.
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function create(Request $request)
+    {
+        $forms = new FormRepository();
+        $form = $forms->findBy('name', $request->has('name') ? $request->get('name') : $this->repository->name);
+        return new FormResource($form);
+    }
+
+    /**
      * Store new Resource.
      * @param Request $request
      * @return JsonResource
@@ -191,19 +204,6 @@ abstract class AbstractController implements ControllerInterface
         return response()->json([
             'deleted' => $this->repository->destroy([$id])
         ]);
-    }
-
-    /**
-     * Return the form.
-     * @param Request $request
-     * @return mixed
-     * @throws Exception
-     */
-    public function create(Request $request)
-    {
-        $forms = new FormRepository();
-        $form = $forms->findBy('name', $request->has('name') ? $request->get('name') : $this->repository->name);
-        return new FormResource($form);
     }
 }
 

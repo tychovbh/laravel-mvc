@@ -15,6 +15,7 @@ class User extends AbstractRoutes implements Routes
     {
         $instance = self::instance();
         $instance->index('users', $options);
+        $instance->create('users', $options);
         $instance->show('users', $options);
         $instance->store('users', $options, ['validate']);
         $instance->route('post', 'users.login', 'login', '/users/login', $options);
@@ -25,7 +26,5 @@ class User extends AbstractRoutes implements Routes
             ]
         ], $options), ['validate']);
         $instance->update('users', $options);
-
-        // TODO make user create route
     }
 }

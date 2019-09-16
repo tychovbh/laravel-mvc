@@ -45,7 +45,28 @@ class TestCase extends BaseTestCase
                         'properties' => ['name' => 'avatar', 'type' => 'file'],
                     ],
                 ]
-            ]
+            ],
+            [
+                'name' => 'users',
+                'fields' => [
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'email', 'type' => 'email', 'required' => true, 'placeholder' => 'test@example.com'],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'password', 'type' => 'password', 'required' => true],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'name', 'type' => 'text', 'required' => true],
+                    ],
+                    [
+                        'element' => 'input',
+                        'properties' => ['name' => 'avatar', 'type' => 'file'],
+                    ],
+                ]
+            ],
         ]);
 
         $faker = Factory::create();
@@ -161,6 +182,25 @@ class TestCase extends BaseTestCase
     public function show($uri, JsonResource $resource, int $status = 200, array $assert = [])
     {
         $response = parent::get(route($uri, ['id' => $resource->id]))
+            ->assertStatus($status)
+            ->assertJson(
+                $assert ?? $resource->response($this->app['request'])->getData(true)
+            );
+
+        return $response;
+    }
+
+    /**
+     * Show resource
+     * @param $uri
+     * @param JsonResource $resource
+     * @param int $status
+     * @param mixed $assert
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function create($uri, JsonResource $resource, int $status = 200, array $assert = [])
+    {
+        $response = parent::get(route($uri))
             ->assertStatus($status)
             ->assertJson(
                 $assert ?? $resource->response($this->app['request'])->getData(true)

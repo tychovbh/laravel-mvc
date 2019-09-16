@@ -35,6 +35,14 @@ interface Routes
     public function show(string $name, array $options = [], array $middleware = []);
 
     /**
+     * Define create route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function create(string $name, array $options = [], array $middleware = []);
+
+    /**
      * Define store route
      * @param string $name
      * @param array $options
