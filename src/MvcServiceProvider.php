@@ -4,12 +4,12 @@ namespace Tychovbh\Mvc;
 
 use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Laravelista\LumenVendorPublish\VendorPublishCommand;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
+use Tychovbh\Mvc\Console\Commands\VendorPublishCommand;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 
 class MvcServiceProvider extends ServiceProvider
