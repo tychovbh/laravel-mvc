@@ -2,13 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use ReallySimpleJWT\Token;
 use Tychovbh\Mvc\Repositories\Repository;
+use Tychovbh\Mvc\User;
 
 if (!function_exists('repository')) {
     /**
@@ -327,16 +328,17 @@ if (!function_exists('random_string')) {
 if (!function_exists('token')) {
     /**
      * Generate token
-     * TODO fix front-end login issue token expired and set addMonth to addDay
      * @param mixed $data
+     * @param int|null $expiration
      * @return string
      */
-    function token($data): string
+    function token($data, int $expiration = null): string
     {
+        $expiration = $expiration ?? time() + config('mvc-auth.expiration');
         return Token::create(
             $data,
             config('mvc-auth.secret'),
-            time() + config('mvc-auth.expiration'),
+            $expiration,
             config('mvc-auth.id')
         );
     }
@@ -377,5 +379,21 @@ if (!function_exists('request')) {
     {
         $request = app('request');
         return $item ? $request->get($item) : $request;
+    }
+}
+
+if (!function_exists('user')) {
+    /**
+     * The authenticated user
+     * @return User
+     */
+    function user(): User
+    {
+        try {
+            $user = Auth::user();
+            return User::findOrFail($user->id);
+        } catch (ModelNotFoundException $exception) {
+            return new User;
+        }
     }
 }

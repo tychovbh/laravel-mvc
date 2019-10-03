@@ -4,6 +4,7 @@ namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
 
+
 class MvcController extends Command
 {
     /**

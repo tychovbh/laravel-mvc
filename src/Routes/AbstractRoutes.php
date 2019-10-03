@@ -136,6 +136,34 @@ abstract class AbstractRoutes
     }
 
     /**
+     * Define update route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function destroy(string $name, array $options = [], array $middleware = [])
+    {
+        $url = Arr::get($options, 'destroy.url');
+
+        if (!$url) {
+            $parts = explode('.', $name);
+            $url = '/' . array_shift($parts) . '/{id}';
+            if ($parts) {
+                $url .= '/' . implode('/', $parts);
+            }
+        }
+
+        $this->route(
+            'delete',
+            $this->asFromName($name, 'destroy'),
+            'destroy',
+            $url,
+            $options,
+            $middleware
+        );
+    }
+
+    /**
      * Generate route as from a name and action
      * @param string $name
      * @param string $action
@@ -170,24 +198,33 @@ abstract class AbstractRoutes
         array $middleware = []
     )
     {
+        $except = Arr::get($options, 'except', []);
+        $only = Arr::get($options, 'only', []);
+        $options = Arr::get($options, $action, []);
+        $action = Arr::get($options, 'action', $action);
+
+        if (in_array($action, $except)) {
+            return;
+        }
+
+        if ($only && !in_array($action, $only)) {
+            return;
+        }
+
         $app = app();
         $parts = explode('.', $as);
         $controller = ucfirst(Str::camel(Str::singular(array_shift($parts))));
-        $namespace = Arr::get($options, $action . '.namespace', 'Tychovbh\Mvc\Http\Controllers') . '\\';
-        $uses = Arr::get(
-            $options,
-            $action . '.uses',
-            $namespace . $controller . 'Controller@' . Arr::get($options, $action . '.action', $action)
-        );
-        $middleware = array_merge(Arr::get($options, $action . '.middleware', []), $middleware);
-        Arr::forget($options, $action . '.middleware');
+        $namespace = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers') . '\\';
+        $uses = Arr::get($options, 'uses', $namespace . $controller . 'Controller@' . $action);
+        $middleware = array_merge(Arr::get($options, 'middleware', []), $middleware);
+        Arr::forget($options, 'middleware');
 
         if (is_application() === 'lumen') {
             $app->router->{$method}($url, array_merge([
                 'as' => $as,
                 'uses' => $uses,
                 'middleware' => $middleware
-            ], Arr::get($options, $action, [])));
+            ], $options));
         }
 
         if (is_application() === 'laravel') {

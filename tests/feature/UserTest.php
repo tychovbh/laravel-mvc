@@ -235,6 +235,15 @@ class UserTest extends TestCase
             'password' => $password
         ], 200);
     }
+
+    /**
+     * @test
+     */
+    public function itCanDestroy()
+    {
+        $user = factory(User::class)->create();
+        $this->destroy('users.destroy', UserResource::make($user));
+    }
 }
 
 

@@ -51,12 +51,20 @@ interface Routes
     public function store(string $name, array $options = [], array $middleware = []);
 
     /**
-     * Define store route
+     * Define update route
      * @param string $name
      * @param array $options
      * @param array $middleware
      */
     public function update(string $name, array $options = [], array $middleware = []);
+
+    /**
+     * Define destroy route
+     * @param string $name
+     * @param array $options
+     * @param array $middleware
+     */
+    public function destroy(string $name, array $options = [], array $middleware = []);
 
     /**
      * Define route

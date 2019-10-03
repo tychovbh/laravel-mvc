@@ -69,6 +69,7 @@ class Handler extends AbstractHandler
         }
 
         if ($status === 500) {
+            emergency($exception->getMessage(), $exception);
             $message = message('server.error');
         }
 

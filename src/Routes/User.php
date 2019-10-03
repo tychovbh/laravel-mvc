@@ -26,5 +26,6 @@ class User extends AbstractRoutes implements Routes
             ]
         ], $options), ['validate']);
         $instance->update('users', $options);
+        $instance->destroy('users', $options);
     }
 }
