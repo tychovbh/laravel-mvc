@@ -214,8 +214,9 @@ abstract class AbstractRoutes
         $app = app();
         $parts = explode('.', $as);
         $controller = ucfirst(Str::camel(Str::singular(array_shift($parts))));
-        $namespace = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers') . '\\';
-        $uses = Arr::get($options, 'uses', $namespace . $controller . 'Controller@' . $action);
+        $class = Arr::get($options, 'namespace', 'Tychovbh\Mvc\Http\Controllers') . '\\' . $controller . 'Controller';
+        $class = project_or_package_class('Controller', $class);
+        $uses = Arr::get($options, 'uses', $class . '@' . $action);
         $middleware = array_merge(Arr::get($options, 'middleware', []), $middleware);
         Arr::forget($options, 'middleware');
 
