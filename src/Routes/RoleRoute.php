@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Routes;
 
-class PasswordReset extends AbstractRoutes implements Routes
+class RoleRoute extends AbstractRoutes implements Routes
 {
     /**
      * @param array $options
@@ -12,6 +12,6 @@ class PasswordReset extends AbstractRoutes implements Routes
     public static function routes(array $options = [])
     {
         $instance = self::instance();
-        $instance->store('password_resets', $options, ['validate']);
+        $instance->index('roles', $options);
     }
 }

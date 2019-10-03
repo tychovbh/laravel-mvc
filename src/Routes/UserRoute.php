@@ -6,7 +6,7 @@ namespace Tychovbh\Mvc\Routes;
 
 use Tychovbh\Mvc\Http\Controllers\UserController;
 
-class User extends AbstractRoutes implements Routes
+class UserRoute extends AbstractRoutes implements Routes
 {
     /**
      * @param array $options

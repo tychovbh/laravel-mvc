@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
-use Tychovbh\Mvc\Routes\PasswordReset;
-use Tychovbh\Mvc\Routes\Role;
-use Tychovbh\Mvc\Routes\Invite;
-use Tychovbh\Mvc\Routes\User;
+use Tychovbh\Mvc\Routes\PasswordResetRoute;
+use Tychovbh\Mvc\Routes\RoleRoute;
+use Tychovbh\Mvc\Routes\InviteRoute;
+use Tychovbh\Mvc\Routes\UserRoute;
 use Tychovbh\Tests\Mvc\App\TestUserController;
 use Tychovbh\Tests\Mvc\App\TestUserRepository;
 
@@ -138,10 +138,10 @@ class TestCase extends BaseTestCase
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
         $app['router']->post('test_users', TestUserController::class . '@store')->name('test_users.store');
         $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
-        Invite::routes();
-        User::routes();
-        Role::routes();
-        PasswordReset::routes();
+        InviteRoute::routes();
+        UserRoute::routes();
+        RoleRoute::routes();
+        PasswordResetRoute::routes();
     }
 
     /**
