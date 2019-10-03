@@ -386,12 +386,14 @@ if (!function_exists('user')) {
     /**
      * The authenticated user
      * @return User
+     * @throws Exception
      */
     function user(): User
     {
         try {
             $user = Auth::user();
-            return User::findOrFail($user->id);
+            $class = project_or_package_class('User', User::class);
+            return $class::findOrFail($user->id);
         } catch (ModelNotFoundException $exception) {
             return new User;
         }
