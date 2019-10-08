@@ -78,9 +78,7 @@ class ControllerTest extends TestCase
                     ->getData(true)
             );
 
-        $form = json_decode($response->getContent(), true)['data'];
-
-        return $form;
+        return json_decode($response->getContent(), true)['data'];
     }
 
     /**

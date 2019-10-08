@@ -12,7 +12,7 @@ return [
             'label' => 'Dropdown Field',
             'name' => 'select',
             'description' => 'Create a list of options.',
-            'properties' => ['name', 'id', 'default', 'options'],
+            'properties' => ['name', 'id', 'default', 'options', 'source', 'label_key', 'value_key'],
         ],
         [
             'label' => 'Text Area Field',
@@ -84,6 +84,48 @@ return [
             'name' => 'alt',
             'label' => 'Alt value',
             'options' => null,
+        ],
+        [
+            'name' => 'source',
+            'label' => 'Source',
+            'options' => null,
+        ],
+        [
+            'name' => 'label_key',
+            'label' => 'Label Key',
+            'options' => null,
+        ],
+        [
+            'name' => 'value_key',
+            'label' => 'Value Key',
+            'options' => null,
+        ],
+    ],
+    'forms' => [
+        [
+            'name' => 'users',
+            'fields' => [
+                [
+                    'element' => 'input',
+                    'properties' => ['name' => 'email', 'type' => 'email', 'required' => true, 'placeholder' => 'test@example.com'],
+                ],
+                [
+                    'element' => 'input',
+                    'properties' => ['name' => 'password', 'type' => 'password', 'required' => true],
+                ],
+                [
+                    'element' => 'input',
+                    'properties' => ['name' => 'name', 'type' => 'text', 'required' => true],
+                ],
+                [
+                    'element' => 'input',
+                    'properties' => ['name' => 'avatar', 'type' => 'file'],
+                ],
+                [
+                    'element' => 'select',
+                    'properties' => ['name' => 'role_id', 'options' => [], 'source' => 'roles.index', 'label_key' => 'label', 'value_key' => 'id'],
+                ],
+            ]
         ],
     ]
 ];

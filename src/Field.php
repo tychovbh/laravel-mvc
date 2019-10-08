@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tychovbh\Mvc;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 
 class Field extends Model
 {
@@ -43,5 +44,18 @@ class Field extends Model
     public function element(): BelongsTo
     {
         return $this->belongsTo(Element::class);
+    }
+
+    /**
+     * Set properties.
+     * @param array $properties
+     */
+    public function setPropertiesAttribute(array $properties = []) {
+
+        if (Arr::has($properties, 'source') && is_callable($properties['source'])) {
+            $properties['source'] = $properties['source']();
+        }
+
+        $this->attributes['properties'] = json_encode($properties);
     }
 }

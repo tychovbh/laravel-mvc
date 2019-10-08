@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Http\Resources\UserResource;
@@ -45,8 +44,8 @@ class UserTest extends TestCase
      */
     public function itCanCreate()
     {
-        $this->create('users.create', FormResource::make(Form::where('name', 'users')->first()));
-
+        $response = $this->create('users.create', FormResource::make(Form::where('name', 'users')->first()));
+        return json_decode($response->getContent(), true)['data'];
     }
 
     /**
@@ -79,6 +78,46 @@ class UserTest extends TestCase
         Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($user) {
             return $mail->email = $user['data']['email'];
         });
+    }
+
+    /**
+     * @test
+     * @depends itCanCreate
+     * @param array $form
+     */
+    public function storeFromCreate(array $form)
+    {
+        Mail::fake();
+        $user = factory(User::class)->make([
+            'password' => uniqid(),
+            'id' => 1,
+        ]);
+
+        $role = factory(Role::class)->create();
+
+        $store = [];
+        foreach ($form['fields'] as $field) {
+            $properties = $field['properties'];
+
+            if (Arr::has($properties, 'source')) {
+                $response = $this->get($properties['source']);
+                $data = json_decode($response->getContent(), true)['data'];
+                $store[$properties['name']] = $data[0][$properties['value_key']];
+                continue;
+            }
+
+            $store[$properties['name']] = $user->{$properties['name']};
+        }
+
+        $user->roles = new Collection([$role]);
+        $user = new UserResource($user);
+
+        $this->post($form['route'], $store)
+            ->assertStatus(201)
+            ->assertJson(
+                $user->response($this->app['request'])
+                    ->getData(true)
+            );
     }
 
     /**

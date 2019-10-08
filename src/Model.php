@@ -75,14 +75,26 @@ class Model extends BaseModel
      */
     protected function saveAssociations(array $options = [])
     {
+        $associations = [];
         foreach ($this->getAssociations() as $relation => $association) {
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $values = $this->attributes[$association['post_field']];
                 Arr::forget($this->attributes, $association['post_field']);
-                if ($values) {
-                    $this->{$type}($association, $relation, $values, $options);
-                }
+                $associations[] = [
+                    'type' => $type,
+                    'association' => $association,
+                    'relation' => $relation,
+                    'values' => $values,
+                    'options' => $options
+                ];
+
+            }
+        }
+
+        foreach ($associations as $association) {
+            if ($association['values']) {
+                $this->{$association['type']}($association['association'], $association['relation'], $association['values'], $association['options']);
             }
         }
     }
@@ -106,6 +118,7 @@ class Model extends BaseModel
 
     /**
      * Save belongs to many relation
+     *
      * @param array $association
      * @param string $relation
      * @param mixed $values
@@ -125,9 +138,12 @@ class Model extends BaseModel
         }
 
         foreach ($values as $value) {
-            $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
-
-            $this->{$relation}()->save($model, $pivot);
+            try {
+                $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
+                $this->{$relation}()->save($model, $pivot);
+            } catch (\Exception $exception) {
+                continue;
+            }
         }
     }
 

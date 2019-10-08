@@ -65,6 +65,18 @@ class TestCase extends BaseTestCase
                         'element' => 'input',
                         'properties' => ['name' => 'avatar', 'type' => 'file'],
                     ],
+                    [
+                        'element' => 'select',
+                        'properties' => [
+                            'name' => 'role_id',
+                            'options' => [],
+                            'source' => function() {
+                                return route('roles.index');
+                            },
+                            'label_key' => 'label',
+                            'value_key' => 'id'
+                        ],
+                    ],
                 ]
             ],
         ]);
@@ -104,7 +116,7 @@ class TestCase extends BaseTestCase
 
     private function setConfig(string $name)
     {
-        $config = require __DIR__ . '/../config/'. $name .'.php';
+        $config = require __DIR__ . '/../config/' . $name . '.php';
         Config::set($name, $config);
     }
 
