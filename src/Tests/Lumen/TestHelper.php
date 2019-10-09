@@ -161,7 +161,9 @@ trait TestHelper
         if ($this->model_name) {
             return $this->model_name;
         }
-        return str_replace(['app\tests\feature\\', 'test'], ['', ''], strtolower(get_called_class()));
+
+        $class = explode('\\', strtolower(str_replace('Test', '', get_called_class())));
+        return array_pop($class);
     }
 
     /**

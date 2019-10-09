@@ -10,6 +10,7 @@ use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
 use Tychovbh\Mvc\Console\Commands\VendorPublishCommand;
+use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 
@@ -25,7 +26,7 @@ class MvcServiceProvider extends ServiceProvider
         if (is_application() === 'lumen') {
             $this->app->routeMiddleware([
                 'validate' => ValidateMiddleware::class,
-                'auth' => AuthorizeMiddleware::class,
+                'auth' => AuthenticateMiddleware::class,
                 'authorize' => AuthorizeMiddleware::class
             ]);
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
