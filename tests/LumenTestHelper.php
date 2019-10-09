@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace Tychovbh\Tests\Mvc;
 
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
