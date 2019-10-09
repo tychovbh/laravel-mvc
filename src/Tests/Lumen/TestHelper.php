@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc;
+namespace Tychovbh\Mvc\Tests\Lumen;
 
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Laravel\Lumen\Testing\TestCase;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-trait LumenTestHelper
+trait TestHelper
 {
     /**
      * Generate a user with a token to perform authenticated requests.
@@ -139,6 +139,18 @@ trait LumenTestHelper
         }
 
         return $this;
+    }
+
+    /**
+     * see if collection in database
+     * @param string $table
+     * @param array $collection
+     */
+    public function seeCollectionInDatabase(string $table, array $collection)
+    {
+        foreach ($collection as $rowInDatabase) {
+            $this->seeInDatabase($table, $rowInDatabase);
+        }
     }
 
     /**
