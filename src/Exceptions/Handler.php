@@ -69,7 +69,9 @@ class Handler extends AbstractHandler
         }
 
         if ($status === 500) {
-            emergency($exception->getMessage(), $exception);
+            error($exception->getMessage(), [
+                'trace' => $exception->getTraceAsString(),
+            ]);
             $message = message('server.error');
         }
 
