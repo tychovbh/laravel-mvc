@@ -399,3 +399,31 @@ if (!function_exists('user')) {
         }
     }
 }
+
+if (!function_exists('cant')) {
+    /**
+     * User cant
+     * @param string $ability
+     * @param String|Model $model
+     * @return bool
+     * @throws Exception
+     */
+    function cant(string $ability, $model): bool
+    {
+        return user()->id && user()->cant($ability, $model);
+    }
+}
+
+if (!function_exists('can')) {
+    /**
+     * User can
+     * @param string $ability
+     * @param string|Model $model
+     * @return bool
+     * @throws Exception
+     */
+    function can(string $ability, $model): bool
+    {
+        return user()->id && user()->can($ability, $model);
+    }
+}

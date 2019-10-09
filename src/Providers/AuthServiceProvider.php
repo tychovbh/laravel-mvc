@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Tychovbh\Mvc\Providers;
 
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
