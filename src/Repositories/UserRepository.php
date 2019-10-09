@@ -62,13 +62,13 @@ class UserRepository extends AbstractRepository implements Repository
      */
     public function login(array $data): User
     {
-        $login_field = config('auth.login_field', 'email');
+        $login_field = (string)config('mvc-auth.login_field', 'email');
         if (!Arr::has($data, $login_field)) {
             abort(404, message('login.notfound'));
         }
 
         try {
-            $user = $this->findBy('email', $data[$login_field]);
+            $user = $this->findBy($login_field, $data[$login_field]);
         } catch (Exception $exception) {
             abort(404, message('login.notfound'));
         }
