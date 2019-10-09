@@ -7,5 +7,6 @@ return [
     'password_reset_url' => env('PASSWORD_RESET_URL'),
     'secret' => env('AUTH_SECRET'),
     'id' => env('AUTH_ID'),
-    'expiration' => (int) (env('AUTH_EXPIRATION') ?? 3600)
+    'expiration' => (int) (env('AUTH_EXPIRATION') ?? 3600),
+    'login_field' => env('AUTH_LOGIN_FIELD', 'email')
 ];
