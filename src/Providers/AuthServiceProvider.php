@@ -62,6 +62,9 @@ class AuthServiceProvider extends ServiceProvider
             try {
                 $route = get_route_info($request, 'as');
                 $login_field = config('mvc-auth.login_field', 'email');
+                if ($request->has('login_field')) {
+                    $login_field = $request->input('login_field');
+                }
                 if ($request->has([$login_field, 'password']) && $route === 'auth.login') {
                     return $users->login($request->toArray());
                 }
