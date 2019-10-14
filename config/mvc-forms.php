@@ -100,6 +100,11 @@ return [
             'label' => 'Value Key',
             'options' => null,
         ],
+        [
+            'name' => 'data_key',
+            'label' => 'Data Key',
+            'options' => null,
+        ],
     ],
     'forms' => [
         [
