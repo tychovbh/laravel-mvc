@@ -232,7 +232,7 @@ if (!function_exists('emergency')) {
             'website' => config('app.url'),
             'exception' => $exception->getMessage(),
             'file' => str_replace(base_path(), '', $exception->getFile()),
-            'line' => $exception->getLine()
+            'line' => $exception->getLine(),
         ]));
     }
 }
