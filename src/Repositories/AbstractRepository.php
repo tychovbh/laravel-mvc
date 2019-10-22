@@ -51,13 +51,37 @@ abstract class AbstractRepository
      * @param string $table
      * @param string $first
      * @param string $second
+     * @param string type
      */
-    public function join(string $table, string $first, string $second)
+    public function join(string $table, string $first, string $second, string $type = '')
     {
         if (!in_array($table, $this->joins)) {
             $this->joins[] = $table;
-            $this->query->join($table, $first, $second);
+            $method = $type ? $type . 'Join' : 'join';
+            $this->query->{$method}($table, $first, $second);
         }
+    }
+
+    /**
+     * Left join
+     * @param string $table
+     * @param string $first
+     * @param string $second
+     */
+    public function leftJoin(string $table, string $first, string $second)
+    {
+        $this->join($table, $first, $second, 'left');
+    }
+
+    /**
+     * Right join
+     * @param string $table
+     * @param string $first
+     * @param string $second
+     */
+    public function rightJoin(string $table, string $first, string $second)
+    {
+        $this->join($table, $first, $second, 'right');
     }
 
     /**
