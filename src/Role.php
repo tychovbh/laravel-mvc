@@ -2,6 +2,8 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Role extends Model
 {
     /**
@@ -13,5 +15,14 @@ class Role extends Model
         $this->fillables('name', 'label');
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * The users
+     * @return HasMany
+     */
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
     }
 }
