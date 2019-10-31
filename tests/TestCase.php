@@ -82,7 +82,7 @@ class TestCase extends BaseTestCase
         ]);
 
         $faker = Factory::create();
-        Config::set('mvc-collections', [
+        Config::set('mvc-collections', array_merge(config('mvc-collections'), [
             [
                 'table' => 'test_users',
                 'repository' => TestUserRepository::class,
@@ -105,13 +105,14 @@ class TestCase extends BaseTestCase
                     ],
                 ],
             ]
-        ]);
+        ]));
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->artisan('mvc:update');
+        $this->artisan('mvc:collections');
     }
 
     private function setConfig(string $name)
@@ -129,6 +130,7 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $this->setConfig('mvc-messages');
+        $this->setConfig('mvc-collections');
         $this->setConfig('mvc-forms');
         $this->setConfig('mvc-auth');
         $this->setConfig('mvc-mail');
@@ -142,6 +144,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('filesystems.disks.local.root', storage_path('framework/testing/disks/app'));
         $app['config']->set('mvc-auth.secret', 'sec!ReT423*&');
         $app['config']->set('mvc-auth.id', '1');
+        $app['config']->set('mvc-auth.email_verify_enabled', true);
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
 

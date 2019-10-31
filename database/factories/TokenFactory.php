@@ -13,11 +13,12 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Tychovbh\Mvc\Invite::class, function (Faker $faker) {
+$factory->define(Tychovbh\Mvc\Token::class, function (Faker $faker) {
     return [
-        'reference' => random_string(),
-        'token' => token([
+        'reference' => uniqid(),
+        'value' => token([
             'email' => $faker->email,
         ]),
+        'type' => \Tychovbh\Mvc\TokenType::INVITE_USER
     ];
 });

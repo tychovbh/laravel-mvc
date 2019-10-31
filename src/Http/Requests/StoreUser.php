@@ -25,8 +25,7 @@ class StoreUser extends FormRequest
             'name' => 'required_with:token|string|min:1',
             'email' => 'required_without:token|string|email|unique:users,email',
             'token' => 'required_without:email|string',
-            'password' => 'required|min:8'
+            'password' => 'min:8'
         ];
     }
 }
-

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInvitesTable extends Migration
+class CreateTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateInvitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invites', function (Blueprint $table) {
+        Schema::create('tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('reference');
-            $table->text('token');
+            $table->text('value');
+            $table->string('reference')->unique();
+
+            $table->unsignedInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('token_types')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateInvitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invites');
+        Schema::dropIfExists('tokens');
     }
 }

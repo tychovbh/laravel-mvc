@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserCreated;
+use Tychovbh\Mvc\Mail\UserVerify;
 use Tychovbh\Mvc\PasswordReset;
-use Tychovbh\Mvc\Repositories\InviteRepository;
+use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Repositories\TokenRepository;
 use Tychovbh\Mvc\Repositories\PasswordResetRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
 
 /**
- * @property InviteRepository invites
+ * @property TokenRepository $tokens
  * @property PasswordResetRepository passwordResets
  * @property UserRepository repository
  */
@@ -21,13 +23,13 @@ class UserController extends AbstractController
 {
     /**
      * FieldController constructor.
-     * @param InviteRepository $invites
+     * @param TokenRepository $tokens
      * @param PasswordResetRepository $passwordResets
      * @throws \Exception
      */
-    public function __construct(InviteRepository $invites, PasswordResetRepository $passwordResets)
+    public function __construct(TokenRepository $tokens, PasswordResetRepository $passwordResets)
     {
-        $this->invites = $invites;
+        $this->tokens = $tokens;
         $this->passwordResets = $passwordResets;
         parent::__construct();
     }
@@ -43,6 +45,16 @@ class UserController extends AbstractController
 
         if (config('mvc-mail.messages.user.store')) {
             Mail::send(new UserCreated($user->email));
+        }
+
+        if (config('mvc-mail.messages.user.verify')) {
+            $token = $this->tokens->save([
+                'type' => TokenType::VERIFY_EMAIL,
+                'id' => $user->id,
+                'email' => $user->email
+            ]);
+            $data['link'] = str_replace('{reference}', $token->reference, config('mvc-auth.url'));
+            Mail::send(new UserVerify($data));
         }
 
         return $user;
@@ -75,19 +87,19 @@ class UserController extends AbstractController
      */
     private function storeFromInvite(Request $request): JsonResource
     {
-        $reference = $request->input('token');
+        $token = $request->input('token');
 
         try {
-            $invite = $this->invites->findBy('reference', $reference);
-            $request->merge(['token' => $invite->token]);
+            $invite = $this->tokens->findBy('reference', $token);
+            $request->merge(['token' => $invite->value]);
             $user = parent::store($request);
-            $this->invites->model::where('reference', $reference)->delete();
+            $this->tokens->destroy([$invite->id]);
             return $user;
         } catch (\Exception $exception) {
             //
         }
 
-        return abort(404, message('model.notfound', 'Invite', 'Reference', $reference));
+        return abort(404, message('model.notfound', 'Invite', 'Reference', $token));
     }
 
     /**

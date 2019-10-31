@@ -19,6 +19,11 @@ return [
                 'to' => 'users@domain.com',
                 'from' => 'noreply@domain.com',
             ],
+            'verify' => [
+                'template' => 'emails.user.verify',
+                'subject' => 'Verify your email for ' . config('app.name'),
+                'from' => 'noreply@domain.com',
+            ],
             'password_reset' => [
                 'template' => 'emails.user.password_reset',
                 'subject' => 'Your Password Reset Link for ' . config('app.name'),

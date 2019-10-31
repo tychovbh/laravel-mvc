@@ -77,6 +77,10 @@ class UserRepository extends AbstractRepository implements Repository
             abort(404, message('login.notfound'));
         }
 
+        if (config('mvc-auth.email_verify_enabled') && !$user->email_verified_at) {
+            abort(401, message('login.email.unverified'));
+        }
+
         if (!Hash::check(Arr::get($data, 'password'), $user->password)) {
             abort(401, message('login.password.incorrect'));
         }

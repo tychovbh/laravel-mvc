@@ -9,11 +9,13 @@ use Tychovbh\Mvc\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserCreated;
+use Tychovbh\Mvc\Mail\UserVerify;
+use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\Role;
 use Tychovbh\Tests\Mvc\TestCase;
 
 use Illuminate\Support\Arr;
-use Tychovbh\Mvc\Invite;
+use Tychovbh\Mvc\Token;
 use Tychovbh\Mvc\User;
 use Faker\Factory;
 use Illuminate\Support\Facades\Mail;
@@ -78,6 +80,10 @@ class UserTest extends TestCase
         Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($user) {
             return $mail->email = $user['data']['email'];
         });
+
+        Mail::assertQueued(UserVerify::class, function (UserVerify $mail) use ($user) {
+            return $mail->email = $user['data']['email'];
+        });
     }
 
     /**
@@ -137,6 +143,33 @@ class UserTest extends TestCase
     /**
      * @test
      */
+    public function itCanUpdateAndVerify()
+    {
+        $user = factory(User::class)->create();
+        $token = factory(Token::class)->create([
+            'type' => TokenType::VERIFY_EMAIL,
+            'value' => token([
+                'id' => $user->id,
+                'email' => $user->email,
+            ]),
+        ]);
+
+        $this->update('users.update', UserResource::make($user), [
+            'reference' => $token->reference
+        ]);
+
+        $user = User::find($user->id);
+
+        $this->assertNotEmpty($user->email_verified_at, 'Email verified not updated');
+
+        $this->assertDatabaseMissing('tokens', [
+            'value' => $token->value
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function itCanStoreViaToken()
     {
         Mail::fake();
@@ -144,9 +177,9 @@ class UserTest extends TestCase
         $user = $this->user();
         $email = $user['data']['email'];
 
-        $invite = factory(Invite::class)->create([
-            'reference' => random_string(),
-            'token' => token([
+        $invite = factory(Token::class)->create([
+            'reference' => uniqid(),
+            'value' => token([
                 'email' => $email,
                 'role_id' => $user['data']['role_id']
             ])
@@ -157,7 +190,7 @@ class UserTest extends TestCase
 
         $this->storeUser($user);
 
-        $this->assertDatabaseMissing('invites', [
+        $this->assertDatabaseMissing('tokens', [
             'reference' => $invite->reference
         ]);
 
@@ -199,7 +232,6 @@ class UserTest extends TestCase
     public function itCannotStoreMissingField()
     {
         $user = $this->user();
-        $this->storeUserMissingField($user, 'password', 'password');
         $this->storeUserMissingField($user, 'email', 'email');
     }
 
@@ -267,11 +299,45 @@ class UserTest extends TestCase
     {
         $password = random_string();
         $user = factory(User::class)->create([
-            'password' => $password
+            'password' => $password,
         ]);
         $this->store('users.login', UserResource::make($user), [
             'email' => $user->email,
             'password' => $password
+        ], 200);
+    }
+
+    /**
+     * @test
+     */
+    public function itCantLoginEmailNotVerified()
+    {
+        $password = random_string();
+        $user = factory(User::class)->create([
+            'password' => $password,
+            'email_verified_at' => null
+        ]);
+        $this->store('users.login', UserResource::make($user), [
+            'email' => $user->email,
+            'password' => $password
+        ], 401, [
+            'message' => message('login.email.unverified')
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanLoginById()
+    {
+        $password = random_string();
+        $user = factory(User::class)->create([
+            'password' => $password
+        ]);
+        $this->store('users.login', UserResource::make($user), [
+            'id' => $user->id,
+            'password' => $password,
+            'login_field' => 'id'
         ], 200);
     }
 

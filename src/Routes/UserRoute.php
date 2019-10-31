@@ -16,7 +16,7 @@ class UserRoute extends AbstractRoutes implements Routes
         $instance->create('users', $options);
         $instance->show('users', $options);
         $instance->store('users', $options, ['validate']);
-        $instance->route('post', 'users.login', 'login', '/users/login', $options);
+        $instance->route('post', 'users.login', 'login', '/users/login', $options, ['validate']);
         $instance->route('put', 'users.password_reset', 'resetPassword', '/users/password_reset', $options, ['validate']);
         $instance->update('users', $options);
         $instance->destroy('users', $options);

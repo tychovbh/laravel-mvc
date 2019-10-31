@@ -23,5 +23,6 @@ $factory->define(Tychovbh\Mvc\User::class, function (Faker $faker) {
         'password' => Hash::make($faker->password),
         'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        'email_verified_at' => Carbon::now()->format('Y-m-d H:i:s')
     ];
 });

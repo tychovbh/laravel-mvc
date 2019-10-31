@@ -195,10 +195,10 @@ abstract class AbstractRepository
     /**
      * Find a resource by key
      * @param string $key
-     * @param string $value
+     * @param string|int $value
      * @return mixed
      */
-    public function findBy(string $key, string $value)
+    public function findBy(string $key, $value)
     {
         return $this->model::where($key, $value)->firstOrFail();
     }

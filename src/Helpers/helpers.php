@@ -373,12 +373,18 @@ if (!function_exists('request')) {
     /**
      * Get Request attribute
      * @param string $item
+     * @param null $default
      * @return mixed
      */
-    function request(string $item = '')
+    function request(string $item = '', $default = null)
     {
         $request = app('request');
-        return $item ? $request->get($item) : $request;
+
+        if ($item) {
+            return $request->get($item) ?? $default;
+        }
+
+        return $request;
     }
 }
 

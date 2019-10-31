@@ -22,6 +22,16 @@ return [
         'error' => sprintf('Server error! Please contact %s.', config('app.support.email')),
     ],
     'auth' => [
-        'unauthorized' => 'Unauthorized!'
-    ]
+        'unauthorized' => 'Unauthorized!',
+    ],
+    'login' => [
+        'notfound' => 'User not found, please register.',
+        'password' => [
+            'incorrect' => 'Combination of email and password is incorrect.'
+        ],
+        'email' => [
+            'unverified' => 'Email unverified, please check your mailbox.'
+        ],
+        'attempts' => 'To many attempts, wait 1 minute and try again.'
+    ],
 ];

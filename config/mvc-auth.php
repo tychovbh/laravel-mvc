@@ -8,5 +8,6 @@ return [
     'secret' => env('AUTH_SECRET'),
     'id' => env('AUTH_ID'),
     'expiration' => (int) (env('AUTH_EXPIRATION') ?? 3600),
-    'login_field' => env('AUTH_LOGIN_FIELD', 'email')
+    'login_field' => env('AUTH_LOGIN_FIELD', 'email'),
+    'email_verify_enabled' => env('AUTH_EMAIL_VERIFY_ENABLED', false)
 ];

@@ -41,7 +41,7 @@ class PasswordResetTest extends TestCase
         $password = random_string();
         $passwordReset = factory(PasswordReset::class)->create();
         $oldUser = DB::table('users')->where('id', $passwordReset->user->id)->first();
-        $this->put(route('users.update.password_reset'), [
+        $this->put(route('users.password_reset'), [
             'token' => $passwordReset->token,
             'password' => $password
         ])->assertStatus(200)->assertJson([
