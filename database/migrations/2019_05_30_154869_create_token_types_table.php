@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTokensTable extends Migration
+class CreateTokenTypes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('tokens', function (Blueprint $table) {
+        Schema::create('token_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('value');
-            $table->string('reference')->unique();
-
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('token_types')->onDelete('cascade');
+            $table->string('name');
+            $table->string('label');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tokens');
+        Schema::dropIfExists('token_types');
     }
 }
