@@ -82,7 +82,7 @@ class UserTest extends TestCase
         });
 
         Mail::assertQueued(UserVerify::class, function (UserVerify $mail) use ($user) {
-            return $mail->email = $user['data']['email'];
+            return $mail->mail['email'] = $user['data']['email'];
         });
     }
 
@@ -165,6 +165,22 @@ class UserTest extends TestCase
         $this->assertDatabaseMissing('tokens', [
             'value' => $token->value
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanSendVerificationEmail()
+    {
+        Mail::fake();
+        $user = factory(User::class)->create();
+        $this->store('users.send_verify_email', UserResource::make($user), [
+            'email' => $user->email
+        ], 200);
+
+        Mail::assertQueued(UserVerify::class, function (UserVerify $mail) use ($user) {
+            return $mail->mail['email'] = $user->email;
+        });
     }
 
     /**

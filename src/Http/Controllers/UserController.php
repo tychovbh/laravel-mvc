@@ -13,6 +13,7 @@ use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\Repositories\TokenRepository;
 use Tychovbh\Mvc\Repositories\PasswordResetRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
+use Tychovbh\Mvc\User;
 
 /**
  * @property TokenRepository $tokens
@@ -35,6 +36,23 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param User $user
+     */
+    private function createVerifyTokenAndSendEmail(User $user)
+    {
+        $token = $this->tokens->save([
+            'type' => TokenType::VERIFY_EMAIL,
+            'id' => $user->id,
+            'email' => $user->email
+        ]);
+
+        Mail::send(new UserVerify([
+            'link' => str_replace('{reference}', $token->reference, config('mvc-auth.password_reset_url')),
+            'email' => $user->email
+        ]));
+    }
+
+    /**
      * Store User Resource
      * @param Request $request
      * @return JsonResource
@@ -48,15 +66,7 @@ class UserController extends AbstractController
         }
 
         if (config('mvc-auth.email_verify_enabled')) {
-            $token = $this->tokens->save([
-                'type' => TokenType::VERIFY_EMAIL,
-                'id' => $user->id,
-                'email' => $user->email
-            ]);
-            Mail::send(new UserVerify([
-                'link' => str_replace('{reference}', $token->reference, config('mvc-auth.password_reset_url')),
-                'email' => $user->email
-            ]));
+            $this->createVerifyTokenAndSendEmail($user->resource);
         }
 
         return $user;
@@ -80,6 +90,25 @@ class UserController extends AbstractController
         }
 
         return abort(404, message('model.notfound', 'Password Reset', 'Reference', $token));
+    }
+
+    /**
+     * Send verification email to User
+     * @param Request $request
+     * @return JsonResource
+     */
+    public function sendVerifyEmail(Request $request): JsonResource
+    {
+        try {
+            $user = $this->repository->findBy('email', $request->input('email'));
+            $this->createVerifyTokenAndSendEmail($user);
+
+            return new $this->resource($user);
+        } catch (\Exception $exception) {
+            //
+        }
+
+        return abort(404, message('model.notfound', 'User'));
     }
 
     /**
