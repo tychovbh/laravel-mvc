@@ -23,7 +23,7 @@ class ResetPasswordUser extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|exists:password_resets,token'
+            'token' => 'required|exists:tokens,reference'
         ];
     }
 }

@@ -18,7 +18,7 @@ class UserRoute extends AbstractRoutes implements Routes
         $instance->store('users', $options, ['validate']);
         $instance->route('post', 'users.login', 'login', '/users/login', $options, ['validate']);
         $instance->route('put', 'users.password_reset', 'resetPassword', '/users/password_reset', $options, ['validate']);
-        if (config('mvc-auth.email_verify_enabled')) {
+        if (env('AUTH_EMAIL_VERIFY_ENABLED')) {
             $instance->route('post', 'users.send_verify_email', 'sendVerifyEmail', '/users/send_verify_email', $options, ['validate']);
         }
         $instance->update('users', $options);

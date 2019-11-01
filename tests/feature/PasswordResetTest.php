@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserPasswordReset;
 use Tychovbh\Mvc\PasswordReset;
+use Tychovbh\Mvc\Token;
+use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
@@ -23,12 +25,10 @@ class PasswordResetTest extends TestCase
 
         $this->post(route('password_resets.store'), [
             'email' => $user->email
-        ])->assertStatus(201)->assertJson([
-            'data' => ['email' => $user->email]
-        ]);
+        ])->assertStatus(201);
 
         Mail::assertQueued(UserPasswordReset::class, function (UserPasswordReset $mail) use ($user) {
-            return $mail->hasTo($user->email);
+            return $mail->mail['email'] === $user->email;
         });
     }
 
@@ -39,19 +39,26 @@ class PasswordResetTest extends TestCase
     {
         Mail::fake();
         $password = random_string();
-        $passwordReset = factory(PasswordReset::class)->create();
-        $oldUser = DB::table('users')->where('id', $passwordReset->user->id)->first();
+        $user = factory(User::class)->create();
+        $token = factory(Token::class)->create([
+            'type' => TokenType::PASSWORD_RESET,
+            'value' => token([
+                'id' => $user->id,
+                'email' => $user->email,
+            ]),
+        ]);
+        $oldUser = DB::table('users')->where('id', $user->id)->first();
         $this->put(route('users.password_reset'), [
-            'token' => $passwordReset->token,
+            'token' => $token->reference,
             'password' => $password
         ])->assertStatus(200)->assertJson([
-            'data' => ['email' => $passwordReset['email']]
+            'data' => ['email' => $user->email]
         ]);
 
-        $newUser = DB::table('users')->where('id', $passwordReset->user->id)->first();
+        $newUser = DB::table('users')->where('id', $user->id)->first();
 
-        $this->assertDatabaseMissing('password_resets', [
-            'email' => $oldUser->email
+        $this->assertDatabaseMissing('tokens', [
+            'id' => $token->id
         ]);
         $this->assertNotTrue($newUser->password === $oldUser->password, 'Failed to reset user password');
 

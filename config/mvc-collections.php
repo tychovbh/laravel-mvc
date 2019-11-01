@@ -11,11 +11,15 @@ return [
         'items' => [
             [
                 'name' => TokenType::INVITE_USER,
-                'label' => 'Invite'
+                'label' => 'Invite User'
             ],
             [
                 'name' => TokenType::VERIFY_EMAIL,
                 'label' => 'Verify Email'
+            ],
+            [
+                'name' => TokenType::PASSWORD_RESET,
+                'label' => 'Password Reset'
             ],
         ]
     ],

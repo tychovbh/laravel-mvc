@@ -81,9 +81,11 @@ class UserController extends AbstractController
     {
         $token = $request->input('token');
         try {
-            $passwordReset = $this->passwordResets->findBy('token', $token);
-            $user = parent::update($request, $passwordReset->user->id);
-            PasswordReset::where('email', $passwordReset->email)->delete();
+            $passwordReset = $this->tokens->findBy('reference', $token);
+            $data = token_value($passwordReset->value);
+            $user = parent::update($request, $data['id']);
+            $this->tokens->destroy([$passwordReset->id]);
+
             return $user;
         } catch (\Exception $exception) {
             //

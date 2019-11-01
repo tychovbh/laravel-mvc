@@ -5,6 +5,7 @@ namespace Tychovbh\Mvc;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserInvite;
+use Tychovbh\Mvc\Mail\UserPasswordReset;
 
 class Token extends Model
 {
@@ -32,10 +33,15 @@ class Token extends Model
     protected static function boot()
     {
         self::created(function(Token $token) {
+            $data = token_value($token->value);
             if ($token->type->name === TokenType::INVITE_USER) {
-                $data = token_value($token->value);
                 $data['link'] = str_replace('{reference}', $token->reference, config('mvc-auth.url'));
                 Mail::send(new UserInvite($data));
+            }
+
+            if ($token->type->name === TokenType::PASSWORD_RESET) {
+                $data['link'] = str_replace('{reference}', $token->reference, config('mvc-auth.password_reset_url'));
+                Mail::send(new UserPasswordReset($data));
             }
         });
 
