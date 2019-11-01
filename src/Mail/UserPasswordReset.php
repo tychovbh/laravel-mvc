@@ -29,7 +29,7 @@ class UserPasswordReset extends Mailable implements ShouldQueue
     {
         $config = config('mvc-mail.messages.password_reset.store');
         return $this
-            ->to($this->mail['to'])
+            ->to($this->mail['email'])
             ->view($config['template'])
             ->subject($config['subject'])
             ->from($config['from']);
