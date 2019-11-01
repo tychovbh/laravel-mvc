@@ -47,7 +47,7 @@ class UserController extends AbstractController
             Mail::send(new UserCreated($user->email));
         }
 
-        if (config('mvc-mail.messages.user.verify')) {
+        if (config('mvc-auth.email_verify_enabled')) {
             $token = $this->tokens->save([
                 'type' => TokenType::VERIFY_EMAIL,
                 'id' => $user->id,
