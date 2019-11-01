@@ -24,7 +24,7 @@ class StoreInvite extends FormRequest
     {
         return [
             'name' => 'required|string|min:1',
-            'email' => 'required|string|email'
+            'email' => 'required|string|email|unique:users,email'
         ];
     }
 }

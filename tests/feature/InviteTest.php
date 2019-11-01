@@ -25,7 +25,7 @@ class InviteTest extends TestCase
             ->assertJsonStructure(['data']);
 
         Mail::assertQueued(UserInvite::class, function (UserInvite $mail) use ($user) {
-            return $mail->hasTo($user->email);
+            return $mail->mail['email'] === $user->email;
         });
     }
 
