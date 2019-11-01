@@ -53,8 +53,10 @@ class UserController extends AbstractController
                 'id' => $user->id,
                 'email' => $user->email
             ]);
-            $data['link'] = str_replace('{reference}', $token->reference, config('mvc-auth.password_reset_url'));
-            Mail::send(new UserVerify($data));
+            Mail::send(new UserVerify([
+                'link' => str_replace('{reference}', $token->reference, config('mvc-auth.password_reset_url')),
+                'email' => $user->email
+            ]));
         }
 
         return $user;
