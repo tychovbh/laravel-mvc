@@ -155,7 +155,7 @@ class UserTest extends TestCase
         ]);
 
         $this->update('users.update', UserResource::make($user), [
-            'reference' => $token->reference
+            'token' => $token->reference
         ]);
 
         $user = User::find($user->id);
@@ -188,6 +188,7 @@ class UserTest extends TestCase
      */
     public function itCanStoreViaToken()
     {
+        // TODO fix test case
         Mail::fake();
 
         $user = $this->user();

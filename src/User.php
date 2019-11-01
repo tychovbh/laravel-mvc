@@ -17,7 +17,7 @@ class User extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('name', 'email', 'password', 'reference', 'avatar', 'is_admin', 'role_id');
+        $this->fillables('name', 'email', 'password', 'token', 'avatar', 'is_admin', 'role_id');
         $this->hiddens('password');
         $this->associations([
             'roles' => [
@@ -36,9 +36,9 @@ class User extends Model
     protected static function boot()
     {
         self::updating(function(User $user) {
-            if ($user->reference) {
+            if ($user->token) {
                 $tokens = new TokenRepository();
-                $token = $tokens->findBy('reference', $user->reference);
+                $token = $tokens->findBy('reference', $user->token);
                 $user->verify($token);
                 $tokens->destroy([$token->id]);
             }
@@ -87,7 +87,7 @@ class User extends Model
         $data = token_value($token->value);
         if ($this->id === $data['id']) {
             $this->email_verified_at = Carbon::now();
-            Arr::forget($this->attributes, 'reference');
+            Arr::forget($this->attributes, 'token');
         }
     }
 }

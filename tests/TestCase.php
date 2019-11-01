@@ -129,6 +129,7 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        putenv('AUTH_EMAIL_VERIFY_ENABLED=true');
         $this->setConfig('mvc-messages');
         $this->setConfig('mvc-collections');
         $this->setConfig('mvc-forms');
