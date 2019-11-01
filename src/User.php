@@ -41,6 +41,7 @@ class User extends Model
                 $token = $tokens->findBy('reference', $user->token);
                 $user->verify($token);
                 $tokens->destroy([$token->id]);
+                Arr::forget($this->attributes, 'token');
             }
         });
 
@@ -87,7 +88,6 @@ class User extends Model
         $data = token_value($token->value);
         if ($this->id === $data['id']) {
             $this->email_verified_at = Carbon::now();
-            Arr::forget($this->attributes, 'token');
         }
     }
 }
