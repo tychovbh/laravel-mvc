@@ -8,16 +8,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Mail\UserVerify;
-use Tychovbh\Mvc\PasswordReset;
 use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\Repositories\TokenRepository;
-use Tychovbh\Mvc\Repositories\PasswordResetRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Tychovbh\Mvc\User;
 
 /**
  * @property TokenRepository $tokens
- * @property PasswordResetRepository passwordResets
  * @property UserRepository repository
  */
 class UserController extends AbstractController
@@ -25,13 +22,11 @@ class UserController extends AbstractController
     /**
      * FieldController constructor.
      * @param TokenRepository $tokens
-     * @param PasswordResetRepository $passwordResets
      * @throws \Exception
      */
-    public function __construct(TokenRepository $tokens, PasswordResetRepository $passwordResets)
+    public function __construct(TokenRepository $tokens)
     {
         $this->tokens = $tokens;
-        $this->passwordResets = $passwordResets;
         parent::__construct();
     }
 
