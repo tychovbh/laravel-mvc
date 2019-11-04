@@ -34,6 +34,7 @@ class PasswordResetController extends AbstractController
         $user = $this->users->findBy('email', $request->input('email'));
         $request->offsetSet('id', $user->id);
         $request->offsetSet('type', TokenType::PASSWORD_RESET);
+        $request->offsetSet('user', $user->toArray());
         return parent::store($request);
     }
 }
