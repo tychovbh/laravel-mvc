@@ -39,12 +39,13 @@ class UserRepository extends AbstractRepository implements Repository
         }
 
         try {
-            token_validate($data['token']);
+            token_validate($data['token']->value);
         } catch (Exception $exception) {
             abort(400, message('auth.token.expired'));
         }
 
-        $data = array_merge($data, (array)token_value($data['token']));
+        $data = array_merge($data, (array)token_value($data['token']->value));
+        $data['token'] = $data['token']->reference;
 
         try {
             $this->findBy('email', $data['email']);

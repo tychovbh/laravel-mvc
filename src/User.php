@@ -35,13 +35,13 @@ class User extends Model
      */
     protected static function boot()
     {
-        self::updating(function(User $user) {
+        self::saving(function(User $user) {
             if ($user->token) {
                 $tokens = new TokenRepository();
                 $token = $tokens->findBy('reference', $user->token);
                 $user->verify($token);
                 $tokens->destroy([$token->id]);
-                Arr::forget($this->attributes, 'token');
+                Arr::forget($user->attributes, 'token');
             }
         });
 
@@ -81,12 +81,12 @@ class User extends Model
      */
     private function verify(Token $token)
     {
-        if ($token->type->name !== TokenType::VERIFY_EMAIL) {
+        if (!in_array($token->type->name, [TokenType::VERIFY_EMAIL, TokenType::INVITE_USER])) {
             return;
         }
 
         $data = token_value($token->value);
-        if ($this->id === $data['id']) {
+        if ($this->email === $data['email']) {
             $this->email_verified_at = Carbon::now();
         }
     }

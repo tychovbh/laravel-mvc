@@ -119,7 +119,7 @@ class UserController extends AbstractController
 
         try {
             $invite = $this->tokens->findBy('reference', $token);
-            $request->merge(['token' => $invite->value]);
+            $request->merge(['token' => $invite]);
             $user = parent::store($request);
             $this->tokens->destroy([$invite->id]);
             return $user;
