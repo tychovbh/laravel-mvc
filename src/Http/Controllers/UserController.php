@@ -54,13 +54,14 @@ class UserController extends AbstractController
      */
     public function store(Request $request): JsonResource
     {
-        $user = $request->has('token') ? $this->storeFromInvite($request) : parent::store($request);
+        $token = $request->has('token');
+        $user = $token ? $this->storeFromInvite($request) : parent::store($request);
 
         if (config('mvc-mail.messages.user.store')) {
             Mail::send(new UserCreated($user->email));
         }
 
-        if (config('mvc-auth.email_verify_enabled')) {
+        if (!$token && config('mvc-auth.email_verify_enabled')) {
             $this->createVerifyTokenAndSendEmail($user->resource);
         }
 
