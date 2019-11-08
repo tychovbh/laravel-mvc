@@ -1,8 +1,8 @@
 <?php
 namespace Tychovbh\Mvc\Http\Requests;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
 
 trait RequestSettings
 {
@@ -25,27 +25,41 @@ trait RequestSettings
     }
 
     /**
-     * Set messages
+     * Generate messages from rules
+     * @param array $validation
+     * @param array $messages
+     * @param string|null $current_field
      * @return array
      */
-    public function messages(): array
+    private function messagesFromRules(array $validation, array $messages, $current_field = null)
     {
-        $messages = [];
-        foreach ($this->rules() as $field => $rules)
+        foreach ($validation as $key => $rules)
         {
-            $rules = explode('|', $rules);
+            $field = $current_field ?? $key;
+            if (is_array($rules)) {
+                $messages = $this->messagesFromRules($rules, $messages, $field);
+                continue;
+            }
+
+            if (is_a($rules, Rule::class)) {
+                continue;
+            } else {
+                $rules = explode('|', $rules);
+            }
 
             foreach ($rules as $rule) {
                 $rule = explode(':', $rule);
                 switch ($rule[0]) {
                     case 'required_with':
-                        $message = message('field.' . $rule[0], $this->translate($field));
+                        $message = message('field.' . $rule[0], __($field));
                         break;
                     case 'min':
-                        $message = message('field.' . $rule[0], $field, $this->translate($rule[1]));
+                    case 'before':
+                    case 'after':
+                        $message = message('field.' . $rule[0], __($field), __($rule[1]));
                         break;
                     default:
-                        $message = message('field.' . $rule[0], $this->translate($field));
+                        $message = message('field.' . $rule[0], __($field));
 
                 }
                 $messages[$field . '.' . $rule[0]] = $message;
@@ -56,18 +70,11 @@ trait RequestSettings
     }
 
     /**
-     * Translate fields
-     * @param string $field
-     * @return string
+     * Set messages
+     * @return array
      */
-    private function translate(string $field): string
+    public function messages(): array
     {
-        if (!method_exists($this, 'translations')) {
-            return $field;
-        }
-
-        $translations = $this->translations();
-
-        return Arr::get($translations, $field) ?? $field;
+        return $this->messagesFromRules($this->rules(), []);
     }
 }
