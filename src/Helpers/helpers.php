@@ -250,6 +250,8 @@ if (!function_exists('message')) {
         $config = config('mvc-messages');
         $message = __(Arr::get($config, $message) ?? Arr::get($config, 'server.error'));
 
+        $params = array_map('__', $params);
+
         return $params ? sprintf($message, ...$params) : $message;
     }
 }
