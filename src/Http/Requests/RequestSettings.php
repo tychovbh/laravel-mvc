@@ -56,6 +56,7 @@ trait RequestSettings
                     case 'min':
                     case 'before':
                     case 'after':
+                    case 'mimes':
                         $message = message('field.' . $rule[0], __($field), __($rule[1]));
                         break;
                     default:

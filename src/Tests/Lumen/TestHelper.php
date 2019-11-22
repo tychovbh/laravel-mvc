@@ -293,6 +293,19 @@ trait TestHelper
     }
 
     /**
+     * Perform store request but cannot store model
+     * @param array $params
+     * @param array $messages
+     * @param array $tokenParams
+     */
+    public function cantStore(array $params = [], array $messages = [], array $tokenParams = [])
+    {
+        $this->post(route($this->indexName() . '.store'), $params, $this->token($tokenParams))
+            ->seeStatusCode(400)
+            ->seeJson($messages);
+    }
+
+    /**
      * Perform update request
      * @param Resource $resource
      * @param array $params
@@ -311,7 +324,7 @@ trait TestHelper
     }
 
     /**
-     * Perform update request but cannot update video
+     * Perform update request but cannot update model
      * @param int $id
      * @param array $params
      * @param array $messages
