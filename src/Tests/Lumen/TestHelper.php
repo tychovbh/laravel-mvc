@@ -310,15 +310,16 @@ trait TestHelper
      * @param Resource $resource
      * @param array $params
      * @param array $tokenParams
+     * @param array $except
      * @return array
      */
-    public function update(Resource $resource, array $params = [], array $tokenParams = []): array
+    public function update(Resource $resource, array $params = [], array $tokenParams = [], array $except = []): array
     {
         $request = $this->put(route($this->indexName() . '.update', [
             'id' => $resource->id
         ]), $params, $this->token($tokenParams))
             ->seeStatusCode(200)
-            ->seeResource($resource);
+            ->seeResource($resource, $except);
 
         return $this->content($request);
     }
