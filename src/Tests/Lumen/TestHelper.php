@@ -293,25 +293,39 @@ trait TestHelper
     }
 
     /**
+     * Perform store request but cannot store model
+     * @param array $params
+     * @param array $messages
+     * @param array $tokenParams
+     */
+    public function cantStore(array $params = [], array $messages = [], array $tokenParams = [])
+    {
+        $this->post(route($this->indexName() . '.store'), $params, $this->token($tokenParams))
+            ->seeStatusCode(400)
+            ->seeJson($messages);
+    }
+
+    /**
      * Perform update request
      * @param Resource $resource
      * @param array $params
      * @param array $tokenParams
+     * @param array $except
      * @return array
      */
-    public function update(Resource $resource, array $params = [], array $tokenParams = []): array
+    public function update(Resource $resource, array $params = [], array $tokenParams = [], array $except = []): array
     {
         $request = $this->put(route($this->indexName() . '.update', [
             'id' => $resource->id
         ]), $params, $this->token($tokenParams))
             ->seeStatusCode(200)
-            ->seeResource($resource);
+            ->seeResource($resource, $except);
 
         return $this->content($request);
     }
 
     /**
-     * Perform update request but cannot update video
+     * Perform update request but cannot update model
      * @param int $id
      * @param array $params
      * @param array $messages
