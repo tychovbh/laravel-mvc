@@ -72,7 +72,9 @@ class User extends Model
      */
     public function setPasswordAttribute(string $password)
     {
-        $this->attributes['password'] = Hash::make($password);
+        if ($password !== '') {
+            $this->attributes['password'] = Hash::make($password);
+        }
     }
 
     /**
