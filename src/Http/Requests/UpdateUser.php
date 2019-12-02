@@ -23,7 +23,7 @@ class UpdateUser extends FormRequest
     {
         return [
             'name' => 'string|min:1',
-            'email' => 'string|email', // TODO add unique:users,email but only when email is changed
+            'email' => 'string|email|unique:users,email,' . request()->route('id'),
             'token' => 'string',
             'password' => 'min:8'
         ];

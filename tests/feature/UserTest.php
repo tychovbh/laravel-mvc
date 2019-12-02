@@ -132,7 +132,9 @@ class UserTest extends TestCase
     public function itCanUpdate()
     {
         $user = factory(User::class)->create();
-        $update = factory(User::class)->make();
+        $update = factory(User::class)->make([
+            'email' => $user->email
+        ]);
         $params = $update->toArray();
         $update->id = $user->id;
         $update->updated_at = Carbon::now();
@@ -155,7 +157,7 @@ class UserTest extends TestCase
         ]);
 
         $this->update('users.update', UserResource::make($user), [
-            'token' => $token->reference
+            'token' => $token->reference,
         ]);
 
         $user = User::find($user->id);
