@@ -27,6 +27,11 @@ abstract class AbstractRepository
     protected $joins = [];
 
     /**
+     * @var int
+     */
+    protected $limit;
+
+    /**
      * @var Model
      */
     public $model;
@@ -119,6 +124,9 @@ abstract class AbstractRepository
 
         $this->params = [];
         $this->query->groupBy($this->name . '.id');
+        if ($this->limit) {
+            $this->query->limit($this->limit);
+        }
         return $this->query;
     }
 
@@ -143,6 +151,17 @@ abstract class AbstractRepository
     public function get(): Collection
     {
         return $this->applyParams('index')->get([$this->name . '.*']);
+    }
+
+    /**
+     * Set query limit
+     * @param int $limit
+     * @return Repository
+     */
+    public function limit(int $limit): Repository
+    {
+        $this->limit = $limit;
+        return $this;
     }
 
     /**
