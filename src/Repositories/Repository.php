@@ -33,7 +33,7 @@ interface Repository
      * @param array $params
      * @return Repository
      */
-    public static function withParams(array $params): Repository;
+    public static function withParams(array $params = []): Repository;
 
     /**
      * Find a resource by ID.
@@ -54,6 +54,13 @@ interface Repository
      * @return Repository
      */
     public function limit(int $limit): Repository;
+
+    /**
+     * Set query select
+     * @param array $select
+     * @return Repository
+     */
+    public function select(array $select): Repository;
 
     /**
      * Retrieve first resource.

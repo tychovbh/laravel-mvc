@@ -32,6 +32,11 @@ abstract class AbstractRepository
     protected $limit;
 
     /**
+     * @var array
+     */
+    protected $select;
+
+    /**
      * @var Model
      */
     public $model;
@@ -127,6 +132,10 @@ abstract class AbstractRepository
         if ($this->limit) {
             $this->query->limit($this->limit);
         }
+
+        if ($this->select) {
+            $this->query->select($this->select);
+        }
         return $this->query;
     }
 
@@ -136,11 +145,10 @@ abstract class AbstractRepository
      * @return Repository
      * @throws \Exception
      */
-    public static function withParams(array $params): Repository
+    public static function withParams(array $params = []): Repository
     {
         $repository = new static();
         $repository->params = $params;
-
         return $repository;
     }
 
@@ -161,6 +169,17 @@ abstract class AbstractRepository
     public function limit(int $limit): Repository
     {
         $this->limit = $limit;
+        return $this;
+    }
+
+    /**
+     * Set query select
+     * @param array $select
+     * @return Repository
+     */
+    public function select(array $select): Repository
+    {
+        $this->select = $select;
         return $this;
     }
 

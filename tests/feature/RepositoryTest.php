@@ -62,6 +62,45 @@ class RepositoryTest extends TestCase
 
     /**
      * @test
+     * TODO test this method sqllite is broke so cannot run tests
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     * @throws \Exception
+     */
+    public function itCanLimitUsers(TestUserRepository $repository)
+    {
+        $this->markTestIncomplete('Not yet tested');
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        $users = factory(TestUser::class, 10)->create();
+        $all = $repository::withParams()->limit(5)->get();
+
+        $this->assertEquals($users->slice(0, 5)->toArray(), $all->toArray());
+    }
+
+    /**
+     * @test
+     * TODO test this method sqllite is broke so cannot run tests
+     * @depends itCanInstantiate
+     * @param TestUserRepository $repository
+     * @throws \Exception
+     */
+    public function itCanSelectFieldsUsers(TestUserRepository $repository)
+    {
+        $this->markTestIncomplete('Not yet tested');
+        TestUser::destroy(TestUser::select('id')->get()->toArray());
+        $users = factory(TestUser::class, 10)->create()->map(function(TestUser $user) {
+            return [
+                'email' => $user->email,
+                'name' => $user->name,
+            ];
+        });
+        $all = $repository::withParams()->select(['email', 'name'])->get();
+
+        $this->assertEquals($users->toArray(), $all->toArray());
+    }
+
+    /**
+     * @test
      * @depends itCanInstantiate
      * @param TestUserRepository $repository
      * @throws \Exception
