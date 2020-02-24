@@ -9,7 +9,7 @@ return [
         'invite' => [
             'store' => [
                 'template' => 'emails.invite.store',
-                'subject' => 'You\'r invited to ' . config('app.name')
+                'subject' => 'You\'re invited to ' . config('app.name')
             ]
         ],
         'user' => [
