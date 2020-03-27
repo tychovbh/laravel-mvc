@@ -13,6 +13,7 @@ use Tychovbh\Mvc\Console\Commands\VendorPublishCommand;
 use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
+use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 
 class MvcServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,8 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->routeMiddleware([
                 'validate' => ValidateMiddleware::class,
                 'auth' => AuthenticateMiddleware::class,
-                'authorize' => AuthorizeMiddleware::class
+                'authorize' => AuthorizeMiddleware::class,
+                'cache' => CacheMiddleware::class
             ]);
             $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
             $this->app->configure('mvc-messages');
