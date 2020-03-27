@@ -2,9 +2,9 @@
 
 namespace Tychovbh\Mvc\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class PasswordResetResource extends JsonResource
+class PasswordResetResource extends Resource
 {
     /**
      * Transform the resource into an array.
