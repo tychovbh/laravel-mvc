@@ -45,21 +45,21 @@ class VendorPublishCommand extends Command
      * @var string
      */
     protected $description = 'Publish any publishable assets from vendor packages';
+
     /**
      * Create a new command instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param  \Illuminate\Filesystem\Filesystem $files
      */
     public function __construct(Filesystem $files)
     {
         parent::__construct();
         $this->files = $files;
     }
+
     /**
      * Execute the console command.
-     *
-     * @return void
+
      */
     public function handle()
     {
@@ -69,10 +69,9 @@ class VendorPublishCommand extends Command
         }
         $this->info('Publishing complete.');
     }
+
     /**
      * Determine the provider or tag(s) to publish.
-     *
-     * @return void
      */
     protected function determineWhatShouldBePublished()
     {
@@ -80,16 +79,15 @@ class VendorPublishCommand extends Command
             return;
         }
         [$this->provider, $this->tags] = [
-            $this->option('provider'), (array) $this->option('tag'),
+            $this->option('provider'), (array)$this->option('tag'),
         ];
-        if (! $this->provider && ! $this->tags) {
+        if (!$this->provider && !$this->tags) {
             $this->promptForProviderOrTag();
         }
     }
+
     /**
      * Prompt for which provider or tag to publish.
-     *
-     * @return void
      */
     protected function promptForProviderOrTag()
     {
@@ -102,6 +100,7 @@ class VendorPublishCommand extends Command
         }
         $this->parseChoice($choice);
     }
+
     /**
      * The choices available via the prompt.
      *
@@ -115,11 +114,11 @@ class VendorPublishCommand extends Command
             preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort(ServiceProvider::publishableGroups()))
         );
     }
+
     /**
      * Parse the answer that was given via the prompt.
      *
-     * @param  string  $choice
-     * @return void
+     * @param  string $choice
      */
     protected function parseChoice($choice)
     {
@@ -130,11 +129,13 @@ class VendorPublishCommand extends Command
             $this->tags = [$value];
         }
     }
+
     /**
      * Publishes the assets for a tag.
      *
-     * @param  string  $tag
+     * @param  string $tag
      * @return mixed
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishTag($tag)
     {
@@ -142,10 +143,11 @@ class VendorPublishCommand extends Command
             $this->publishItem($from, $to);
         }
     }
+
     /**
      * Get all of the paths to publish.
      *
-     * @param  string  $tag
+     * @param  string $tag
      * @return array
      */
     protected function pathsToPublish($tag)
@@ -154,12 +156,13 @@ class VendorPublishCommand extends Command
             $this->provider, $tag
         );
     }
+
     /**
      * Publish the given item from and to the given location.
      *
-     * @param  string  $from
-     * @param  string  $to
-     * @return void
+     * @param  string $from
+     * @param  string $to
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishItem($from, $to)
     {
@@ -170,27 +173,28 @@ class VendorPublishCommand extends Command
         }
         $this->error("Can't locate path: <{$from}>");
     }
+
     /**
      * Publish the file to the given path.
      *
-     * @param  string  $from
-     * @param  string  $to
-     * @return void
+     * @param  string $from
+     * @param  string $to
      */
     protected function publishFile($from, $to)
     {
-        if (! $this->files->exists($to) || $this->option('force')) {
+        if (!$this->files->exists($to) || $this->option('force')) {
             $this->createParentDirectory(dirname($to));
             $this->files->copy($from, $to);
             $this->status($from, $to, 'File');
         }
     }
+
     /**
      * Publish the directory to the given directory.
      *
-     * @param  string  $from
-     * @param  string  $to
-     * @return void
+     * @param  string $from
+     * @param  string $to
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishDirectory($from, $to)
     {
@@ -200,44 +204,45 @@ class VendorPublishCommand extends Command
         ]));
         $this->status($from, $to, 'Directory');
     }
+
     /**
      * Move all the files in the given MountManager.
      *
-     * @param  \League\Flysystem\MountManager  $manager
-     * @return void
+     * @param  \League\Flysystem\MountManager $manager
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']) || $this->option('force'))) {
-                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
+            if ($file['type'] === 'file' && (!$manager->has('to://' . $file['path']) || $this->option('force'))) {
+                $manager->put('to://' . $file['path'], $manager->read('from://' . $file['path']));
             }
         }
     }
+
     /**
      * Create the directory to house the published files if needed.
      *
-     * @param  string  $directory
-     * @return void
+     * @param  string $directory
      */
     protected function createParentDirectory($directory)
     {
-        if (! $this->files->isDirectory($directory)) {
+        if (!$this->files->isDirectory($directory)) {
             $this->files->makeDirectory($directory, 0755, true);
         }
     }
+
     /**
      * Write a status message to the console.
      *
-     * @param  string  $from
-     * @param  string  $to
-     * @param  string  $type
-     * @return void
+     * @param  string $from
+     * @param  string $to
+     * @param  string $type
      */
     protected function status($from, $to, $type)
     {
         $from = str_replace(base_path(), '', realpath($from));
         $to = str_replace(base_path(), '', realpath($to));
-        $this->line('<info>Copied '.$type.'</info> <comment>['.$from.']</comment> <info>To</info> <comment>['.$to.']</comment>');
+        $this->line('<info>Copied ' . $type . '</info> <comment>[' . $from . ']</comment> <info>To</info> <comment>[' . $to . ']</comment>');
     }
 }
