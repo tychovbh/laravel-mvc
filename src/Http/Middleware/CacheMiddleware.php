@@ -17,7 +17,7 @@ class CacheMiddleware
     public function handle($request, Closure $next)
     {
 
-        if (!config('app.cache') || boolean($request->get('cache_disabled'))) {
+        if (!config('mvc-cache.enabled') || boolean($request->get('cache_disabled'))) {
             return $next($request);
         }
 

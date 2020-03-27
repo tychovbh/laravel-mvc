@@ -37,6 +37,7 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->configure('mvc-collections');
             $this->app->configure('mvc-auth');
             $this->app->configure('mvc-mail');
+            $this->app->configure('mvc-cache');
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
@@ -59,6 +60,7 @@ class MvcServiceProvider extends ServiceProvider
         $this->config('mvc-collections');
         $this->config('mvc-auth');
         $this->config('mvc-mail');
+        $this->config('mvc-cache');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
