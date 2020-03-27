@@ -435,3 +435,15 @@ if (!function_exists('can')) {
         return user()->id && user()->can($ability, $model);
     }
 }
+
+if (!function_exists('boolean')) {
+    /**
+     * Get boolean value
+     * @param mixed $value
+     * @return bool
+     */
+    function boolean($value): bool
+    {
+        return (bool)filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+}
