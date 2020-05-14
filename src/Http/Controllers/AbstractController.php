@@ -43,6 +43,7 @@ abstract class AbstractController implements ControllerInterface
     public function __construct()
     {
         $request = app('request');
+        $this->setDatabase($request);
 
         App::singleton(
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -91,6 +92,18 @@ abstract class AbstractController implements ControllerInterface
     {
         $resource = get_route_info($request, 'resource');
         return $resource ?? $this->resource ?? resource(get_called_class());
+    }
+
+    /**
+     * Set default database.
+     * @param $request
+     */
+    private function setDatabase($request)
+    {
+        $database = get_route_info($request, 'database');
+        if ($database) {
+            config(['database.default' => $database]);
+        }
     }
 
     /**
