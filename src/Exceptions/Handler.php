@@ -75,6 +75,9 @@ class Handler extends AbstractHandler
             $message = message('server.error');
         }
 
-        return response()->json(['message' => $message], $status);
+        return response()->json([
+            'message' => $message,
+            'error' => $exception->getMessage()
+        ], $status);
     }
 }
