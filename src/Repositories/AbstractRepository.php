@@ -270,14 +270,15 @@ abstract class AbstractRepository
      * @param string $field
      * @param string $search
      * @param array $data
+     * @return mixed
      */
     public function saveOrUpdate(string $field, string $search, array $data = [])
     {
         try {
             $property = $this->findBy($field, $search);
-            $this->update($data, $property->id);
+            return $this->update($data, $property->id);
         } catch (ModelNotFoundException $exception) {
-            $this->save($data);
+            return $this->save($data);
         }
     }
 
