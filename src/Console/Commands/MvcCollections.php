@@ -43,7 +43,11 @@ class MvcCollections extends Command
     {
         $collections = config('mvc-collections');
         foreach ($collections as $collection) {
-            $this->saveCollection($collection);
+            try {
+                $this->saveCollection($collection);
+            } catch (\Exception $exception) {
+                $this->error($exception->getMessage());
+            }
         }
 
         $this->info('MVC Collections updated!');
@@ -52,15 +56,11 @@ class MvcCollections extends Command
     /**
      * Save collection
      * @param array $collection
+     * @throws \Exception
      */
     public function saveCollection(array $collection)
     {
-        try {
-            $repository = $this->repository($collection);
-        } catch (\Exception $exception) {
-            $this->error($exception->getMessage());
-            return;
-        }
+        $repository = $this->repository($collection);
 
         if (Arr::has($collection, 'relations')) {
             foreach ($collection['relations'] as $relation) {
