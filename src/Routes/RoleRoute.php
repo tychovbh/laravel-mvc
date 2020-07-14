@@ -13,5 +13,6 @@ class RoleRoute extends AbstractRoutes implements Routes
     {
         $instance = self::instance();
         $instance->index('roles', $options);
+        $instance->update('roles', $options, ['validate']);
     }
 }
