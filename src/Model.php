@@ -251,7 +251,7 @@ class Model extends BaseModel
      */
     public function associations(array $associations)
     {
-        $this->associations = array_merge($this->associations, $associations);
+        $this->associations = array_merge($associations, $this->associations);
     }
 
     /**

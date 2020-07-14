@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
 {
@@ -27,10 +26,10 @@ class Role extends Model
 
     /**
      * The users
-     * @return HasMany
+     * @return belongsToMany
      */
-    public function users(): HasMany
+    public function users(): belongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
     }
 }
