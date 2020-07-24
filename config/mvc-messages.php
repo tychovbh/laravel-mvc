@@ -22,6 +22,12 @@ return [
         'error' => sprintf('Server error! Please contact %s.', config('app.support.email')),
     ],
     'auth' => [
+        'token' => [
+            'missing' => 'Token is missing in authorization header.',
+            'expired' => 'Token is expired.',
+            'invalid' => 'Token is invalid.'
+        ],
+        'notfound' => ' User not found.',
         'unauthorized' => 'Unauthorized!',
     ],
     'login' => [

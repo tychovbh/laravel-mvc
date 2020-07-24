@@ -17,7 +17,8 @@ class Field extends Model
         $this->fillables('properties', 'form_id', 'element');
         $this->casts(['properties' => 'array']);
         $this->associations([
-            'element' => [
+            [
+                'relation' => 'element',
                 'model' => Element::class,
                 'table_field' => 'name',
                 'post_field' => 'element',

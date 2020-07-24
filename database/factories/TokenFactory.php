@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Tychovbh\Mvc\TokenType;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,8 @@ $factory->define(Tychovbh\Mvc\Token::class, function (Faker $faker) {
         'reference' => uniqid(),
         'value' => token([
             'email' => $faker->email,
+            'type' => TokenType::INVITE_USER
         ]),
-        'type' => \Tychovbh\Mvc\TokenType::INVITE_USER
+        'type' => TokenType::INVITE_USER
     ];
 });

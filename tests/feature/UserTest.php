@@ -153,6 +153,7 @@ class UserTest extends TestCase
             'value' => token([
                 'id' => $user->id,
                 'email' => $user->email,
+                'type' => TokenType::VERIFY_EMAIL
             ]),
         ]);
 
@@ -198,9 +199,11 @@ class UserTest extends TestCase
 
         $invite = factory(Token::class)->create([
             'reference' => uniqid(),
+            'type' => TokenType::INVITE_USER,
             'value' => token([
                 'email' => $email,
-                'role_id' => $user['data']['role_id']
+                'role_id' => $user['data']['role_id'],
+                'type' => TokenType::INVITE_USER
             ])
         ]);
 

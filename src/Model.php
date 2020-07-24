@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -76,7 +77,7 @@ class Model extends BaseModel
     protected function saveAssociations(array $options = [])
     {
         $associations = [];
-        foreach ($this->getAssociations() as $relation => $association) {
+        foreach ($this->getAssociations() as $association) {
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $values = $this->attributes[$association['post_field']];
@@ -84,7 +85,7 @@ class Model extends BaseModel
                 $associations[] = [
                     'type' => $type,
                     'association' => $association,
-                    'relation' => $relation,
+                    'relation' => $association['relation'],
                     'values' => $values,
                     'options' => $options
                 ];
@@ -94,7 +95,12 @@ class Model extends BaseModel
 
         foreach ($associations as $association) {
             if ($association['values']) {
-                $this->{$association['type']}($association['association'], $association['relation'], $association['values'], $association['options']);
+                $this->{$association['type']}(
+                    $association['association'],
+                    $association['relation'],
+                    $association['values'],
+                    $association['options']
+                );
             }
         }
     }
@@ -141,7 +147,7 @@ class Model extends BaseModel
             try {
                 $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
                 $this->{$relation}()->save($model, $pivot);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 continue;
             }
         }

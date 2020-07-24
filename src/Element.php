@@ -15,7 +15,8 @@ class Element extends Model
     {
         $this->fillables('label', 'name', 'description', 'properties');
         $this->associations([
-            'properties' => [
+            [
+                'relation' => 'properties',
                 'model' => Property::class,
                 'post_field' => 'properties',
                 'table_field' => 'name',

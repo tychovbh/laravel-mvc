@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc;
 
+use Exception;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Form extends Model
@@ -15,7 +16,8 @@ class Form extends Model
     {
         $this->fillables('label', 'name', 'description', 'table', 'fields');
         $this->associations([
-            'fields' => [
+            [
+                'relation' => 'fields',
                 'model' => Field::class,
                 'post_field' => 'fields',
                 'type' => HasMany::class
@@ -41,7 +43,7 @@ class Form extends Model
     {
         try {
             return route($this->name . '.store');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return '';
         }
     }

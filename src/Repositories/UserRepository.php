@@ -38,9 +38,7 @@ class UserRepository extends AbstractRepository implements Repository
             return $data;
         }
 
-        try {
-            token_validate($data['token']->value);
-        } catch (Exception $exception) {
+        if (!token_validate($data['token']->value)) {
             abort(400, message('auth.token.expired'));
         }
 

@@ -14,7 +14,8 @@ class Role extends Model
     {
         $this->fillables('name', 'label', 'users');
         $this->associations([
-            'users' => [
+            [
+                'relation' => 'users',
                 'model' => User::class,
                 'post_field' => 'users',
                 'table_field' => 'id',

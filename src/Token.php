@@ -17,7 +17,8 @@ class Token extends Model
     {
         $this->fillables('value', 'reference', 'type');
         $this->associations([
-            'type' => [
+            [
+                'relation' => 'type',
                 'model' => TokenType::class,
                 'post_field' => 'type',
                 'table_field' => 'name',

@@ -17,15 +17,23 @@ class User extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('name', 'email', 'password', 'token', 'avatar', 'is_admin', 'role_id');
+        $this->fillables('name', 'email', 'password', 'token', 'avatar', 'is_admin', 'role_id', 'role');
         $this->hiddens('password');
         $this->associations([
-            'roles' => [
+            [
+                'relation' => 'roles',
                 'model' => Role::class,
                 'post_field' => 'role_id',
                 'table_field' => 'id',
                 'type' => BelongsToMany::class,
-            ]
+            ],
+            [
+                'relation' => 'roles',
+                'model' => Role::class,
+                'post_field' => 'role',
+                'table_field' => 'name',
+                'type' => BelongsToMany::class,
+            ],
         ]);
         parent::__construct($attributes);
     }

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserPasswordReset;
-use Tychovbh\Mvc\PasswordReset;
 use Tychovbh\Mvc\Token;
 use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\User;
@@ -45,6 +44,7 @@ class PasswordResetTest extends TestCase
             'value' => token([
                 'id' => $user->id,
                 'email' => $user->email,
+                'type' => TokenType::PASSWORD_RESET
             ]),
         ]);
         $oldUser = DB::table('users')->where('id', $user->id)->first();

@@ -2,11 +2,14 @@
 
 namespace Tychovbh\Mvc\Providers;
 
+use Illuminate\Support\Arr;
+use ReallySimpleJWT\Exception\ValidateException;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\User;
 
 class AuthServiceProvider extends ServiceProvider
@@ -18,8 +21,6 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -32,7 +33,6 @@ class AuthServiceProvider extends ServiceProvider
      * Boot the authentication services for the application.
      *
      * @param UserRepository $users
-     * @return void
      */
     public function boot(UserRepository $users)
     {
@@ -47,6 +47,19 @@ class AuthServiceProvider extends ServiceProvider
                 return new User;
             }
 
+            // TODO test this
+            $route = get_route_info($request, 'as');
+            $login_field = config('mvc-auth.login_field', 'email');
+
+            if ($request->has('login_field')) {
+                $login_field = $request->input('login_field');
+            }
+
+            if ($request->has([$login_field, 'password']) && $route === 'auth.login') {
+                return $users->login($request->toArray());
+            }
+            // TODO until here
+
             if (!$request->header('Authorization')) {
                 abort(400, message('auth.token.missing'));
             }
@@ -54,25 +67,23 @@ class AuthServiceProvider extends ServiceProvider
             $token = str_replace('Bearer ', '', $request->header('Authorization'));
 
             try {
-                token_validate($token);
-            } catch (\Exception $exception) {
+                $value = token_value($token);
+                $value = is_array($value) ? $value : ['id' => $value];
+            } catch (ValidateException $exception) {
+                abort(400, message('auth.token.invalid'));
+            }
+
+            if (Arr::get($value, 'type', '') !== TokenType::API_KEY && !token_validate($token)) {
                 abort(400, message('auth.token.expired'));
             }
 
             try {
-                $route = get_route_info($request, 'as');
-                $login_field = config('mvc-auth.login_field', 'email');
-                if ($request->has('login_field')) {
-                    $login_field = $request->input('login_field');
-                }
-                if ($request->has([$login_field, 'password']) && $route === 'auth.login') {
-                    return $users->login($request->toArray());
-                }
-
-                return $users->find(token_value($token));
+                return $users->find($value['id']);
             } catch (ModelNotFoundException $exception) {
                 abort(404, message('auth.notfound'));
             }
+
+            return new User;
         });
     }
 }
