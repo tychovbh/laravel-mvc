@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Tychovbh\Mvc\Http\Middleware;
 
 use Closure;
 
