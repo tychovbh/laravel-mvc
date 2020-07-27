@@ -43,7 +43,7 @@ class MvcUserToken extends Command
         $email = $this->option('email') ?? $this->ask('For which email do you want to generate a token?');
         try {
             $user = $repository->findBy('email', $email);
-            $expiration = $this->option('time') ?? $this->ask('When should the token expire? YYYY-MM-DD HH:MM:SS');
+            $expiration = $this->option('expiration') ?? $this->ask('When should the token expire? YYYY-MM-DD HH:MM:SS');
             $expiration = Carbon::createFromFormat('Y-m-d H:i:s', $expiration)->timestamp;
 
             $this->info('Token: ' . token([
