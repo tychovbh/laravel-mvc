@@ -9,6 +9,8 @@ use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
+use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
+use Tychovbh\Mvc\Console\Commands\MvcUserToken;
 use Tychovbh\Mvc\Console\Commands\VendorPublishCommand;
 use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
@@ -38,6 +40,7 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->configure('mvc-auth');
             $this->app->configure('mvc-mail');
             $this->app->configure('mvc-cache');
+            $this->app->configure('mvc-security');
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
@@ -52,7 +55,9 @@ class MvcServiceProvider extends ServiceProvider
             MvcController::class,
             MvcRequest::class,
             MvcUpdate::class,
-            MvcCollections::class
+            MvcCollections::class,
+            MvcUserCreate::class,
+            MvcUserToken::class
         ]);
 
         $this->config('mvc-messages');
@@ -61,6 +66,7 @@ class MvcServiceProvider extends ServiceProvider
         $this->config('mvc-auth');
         $this->config('mvc-mail');
         $this->config('mvc-cache');
+        $this->config('mvc-security');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
