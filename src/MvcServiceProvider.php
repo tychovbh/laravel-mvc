@@ -11,7 +11,7 @@ use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
 use Tychovbh\Mvc\Console\Commands\MvcUserToken;
-use Tychovbh\Mvc\Console\Commands\VendorPublishCommand;
+use Tychovbh\Mvc\Console\Commands\VendorPublish;
 use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
@@ -76,7 +76,7 @@ class MvcServiceProvider extends ServiceProvider
 
         if (is_application() === 'lumen') {
             $this->commands([
-                VendorPublishCommand::class
+                VendorPublish::class
             ]);
         }
     }
