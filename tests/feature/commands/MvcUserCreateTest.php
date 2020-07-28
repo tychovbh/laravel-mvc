@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Tychovbh\Mvc\Role;
 use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
-class MvcUpdateTest extends TestCase
+class MvcUserCreateTestTest extends TestCase
 {
     /**
      * @test

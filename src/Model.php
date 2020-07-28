@@ -81,8 +81,7 @@ class Model extends BaseModel
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $values = $this->attributes[$association['post_field']];
-                Arr::forget($this->attributes, $association['post_field']);
-                $associations[] = [
+                $associations[$association['relation'] . '.' .  $association['post_field']] = [
                     'type' => $type,
                     'association' => $association,
                     'relation' => $association['relation'],
@@ -93,7 +92,9 @@ class Model extends BaseModel
             }
         }
 
+
         foreach ($associations as $association) {
+            Arr::forget($this->attributes, $association['association']['post_field']);
             if ($association['values']) {
                 $this->{$association['type']}(
                     $association['association'],
