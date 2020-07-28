@@ -17,7 +17,7 @@ class MvcUserCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'mvc-user:create {--name=} {--email=} {--role=} {--admin=}';
+    protected $signature = 'mvc-user:create {--name=} {--email=} {--role=} {--admin=} {--password=}';
 
     /**
      * The console command description.
@@ -49,10 +49,10 @@ class MvcUserCreate extends Command
         try {
             $data = array_merge([
                 'name' => $this->option('name') ?? $this->ask('What is your name?'),
-                'email' => $this->option('name') ?? $this->ask('We also need an email?'),
+                'email' => $this->option('email') ?? $this->ask('We also need an email?'),
                 'is_admin' => $this->option('admin') ?? $this->choice('Is the user an admin?', ['No', 'Yes']) === 'Yes',
-                'password' => $this->secret('Finally give up a secure password?'),
-                'role' => $this->role()
+                'password' => $this->option('password') ?? $this->secret('Finally give up a secure password?'),
+                'role_id' => $this->role()
             ], $data);
 
             $user = $this->users->save($data);
