@@ -5,6 +5,7 @@ namespace Tychovbh\Mvc\Console\Commands;
 use Tychovbh\Mvc\Repositories\RoleRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Console\Command;
+use Tychovbh\Mvc\TokenType;
 
 /**
  * @property UserRepository users
@@ -17,7 +18,7 @@ class MvcUserCreate extends Command
      *
      * @var string
      */
-    protected $signature = 'mvc-user:create {--name=} {--email=} {--role=} {--admin=} {--password=}';
+    protected $signature = 'mvc-user:create {--name=} {--email=} {--role=} {--admin=} {--password=} {--type=}';
 
     /**
      * The console command description.
@@ -63,7 +64,13 @@ class MvcUserCreate extends Command
                 $this->info(ucfirst($key) . ': ' . $value);
             }
 
-            $this->info('Token: ' . token($user->id));
+            $this->info('Token: ' . token([
+                    'id' => $user->id,
+                    'type' => $this->option('type') ?? $this->choice('What token type?', [
+                            TokenType::USER_TOKEN,
+                            TokenType::API_KEY
+                        ])
+                ]));
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
@@ -76,7 +83,7 @@ class MvcUserCreate extends Command
     private function role(): int
     {
         $roles = $this->roles->all();
-        $role = $this->option('role') ?? $this->choice('What Role has the User?', $roles->map(function($role) {
+        $role = $this->option('role') ?? $this->choice('What Role has the User?', $roles->map(function ($role) {
                 return $role['label'];
             })->toArray());
         return $roles->where('label', $role)->first()->id;

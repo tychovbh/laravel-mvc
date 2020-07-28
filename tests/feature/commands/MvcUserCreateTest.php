@@ -6,6 +6,7 @@ namespace Tychovbh\Tests\Mvc\Feature\Commands;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Tychovbh\Mvc\Role;
+use Tychovbh\Mvc\TokenType;
 use Tychovbh\Mvc\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
@@ -23,7 +24,8 @@ class MvcUpdateTest extends TestCase
             '--password' => $user->password,
             '--name' => $user->name,
             '--role' => $role->label,
-            '--admin' => $user->is_admin
+            '--admin' => $user->is_admin,
+            '--type' => TokenType::API_KEY
         ]);
 
         $this->assertDatabaseHas('users', [
