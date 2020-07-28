@@ -31,6 +31,6 @@ class WhitelistMiddleware
             ]);
         }
 
-        return abort(401, message('auth.unauthorized'));
+        return abort(401, message('security.unauthorized'));
     }
 }
