@@ -5,7 +5,6 @@ namespace Tychovbh\Mvc\Console\Commands;
 use Tychovbh\Mvc\Repositories\RoleRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Console\Command;
-use Tychovbh\Mvc\TokenType;
 
 /**
  * @property UserRepository users
@@ -63,14 +62,6 @@ class MvcUserCreate extends Command
             foreach ($user->toArray() as $key => $value) {
                 $this->info(ucfirst($key) . ': ' . $value);
             }
-
-            $this->info('Token: ' . token([
-                    'id' => $user->id,
-                    'type' => $this->option('type') ?? $this->choice('What token type?', [
-                            TokenType::USER_TOKEN,
-                            TokenType::API_KEY
-                        ])
-                ]));
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }

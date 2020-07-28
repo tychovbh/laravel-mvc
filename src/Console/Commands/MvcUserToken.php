@@ -48,6 +48,7 @@ class MvcUserToken extends Command
                     TokenType::USER_TOKEN
                 ]);
             $expiration = null;
+
             if ($this !== TokenType::API_KEY) {
                 $expiration = $this->option('expiration') ?? $this->ask('When should the token expire? YYYY-MM-DD HH:MM:SS');
                 $expiration = Carbon::createFromFormat('Y-m-d H:i:s', $expiration)->timestamp;
@@ -58,7 +59,6 @@ class MvcUserToken extends Command
                     'type' => $type
                 ], $expiration)
             );
-            
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
