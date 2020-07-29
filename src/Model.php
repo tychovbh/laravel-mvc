@@ -81,20 +81,24 @@ class Model extends BaseModel
             if (Arr::has($this->attributes, $association['post_field'])) {
                 $type = 'save' . str_replace('Illuminate\\Database\\Eloquent\\Relations\\', '', $association['type']);
                 $values = $this->attributes[$association['post_field']];
+
+                if (Arr::has($association, 'pivots')) {
+                    $association['pivots'] = $this->pivots($association['pivots']);
+                }
+
                 $associations[$association['relation'] . '.' .  $association['post_field']] = [
                     'type' => $type,
                     'association' => $association,
                     'relation' => $association['relation'],
                     'values' => $values,
-                    'options' => $options
+                    'options' => $options,
                 ];
 
+                Arr::forget($this->attributes, $association['post_field']);
             }
         }
 
-
         foreach ($associations as $association) {
-            Arr::forget($this->attributes, $association['association']['post_field']);
             if ($association['values']) {
                 $this->{$association['type']}(
                     $association['association'],
@@ -133,11 +137,6 @@ class Model extends BaseModel
      */
     protected function saveBelongsToMany(array $association, string $relation, $values, array $options = [])
     {
-        $pivot = [];
-        if (Arr::has($association, 'pivots')) {
-            $pivot = $this->pivots($association['pivots']);
-        }
-
         parent::save($options);
 
         if (!is_array($values)) {
@@ -147,7 +146,7 @@ class Model extends BaseModel
         foreach ($values as $value) {
             try {
                 $model = $association['model']::where($association['table_field'], $value)->firstOrFail();
-                $this->{$relation}()->save($model, $pivot);
+                $this->{$relation}()->save($model, Arr::get($association, 'pivots', []));
             } catch (Exception $exception) {
                 continue;
             }
@@ -159,15 +158,17 @@ class Model extends BaseModel
      * @param array $pivots
      * @return array
      */
-    private function pivots(array $pivots = [])
+    private function pivots(array $pivots = []): array
     {
-        $pivot = [];
+        $values = [];
         foreach ($pivots as $name) {
-            $pivot[$name] = Arr::get($this->attributes, $name);
-            Arr::forget($this->attributes, $name);
+            if (Arr::has($this->attributes, $name)) {
+                $values[$name] = $this->getAttribute($name);
+                Arr::forget($this->attributes, $name);
+            }
         }
 
-        return $pivot;
+        return $values;
     }
 
     /**
@@ -258,7 +259,7 @@ class Model extends BaseModel
      */
     public function associations(array $associations)
     {
-        $this->associations = array_merge($associations, $this->associations);
+        $this->associations = array_merge($this->associations, $associations);
     }
 
     /**

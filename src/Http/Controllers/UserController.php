@@ -79,15 +79,12 @@ class UserController extends AbstractController
         try {
             $passwordReset = $this->tokens->findBy('reference', $token);
             $data = token_value($passwordReset->value);
-            $user = parent::update($request, $data['id']);
-            $this->tokens->destroy([$passwordReset->id]);
-
-            return $user;
+            return parent::update($request, $data['id']);
         } catch (\Exception $exception) {
             //
         }
 
-        return abort(404, message('model.notfound', 'Password Reset', 'Reference', $token));
+        abort(404, message('model.notfound', 'Password Reset', 'Reference', $token));
     }
 
     /**
@@ -100,7 +97,6 @@ class UserController extends AbstractController
         try {
             $user = $this->repository->findBy('email', $request->input('email'));
             $this->createVerifyTokenAndSendEmail($user);
-
             return new $this->resource($user);
         } catch (\Exception $exception) {
             //
@@ -121,9 +117,7 @@ class UserController extends AbstractController
         try {
             $invite = $this->tokens->findBy('reference', $token);
             $request->merge(['token' => $invite]);
-            $user = parent::store($request);
-            $this->tokens->destroy([$invite->id]);
-            return $user;
+            return parent::store($request);
         } catch (\Exception $exception) {
             //
         }
