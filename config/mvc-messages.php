@@ -30,7 +30,7 @@ return [
             'expired' => 'Token is expired.',
             'invalid' => 'Token is invalid.'
         ],
-        'notfound' => ' User not found.',
+        'notfound' => 'User not found.',
         'unauthorized' => 'Unauthorized!',
     ],
     'login' => [

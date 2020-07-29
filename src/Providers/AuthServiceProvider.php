@@ -47,8 +47,8 @@ class AuthServiceProvider extends ServiceProvider
                 return new User;
             }
 
-            // TODO test this
             $route = get_route_info($request, 'as');
+            $token_types = get_route_info($request, 'token_types');
             $login_field = config('mvc-auth.login_field', 'email');
 
             if ($request->has('login_field')) {
@@ -73,7 +73,13 @@ class AuthServiceProvider extends ServiceProvider
                 abort(400, message('auth.token.invalid'));
             }
 
-            if (Arr::get($value, 'type', '') !== TokenType::API_KEY && !token_validate($token)) {
+            $token_type = Arr::get($value, 'type', '');
+
+            if ($token_types && !Arr::has($token_types, $token_type)) {
+                abort(400, message('auth.unauthorized'));
+            }
+
+            if ($token_types !== TokenType::API_KEY && !token_validate($token)) {
                 abort(400, message('auth.token.expired'));
             }
 

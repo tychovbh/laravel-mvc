@@ -279,10 +279,11 @@ if (!function_exists('get_route_info')) {
 
     /**
      * @param Request $request
-     * @param $key
+     * @param string $key
+     * @param mixed $default
      * @return mixed|string
      */
-    function get_route_info(Request $request, $key)
+    function get_route_info(Request $request, string $key, $default = null)
     {
         $route = (array)$request->route();
         foreach ($route as $items) {
@@ -290,7 +291,7 @@ if (!function_exists('get_route_info')) {
                 return $items[$key];
             }
         }
-        return null;
+        return $default;
     }
 }
 
