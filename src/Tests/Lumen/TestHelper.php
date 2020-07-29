@@ -55,11 +55,12 @@ trait TestHelper
      * Perform get request with token
      * @param string $route
      * @param array $params
+     * @param array $tokenParam
      * @return TestCase
      */
-    public function getWithToken(string $route, array $params = []): TestCase
+    public function getWithToken(string $route, array $params = [], array $tokenParam = []): TestCase
     {
-        return $this->get(route($route, $params), $this->token());
+        return $this->get(route($route, $params), $this->token($tokenParams));
     }
 
     /**
