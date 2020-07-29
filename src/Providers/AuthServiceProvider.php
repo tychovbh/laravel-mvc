@@ -75,7 +75,7 @@ class AuthServiceProvider extends ServiceProvider
             $token_type = Arr::get($value, 'type', '');
             $allowed_routes = Arr::get($value, 'routes', null);
 
-            if ($allowed_routes && !Arr::has($allowed_routes, $route)) {
+            if ($allowed_routes && !in_array($route, $allowed_routes)) {
                 abort(400, message('auth.unauthorized'));
             }
 

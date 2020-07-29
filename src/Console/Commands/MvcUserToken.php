@@ -66,12 +66,11 @@ class MvcUserToken extends Command
             $params = [
                 'id' => $user->id,
                 'type' => $type,
-                'routes' => $routes
             ];
 
             $routes = $this->choice('Allowed routes?', $routes, 0, null, true);
-            if (!Arr::has($routes, 'all')) {
-                $params['routes'] = $params;
+            if (!in_array('all', $routes)) {
+                $params['routes'] = $routes;
             }
 
             $this->info('Token: ' . token($params, $expiration));
