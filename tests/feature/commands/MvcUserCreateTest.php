@@ -13,7 +13,7 @@ class MvcUserCreateTestTest extends TestCase
     /**
      * @test
      */
-    public function itCanUpdateMvc()
+    public function itCanCreateUser()
     {
         $user = factory(User::class)->make();
         $role = factory(Role::class)->create();

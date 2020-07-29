@@ -264,12 +264,14 @@ trait TestHelper
      * Perform show but cannot find model.
      * @param int $id
      * @param array $params
+     * @param bool $token
+     * @param array $tokenParams
      */
-    public function cantShow(int $id = -1, array $params = [])
+    public function cantShow(int $id = -1, array $params = [], bool $token = false, array $tokenParams = [])
     {
         $this->getWithoutCache($this->indexName() . '.show', array_merge($params, [
             'id' => $id,
-        ]))
+        ]), $token, $tokenParams)
             ->seeStatusCode(404)
             ->seeJson([
                 'message' => message('model.notfound', ucfirst($this->showName()), 'ID', $id)

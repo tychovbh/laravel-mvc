@@ -2,10 +2,12 @@
 
 namespace Tychovbh\Mvc\Console\Commands;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Console\Command;
 use Tychovbh\Mvc\TokenType;
+use Illuminate\Support\Arr;
 
 class MvcUserToken extends Command
 {
@@ -54,11 +56,25 @@ class MvcUserToken extends Command
                 $expiration = Carbon::createFromFormat('Y-m-d H:i:s', $expiration)->timestamp;
             }
 
-            $this->info('Token: ' . token([
-                    'id' => $user->id,
-                    'type' => $type
-                ], $expiration)
-            );
+            $routes = ['all'];
+            foreach (Route::getRoutes() as $route) {
+                if (Arr::has($route, 'action.as')) {
+                    $routes[] = $route['action']['as'];
+                }
+            }
+
+            $params = [
+                'id' => $user->id,
+                'type' => $type,
+                'routes' => $routes
+            ];
+
+            $routes = $this->choice('Allowed routes?', $routes, 0, null, true);
+            if (!Arr::has($routes, 'all')) {
+                $params['routes'] = $params;
+            }
+
+            $this->info('Token: ' . token($params, $expiration));
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
         }
