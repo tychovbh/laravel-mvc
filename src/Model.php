@@ -154,6 +154,24 @@ class Model extends BaseModel
     }
 
     /**
+     * Save has one relation
+     * @param array $association
+     * @param string $relation
+     * @param $value
+     * @param array $options
+     */
+    protected function saveHasOne(array $association, string $relation, $value, array $options = [])
+    {
+        parent::save($options);
+
+        $search = is_array($value) ? Arr::get($value, $association['table_field']) : $value;
+        $model = $association['model']::where($association['table_field'], $search)->first();
+        $model = $model ? $model->fill($value) : new $association['model']($value);
+
+        $this->{$relation}()->save($model);
+    }
+
+    /**
      * Get relation pivots
      * @param array $pivots
      * @return array
