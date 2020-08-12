@@ -10,6 +10,7 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
+use Tychovbh\Mvc\Routes\PaymentRoute;
 use Tychovbh\Mvc\Routes\RoleRoute;
 use Tychovbh\Mvc\Routes\InviteRoute;
 use Tychovbh\Mvc\Routes\UserRoute;
@@ -130,6 +131,7 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         putenv('AUTH_EMAIL_VERIFY_ENABLED=true');
+        putenv('MOLLIE_KEY=');
         $this->setConfig('mvc-messages');
         $this->setConfig('mvc-collections');
         $this->setConfig('mvc-forms');
@@ -158,6 +160,7 @@ class TestCase extends BaseTestCase
         UserRoute::routes();
         RoleRoute::routes();
         PasswordResetRoute::routes();
+        PaymentRoute::routes();
     }
 
     /**

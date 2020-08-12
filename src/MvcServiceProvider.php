@@ -4,7 +4,10 @@ namespace Tychovbh\Mvc;
 
 use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Mollie\Laravel\Facades\Mollie;
+use Mollie\Laravel\MollieServiceProvider;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
+use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
@@ -16,6 +19,8 @@ use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
+use Tychovbh\Mvc\Observers\PaymentObserver;
+use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
 {
@@ -26,6 +31,9 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->observers();
+
+        $this->app->register(MollieServiceProvider::class);
         if (is_application() === 'lumen') {
             $this->app->routeMiddleware([
                 'validate' => ValidateMiddleware::class,
@@ -33,7 +41,9 @@ class MvcServiceProvider extends ServiceProvider
                 'authorize' => AuthorizeMiddleware::class,
                 'cache' => CacheMiddleware::class
             ]);
-            $this->app->register(\Urameshibr\Providers\FormRequestServiceProvider::class);
+            $this->app->register(FormRequestServiceProvider::class);
+
+            $this->app->withFacades(true, [Mollie::class => 'Mollie']);
             $this->app->configure('mvc-messages');
             $this->app->configure('mvc-forms');
             $this->app->configure('mvc-collections');
@@ -57,7 +67,8 @@ class MvcServiceProvider extends ServiceProvider
             MvcUpdate::class,
             MvcCollections::class,
             MvcUserCreate::class,
-            MvcUserToken::class
+            MvcUserToken::class,
+            MvcPaymentsCheck::class
         ]);
 
         $this->config('mvc-messages');
@@ -101,5 +112,13 @@ class MvcServiceProvider extends ServiceProvider
     {
         $source = __DIR__ . '/../config/'. $name .'.php';
         $this->publishes([$source => config_path($name . '.php')], 'laravel-mvc-config-' . $name);
+    }
+
+    /**
+     * Boot Observers.
+     */
+    private function observers()
+    {
+        Payment::observe(PaymentObserver::class);
     }
 }
