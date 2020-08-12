@@ -9,7 +9,7 @@ class PaymentObserver
     /**
      * @param Payment $payment
      */
-    public function creating(Payment $payment)
+    public function created(Payment $payment)
     {
         $payment->prepare();
     }

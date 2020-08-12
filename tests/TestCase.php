@@ -151,6 +151,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
 
+        $app['config']->set('mvc-payments.return', 'https://localhost:3000/payments/{id}');
 
         $app['router']->get('test_users', TestUserController::class . '@index')->name('test_users.index');
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');

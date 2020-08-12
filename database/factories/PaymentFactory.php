@@ -18,5 +18,8 @@ $factory->define(Tychovbh\Mvc\Payment::class, function (Faker $faker) {
         'user_id' => factory(\Tychovbh\Mvc\User::class)->create()->id,
         'amount' => $faker->randomFloat(2, 1, 1000),
         'description' => $faker->word,
+        'options' => [
+            'page' => 'http://localhost:3000/page'
+        ]
     ];
 });

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Tychovbh\Mvc\Payment;
 
 class CreatePaymentsTable extends Migration
 {
@@ -15,10 +16,11 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('external_id')->unique();
+            $table->string('external_id')->nullable()->unique();
             $table->float('amount');
             $table->string('description')->nullable();
-            $table->enum('status', \Tychovbh\Mvc\Payment::STATUSES)->default(\Tychovbh\Mvc\Payment::STATUS_OPEN);
+            $table->enum('status', Payment::STATUSES)->default(Payment::STATUS_OPEN);
+            $table->json('options')->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

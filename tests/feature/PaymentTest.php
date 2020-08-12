@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
+use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Http\Resources\PaymentResource;
 use Tychovbh\Mvc\Payment;
+use Tychovbh\Mvc\User;
 use Tychovbh\Tests\Mvc\TestCase;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,7 +39,7 @@ class PaymentTest extends TestCase
      */
     public function itCanStore()
     {
-        Mail::fake();
+//        Mail::fake();
 
         $payment = factory(Payment::class)->make();
 
@@ -63,6 +66,46 @@ class PaymentTest extends TestCase
      */
     public function itCanCheckStatus(array $payment)
     {
+        $this->markTestSkipped('TO MAKE THIS TEST WORK YOU WILL HAVE TO GO TO THE URL IN $payment["url"], and pay mollie');
+        Event::fake();
+
+        $this->insert($payment);
+
+        $this->artisan('payments:check');
+
+        Event::assertDispatched(PaymentUpdated::class, function (PaymentUpdated $event) use ($payment) {
+            return (int)$event->payment->id === $payment['id'];
+        });
+    }
+
+    /**
+     * @test
+     * @depends itCanStore
+     * @param array $payment
+     */
+    public function itCanSuccess(array $payment)
+    {
+        $this->markTestSkipped('TO MAKE THIS TEST WORK YOU WILL HAVE TO GO TO THE URL IN $payment["url"], and pay mollie');
+        Event::fake();
+
+        $this->insert($payment);
+
+        $response = $this->get(route('payments.success', [$payment['id']]));
+        $response->assertRedirect(
+            str_replace('{id}', $payment['id'] ?? 0, config('mvc-payments.return'))
+        );
+
+        Event::assertDispatched(PaymentUpdated::class, function (PaymentUpdated $event) use ($payment) {
+            return (int)$event->payment->id === $payment['id'];
+        });
+    }
+
+    /**
+     * Insert Payment
+     * @param array $payment
+     */
+    private function insert(array $payment)
+    {
         DB::table('payments')->insert([
             'id' => $payment['id'],
             'amount' => $payment['amount'],
@@ -71,8 +114,6 @@ class PaymentTest extends TestCase
             'external_id' => $payment['external_id'],
             'user_id' => $payment['user']['id']
         ]);
-
-        $this->artisan('payments:check');
     }
 }
 
