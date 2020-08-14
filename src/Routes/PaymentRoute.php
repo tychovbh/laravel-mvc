@@ -13,6 +13,7 @@ class PaymentRoute extends AbstractRoutes implements Routes
     {
         $instance = self::instance();
         $instance->store('payments', $options);
+        $instance->show('payments', $options);
         $instance->route(
             'get',
             'payments.success',

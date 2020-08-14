@@ -7,6 +7,7 @@ namespace Tychovbh\Tests\Mvc;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
@@ -152,6 +153,10 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
 
         $app['config']->set('mvc-payments.return', 'https://localhost:3000/payments/{id}');
+        $app['config']->set('mvc-payments.broadcasting', [
+            'enabled' => true,
+            'event' => PaymentUpdated::class,
+        ]);
 
         $app['router']->get('test_users', TestUserController::class . '@index')->name('test_users.index');
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');

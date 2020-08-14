@@ -54,7 +54,7 @@ class Payment extends Model
      */
     public function getUrlAttribute(): string
     {
-        return $this->external->getCheckoutUrl();
+        return $this->external->getCheckoutUrl() ?? '';
     }
 
     /**
@@ -65,10 +65,10 @@ class Payment extends Model
         $external = Mollie::api()->payments->create([
             'amount' => [
                 'currency' => 'EUR',
-                'value' => (string) $this->amount
+                'value' => (string)$this->amount
             ],
             'description' => $this->description,
-            'redirectUrl' => route('payments.success', [$this->id]),
+            'redirectUrl' => route('payments.success', ['id' => $this->id]),
 //            'webhookUrl' => route('webhooks.mollie'), // TODO add webhook
             'metadata' => [
                 'payment_id' => $this->id,
@@ -103,8 +103,12 @@ class Payment extends Model
             'status' => $external->status
         ], $this->id);
 
-        if ($update->updated_at && $update->updated_at->ne($this->updated_at)) {
-            event(new PaymentUpdated($update));
+        if (
+            config('mvc-payments.broadcasting.enabled') &&
+            $update->updated_at && $update->updated_at->ne($this->updated_at)
+        ) {
+            $event = config('mvc-payments.broadcasting.event');
+            event(new $event($update));
         }
 
         if ($external->isPaid()) {

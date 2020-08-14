@@ -75,6 +75,15 @@ class User extends Model
     }
 
     /**
+     * The payments.
+     * @return HasMany
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
      * Hash password.
      * @param string $password
      */
