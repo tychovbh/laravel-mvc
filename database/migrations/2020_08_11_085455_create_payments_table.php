@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->float('amount');
             $table->string('description')->nullable();
             $table->enum('status', Payment::STATUSES)->default(Payment::STATUS_OPEN);
+            $table->json('products')->nullable();
             $table->json('options')->nullable();
 
             $table->unsignedBigInteger('user_id');

@@ -12,6 +12,7 @@ use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
 use Tychovbh\Mvc\Routes\PaymentRoute;
+use Tychovbh\Mvc\Routes\ProductRoute;
 use Tychovbh\Mvc\Routes\RoleRoute;
 use Tychovbh\Mvc\Routes\InviteRoute;
 use Tychovbh\Mvc\Routes\UserRoute;
@@ -167,6 +168,7 @@ class TestCase extends BaseTestCase
         RoleRoute::routes();
         PasswordResetRoute::routes();
         PaymentRoute::routes();
+        ProductRoute::routes();
     }
 
     /**

@@ -2,12 +2,13 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Api\Resources\Payment as External;
-use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
+use Tychovbh\Mvc\Repositories\ProductRepository;
 
 class Payment extends Model
 {
@@ -28,16 +29,15 @@ class Payment extends Model
     ];
 
     /**
-     * @var array
+     * Payment constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['amount', 'description', 'status', 'options', 'user_id'];
-
-    /**
-     * @var array
-     */
-    protected $casts = [
-        'options' => 'array'
-    ];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('amount', 'description', 'status', 'options', 'products', 'user_id');
+        $this->casts(['products' => 'array']);
+        parent::__construct($attributes);
+    }
 
     /**
      * The User
@@ -75,9 +75,10 @@ class Payment extends Model
             ],
         ]);
 
-        $this->external_id = $external->id;
-        $this->status = Payment::STATUS_OPEN;
-        $this->save();
+        $this->update([
+            'status' => Payment::STATUS_OPEN,
+            'external_id' => $external->id
+        ]);
     }
 
     /**
@@ -103,9 +104,9 @@ class Payment extends Model
             'status' => $external->status
         ], $this->id);
 
-        if (
-            config('mvc-payments.broadcasting.enabled') &&
-            $update->updated_at && $update->updated_at->ne($this->updated_at)
+        if (config('mvc-payments.broadcasting.enabled') &&
+            $update->updated_at &&
+            $update->updated_at->ne($this->updated_at)
         ) {
             $event = config('mvc-payments.broadcasting.event');
             event(new $event($update));
@@ -140,13 +141,40 @@ class Payment extends Model
     }
 
     /**
-     * Get value from Options
-     * @param string $key
-     * @param null $default
-     * @return mixed
+     * The Products
+     * @return Collection
+     * @throws \Exception
      */
-    public function option(string $key, $default = null)
+    public function getProductsAttribute(): Collection
     {
-        return Arr::get($this->options, $key, $default);
+        $products = $this->products_raw;
+
+        if (!$products) {
+            return new Collection;
+        }
+
+        $ids = collect($products)->map(function (array $product) {
+            return $product['id'];
+        })->toArray();
+
+        $collection = ProductRepository::withParams(['id' => $ids])->get();
+
+        foreach ($collection as $product) {
+            $key = array_search($product->id, array_column($products, 'id'));
+            $options = $products[$key];
+            Arr::forget($options, 'id');
+            $product->options = array_merge($product->options ?? [], $options);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * The Raw Products
+     * @return array
+     */
+    public function getProductsRawAttribute(): array
+    {
+        return json_decode($this->attributes['products'], true) ?? [];
     }
 }

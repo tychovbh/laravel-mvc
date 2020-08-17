@@ -2,14 +2,14 @@
 
 namespace Tychovbh\Mvc\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class PaymentResource extends JsonResource
+class PaymentResource extends Resource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -27,7 +27,8 @@ class PaymentResource extends JsonResource
                 'id' => $this->user->id,
                 'email' => $this->user->email,
             ],
-            'options' => $this->options ?? []
+            'options' => $this->options ?? [],
+            'products' => ProductResource::collection($this->products)
         ];
     }
 }

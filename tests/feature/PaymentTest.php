@@ -8,32 +8,11 @@ use Illuminate\Support\Facades\Event;
 use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Http\Resources\PaymentResource;
 use Tychovbh\Mvc\Payment;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Product;
 use Tychovbh\Tests\Mvc\TestCase;
-use Illuminate\Support\Facades\Mail;
-
 
 class PaymentTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function itCanIndex()
-    {
-//        $users = factory(User::class, 3)->create();
-//        $this->index('users.index', UserResource::collection($users));
-    }
-
-    /**
-     * @test
-     */
-    public function itCanShow()
-    {
-//        $user = factory(User::class)->create();
-//        $this->show('users.show', UserResource::make($user));
-    }
-
-
     /**
      * @test
      */
@@ -42,8 +21,16 @@ class PaymentTest extends TestCase
 //        Mail::fake();
 
         $payment = factory(Payment::class)->make();
+        $products = factory(Product::class, 2)->create()->map(function (Product $product) {
+            return [
+                'id' => $product->id,
+                'test_extra_options' => uniqid()
+            ];
+        })->toArray();
 
         $data = $payment->toArray();
+        $data['products'] = $products;
+        $payment->products = $products;
         $payment->status = Payment::STATUS_OPEN;
         $response = $this->store('payments.store', PaymentResource::make($payment), $data);
 
