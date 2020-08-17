@@ -17,7 +17,7 @@ $factory->define(Tychovbh\Mvc\Product::class, function (Faker $faker) {
     return [
         'label' => $faker->name,
         'name' => uniqid(),
-        'price' => $faker->randomFloat(0, 1000),
+        'price' => $faker->randomFloat(2, 1, 1000),
         'tax_rate' => 21,
     ];
 });
