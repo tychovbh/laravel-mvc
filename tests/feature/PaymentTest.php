@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Tychovbh\Mvc\Events\PaymentUpdated;
@@ -44,6 +45,26 @@ class PaymentTest extends TestCase
 //        });
 
         return $payment;
+    }
+
+    /**
+     * @test
+     */
+    public function itCanIgnoreStoreAndReturnExisting()
+    {
+        $products = factory(Product::class, 2)->create()->map(function (Product $product) {
+            return ['id' => $product->id];
+        })->toArray();
+
+        $payment = factory(Payment::class)->create([
+            'user_id' => null,
+            'products' => $products
+        ]);
+
+        $data = $payment->toArray();
+        $data['products'] = $products;
+        Arr::forget($data, ['id', 'user_id', 'created_at', 'updated_at', 'external_id']);
+        $this->store('payments.store', PaymentResource::make($payment), $data, 200, [], $payment->user_id);
     }
 
     /**

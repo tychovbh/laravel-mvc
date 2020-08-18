@@ -23,10 +23,12 @@ class PaymentResource extends Resource
             'description' => $this->description,
             'amount' => $this->amount,
             'external_id' => $this->external_id,
-            'user' => [
-                'id' => $this->user->id,
-                'email' => $this->user->email,
-            ],
+            'user' => $this->when($this->user, function () {
+                return [
+                    'id' => $this->user->id,
+                    'email' => $this->user->email,
+                ];
+            }),
             'options' => $this->options ?? [],
             'products' => ProductResource::collection($this->products)
         ];

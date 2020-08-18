@@ -22,8 +22,8 @@ if (!function_exists('repository')) {
     {
         try {
             $class = new \ReflectionClass($repository);
-        } catch (\Exception $exception) {
-            throw new \Exception('Repository ' . $repository . ' not found!');
+        } catch (Exception $exception) {
+            throw new Exception('Repository ' . $repository . ' not found!');
         }
 
         $class = str_replace([
@@ -61,7 +61,7 @@ if (!function_exists('project_or_package_class')) {
             return $class;
         }
 
-        throw new \Exception($type . $class . ' not found!');
+        throw new Exception($type . $class . ' not found!');
     }
 }
 
@@ -77,8 +77,8 @@ if (!function_exists('model')) {
     {
         try {
             $class = new \ReflectionClass($model);
-        } catch (\Exception $exception) {
-            throw new \Exception('Model not found!');
+        } catch (Exception $exception) {
+            throw new Exception('Model not found!');
         }
 
         $class = str_replace([
@@ -107,8 +107,8 @@ if (!function_exists('controller')) {
     {
         try {
             $class = new \ReflectionClass($controller);
-        } catch (\Exception $exception) {
-            throw new \Exception('Controller not found!');
+        } catch (Exception $exception) {
+            throw new Exception('Controller not found!');
         }
         $class = str_replace([
             $class->getNamespaceName() . '\\',
@@ -137,8 +137,8 @@ if (!function_exists('resource')) {
     {
         try {
             $class = new \ReflectionClass($resource);
-        } catch (\Exception $exception) {
-            throw new \Exception('Resource not found!');
+        } catch (Exception $exception) {
+            throw new Exception('Resource not found!');
         }
 
         $class = str_replace([
@@ -395,7 +395,6 @@ if (!function_exists('user')) {
     /**
      * The authenticated user
      * @return User
-     * @throws Exception
      */
     function user(): User
     {
@@ -404,6 +403,8 @@ if (!function_exists('user')) {
             $class = project_or_package_class('User', User::class);
             return $class::findOrFail($user->id);
         } catch (ModelNotFoundException $exception) {
+            return new User;
+        } catch (Exception $exception) {
             return new User;
         }
     }

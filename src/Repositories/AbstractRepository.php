@@ -121,10 +121,18 @@ abstract class AbstractRepository
                 continue;
             }
 
-            if (has_column($this->model, $param)) {
-                $key = $this->name . '.' . $param;
-                is_array($value) ? $this->query->whereIn($key, $value) : $this->query->where($key, $value);
+            if (!has_column($this->model, $param)) {
+                continue;
             }
+
+            $key = $this->name . '.' . $param;
+
+            if ($value === null || $value === 'null') {
+                $this->query->whereNull($value);
+                continue;
+            }
+
+            is_array($value) ? $this->query->whereIn($key, $value) : $this->query->where($key, $value);
         }
 
         $this->params = [];

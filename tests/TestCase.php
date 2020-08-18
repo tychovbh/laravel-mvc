@@ -73,7 +73,7 @@ class TestCase extends BaseTestCase
                         'properties' => [
                             'name' => 'role_id',
                             'options' => [],
-                            'source' => function() {
+                            'source' => function () {
                                 return route('roles.index');
                             },
                             'label_key' => 'label',
@@ -243,17 +243,24 @@ class TestCase extends BaseTestCase
      * @param array $data
      * @param int $status
      * @param array $assert
+     * @param int|null $user_id
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function store($uri, JsonResource $resource, array $data = [], int $status = 201, array $assert = [])
-    {
-        $response = parent::post(route($uri), $data)
+    public function store(
+        $uri,
+        JsonResource $resource,
+        array $data = [],
+        int $status = 201,
+        array $assert = [],
+        int $user_id = null
+    ) {
+        return parent::post(route($uri), $data, $user_id ? [
+            'HTTP_Authorization' => 'Bearer ' . token($user_id)
+        ] : [])
             ->assertStatus($status)
             ->assertJson(
                 $assert ?? $resource->response($this->app['request'])->getData(true)
             );
-
-        return $response;
     }
 
     /**
