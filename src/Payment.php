@@ -34,7 +34,7 @@ class Payment extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('amount', 'description', 'status', 'options', 'products', 'user_id');
+        $this->fillables('amount', 'description', 'status', 'options', 'products', 'user_id', 'external_id');
         $this->casts(['products' => 'array']);
         parent::__construct($attributes);
     }
