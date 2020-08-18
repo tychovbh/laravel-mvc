@@ -7,17 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Api\Resources\Payment as External;
+use Mollie\Api\Types\PaymentStatus;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 use Tychovbh\Mvc\Repositories\ProductRepository;
 
 class Payment extends Model
 {
-    const STATUS_OPEN = 'open';
-    const STATUS_PENDING = 'pending';
-    const STATUS_PAID = 'paid';
-    const STATUS_FAILED = 'failed';
-    const STATUS_CANCELLED = 'cancelled';
-    const STATUS_EXPIRED = 'expired';
+    const STATUS_OPEN = PaymentStatus::STATUS_OPEN;
+    const STATUS_PENDING = PaymentStatus::STATUS_PENDING;
+    const STATUS_PAID = PaymentStatus::STATUS_PAID;
+    const STATUS_FAILED = PaymentStatus::STATUS_FAILED;
+    const STATUS_CANCELLED = PaymentStatus::STATUS_CANCELED;
+    const STATUS_EXPIRED = PaymentStatus::STATUS_EXPIRED;
 
     const STATUSES = [
         self::STATUS_OPEN,
