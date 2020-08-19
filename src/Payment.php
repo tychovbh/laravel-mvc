@@ -66,7 +66,7 @@ class Payment extends Model
         $external = Mollie::api()->payments->create([
             'amount' => [
                 'currency' => 'EUR',
-                'value' => (string)$this->amount
+                'value' => (string)number_format($this->amount, 2)
             ],
             'description' => $this->description,
             'redirectUrl' => route('payments.success', ['id' => $this->id]),
