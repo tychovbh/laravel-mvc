@@ -5,9 +5,11 @@ namespace Tychovbh\Mvc;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Api\Resources\Payment as External;
 use Mollie\Api\Types\PaymentStatus;
+use Tychovbh\Mvc\Mail\PaymentUpdated;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 use Tychovbh\Mvc\Repositories\ProductRepository;
 
@@ -105,28 +107,31 @@ class Payment extends Model
             'status' => $external->status
         ], $this->id);
 
-        if (config('mvc-payments.broadcasting.enabled') &&
-            $update->updated_at &&
-            $update->updated_at->ne($this->updated_at)
-        ) {
+        if (!$update->updated_at || !$update->updated_at->ne($this->updated_at)) {
+            return $update;
+        }
+
+        if (config('mvc-payments.broadcasting.enabled')) {
             $event = config('mvc-payments.broadcasting.event');
             event(new $event($update));
         }
 
-        if ($external->isPaid()) {
-            // TODO send notification
+        $config = config('mvc-mail.messages.payment');
+
+        if ($external->isPaid() && Arr::get($config, 'paid.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
         }
 
-        if ($external->isExpired()) {
-            // TODO send notification
+        if ($external->isExpired() && Arr::get($config, 'expired.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
         }
 
-        if ($external->isCanceled()) {
-            // TODO send notification
+        if ($external->isCanceled() && Arr::get($config, 'cancelled.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
         }
 
-        if ($external->isFailed()) {
-            // TODO send notification
+        if ($external->isFailed() && Arr::get($config, 'failed.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
         }
 
         return $update;

@@ -6,7 +6,9 @@ namespace Tychovbh\Tests\Mvc\Feature;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Events\PaymentUpdated;
+use Tychovbh\Mvc\Mail\PaymentUpdated as PaymentUpdatedMail;
 use Tychovbh\Mvc\Http\Resources\PaymentResource;
 use Tychovbh\Mvc\Payment;
 use Tychovbh\Mvc\Product;
@@ -19,8 +21,6 @@ class PaymentTest extends TestCase
      */
     public function itCanStore()
     {
-//        Mail::fake();
-
         $payment = factory(Payment::class)->make();
         $products = factory(Product::class, 2)->create()->map(function (Product $product) {
             return [
@@ -35,16 +35,7 @@ class PaymentTest extends TestCase
         $payment->status = Payment::STATUS_OPEN;
         $response = $this->store('payments.store', PaymentResource::make($payment), $data);
 
-        $payment = json_decode($response->getContent(), true)['data'];
-//        Mail::assertQueued(UserCreated::class, function (UserCreated $mail) use ($user) {
-//            return $mail->email = $user['data']['email'];
-//        });
-//
-//        Mail::assertQueued(UserVerify::class, function (UserVerify $mail) use ($user) {
-//            return $mail->mail['email'] = $user['data']['email'];
-//        });
-
-        return $payment;
+        return json_decode($response->getContent(), true)['data'];
     }
 
     /**
@@ -94,6 +85,7 @@ class PaymentTest extends TestCase
     public function itCanSuccess(array $payment)
     {
         $this->markTestSkipped('TO MAKE THIS TEST WORK YOU WILL HAVE TO GO TO THE URL IN $payment["url"], and pay mollie');
+        Mail::fake();
         Event::fake();
 
         $this->insert($payment);
@@ -105,6 +97,10 @@ class PaymentTest extends TestCase
 
         Event::assertDispatched(PaymentUpdated::class, function (PaymentUpdated $event) use ($payment) {
             return (int)$event->payment->id === $payment['id'];
+        });
+
+        Mail::assertQueued(PaymentUpdatedMail::class, function (PaymentUpdatedMail $mail) use ($payment) {
+            return $payment['id'] === $mail->payment->id;
         });
     }
 
@@ -120,7 +116,7 @@ class PaymentTest extends TestCase
             'status' => $payment['status'],
             'description' => $payment['description'],
             'external_id' => $payment['external_id'],
-            'user_id' => $payment['user']['id']
+//            'user_id' => $payment['user']['id']
         ]);
     }
 }

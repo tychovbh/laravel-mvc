@@ -133,7 +133,7 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         putenv('AUTH_EMAIL_VERIFY_ENABLED=true');
-        putenv('MOLLIE_KEY=');
+        putenv('MOLLIE_KEY=test_stnkpmwu8T5VhmyMxnnyMQRVtyrNCm');
         $this->setConfig('mvc-messages');
         $this->setConfig('mvc-collections');
         $this->setConfig('mvc-forms');
