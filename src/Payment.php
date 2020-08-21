@@ -111,12 +111,12 @@ class Payment extends Model
             return $update;
         }
 
-        if (config('mvc-payments.broadcasting.enabled')) {
+        if (config('mvc-payments.broadcasting.enabled', false)) {
             $event = config('mvc-payments.broadcasting.event');
             event(new $event($update));
         }
 
-        $config = config('mvc-mail.messages.payment');
+        $config = config('mvc-mail.messages.payment', []);
 
         if ($external->isPaid() && Arr::get($config, 'paid.enabled', false)) {
             Mail::send(new PaymentUpdated($update));
