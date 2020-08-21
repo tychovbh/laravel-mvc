@@ -13,7 +13,7 @@ class MvcPaymentsCheck extends Command
      *
      * @var string
      */
-    protected $signature = 'payments:check';
+    protected $signature = 'mvc-payments:check';
 
     /**
      * The console command description.
