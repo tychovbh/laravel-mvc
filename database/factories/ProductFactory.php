@@ -13,13 +13,11 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Tychovbh\Mvc\Payment::class, function (Faker $faker) {
+$factory->define(Tychovbh\Mvc\Product::class, function (Faker $faker) {
     return [
-        'user_id' => factory(\Tychovbh\Mvc\User::class)->create()->id,
-        'amount' => $faker->randomFloat(2, 1, 1000),
-        'description' => $faker->word,
-        'options' => [
-            'page' => 'http://localhost:3000/page'
-        ]
+        'label' => $faker->name,
+        'name' => uniqid(),
+        'price' => $faker->randomFloat(2, 1, 1000),
+        'tax_rate' => 21,
     ];
 });

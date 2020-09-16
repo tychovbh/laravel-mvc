@@ -13,7 +13,7 @@ class MvcPaymentsCheck extends Command
      *
      * @var string
      */
-    protected $signature = 'payments:check';
+    protected $signature = 'mvc-payments:check';
 
     /**
      * The console command description.
@@ -36,14 +36,17 @@ class MvcPaymentsCheck extends Command
      * Execute the console command.
      *
      * @param PaymentRepository $payments
-     * @return mixed
      * @throws \Exception
      */
     public function handle(PaymentRepository $payments)
     {
-        $open = $payments::withParams(['status' => Payment::STATUS_OPEN])->get();
+        $open = $payments::withParams([
+            'status' => [Payment::STATUS_OPEN, Payment::STATUS_PENDING],
+        ])->get();
 
         foreach ($open as $payment) {
+            /* @var Payment $payment */
+
             $payment->check();
         }
     }

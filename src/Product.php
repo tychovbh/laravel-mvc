@@ -2,15 +2,15 @@
 
 namespace Tychovbh\Mvc;
 
-class Property extends Model
+class Product extends Model
 {
     /**
-     * Property constructor.
+     * Product constructor.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('name', 'label', 'options');
+        $this->fillables('label', 'name', 'days', 'renew', 'price', 'tax_rate', 'tax_incl', 'options');
         parent::__construct($attributes);
     }
 }

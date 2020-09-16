@@ -7,10 +7,12 @@ namespace Tychovbh\Tests\Mvc;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
 use Tychovbh\Mvc\Routes\PaymentRoute;
+use Tychovbh\Mvc\Routes\ProductRoute;
 use Tychovbh\Mvc\Routes\RoleRoute;
 use Tychovbh\Mvc\Routes\InviteRoute;
 use Tychovbh\Mvc\Routes\UserRoute;
@@ -71,7 +73,7 @@ class TestCase extends BaseTestCase
                         'properties' => [
                             'name' => 'role_id',
                             'options' => [],
-                            'source' => function() {
+                            'source' => function () {
                                 return route('roles.index');
                             },
                             'label_key' => 'label',
@@ -131,7 +133,7 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         putenv('AUTH_EMAIL_VERIFY_ENABLED=true');
-        putenv('MOLLIE_KEY=');
+        putenv('MOLLIE_KEY=test_stnkpmwu8T5VhmyMxnnyMQRVtyrNCm');
         $this->setConfig('mvc-messages');
         $this->setConfig('mvc-collections');
         $this->setConfig('mvc-forms');
@@ -151,6 +153,11 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
 
+        $app['config']->set('mvc-payments.return', 'https://localhost:3000/payments/{id}');
+        $app['config']->set('mvc-payments.broadcasting', [
+            'enabled' => true,
+            'event' => PaymentUpdated::class,
+        ]);
 
         $app['router']->get('test_users', TestUserController::class . '@index')->name('test_users.index');
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
@@ -161,6 +168,7 @@ class TestCase extends BaseTestCase
         RoleRoute::routes();
         PasswordResetRoute::routes();
         PaymentRoute::routes();
+        ProductRoute::routes();
     }
 
     /**
@@ -235,17 +243,24 @@ class TestCase extends BaseTestCase
      * @param array $data
      * @param int $status
      * @param array $assert
+     * @param int|null $user_id
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function store($uri, JsonResource $resource, array $data = [], int $status = 201, array $assert = [])
-    {
-        $response = parent::post(route($uri), $data)
+    public function store(
+        $uri,
+        JsonResource $resource,
+        array $data = [],
+        int $status = 201,
+        array $assert = [],
+        int $user_id = null
+    ) {
+        return parent::post(route($uri), $data, $user_id ? [
+            'HTTP_Authorization' => 'Bearer ' . token($user_id)
+        ] : [])
             ->assertStatus($status)
             ->assertJson(
                 $assert ?? $resource->response($this->app['request'])->getData(true)
             );
-
-        return $response;
     }
 
     /**

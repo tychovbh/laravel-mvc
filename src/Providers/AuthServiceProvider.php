@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc\Providers;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Arr;
 use ReallySimpleJWT\Exception\ValidateException;
 use Tychovbh\Mvc\Repositories\UserRepository;
@@ -33,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
      * Boot the authentication services for the application.
      *
      * @param UserRepository $users
+     * @param Kernel $kernel
      */
     public function boot(UserRepository $users)
     {

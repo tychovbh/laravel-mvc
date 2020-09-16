@@ -2,23 +2,54 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Mollie\Laravel\Facades\Mollie;
+use Mollie\Api\Resources\Payment as External;
+use Mollie\Api\Types\PaymentStatus;
+use Tychovbh\Mvc\Mail\PaymentUpdated;
+use Tychovbh\Mvc\Repositories\PaymentRepository;
+use Tychovbh\Mvc\Repositories\ProductRepository;
 
 class Payment extends Model
 {
-    const STATUS_OPEN = 'open';
-    const STATUS_PAID = 'paid';
-    const STATUS_FAILED = 'failed';
-    const STATUS_CANCELLED = 'cancelled';
-    const STATUS_EXPIRED = 'expired';
+    const STATUS_OPEN = PaymentStatus::STATUS_OPEN;
+    const STATUS_PENDING = PaymentStatus::STATUS_PENDING;
+    const STATUS_PAID = PaymentStatus::STATUS_PAID;
+    const STATUS_FAILED = PaymentStatus::STATUS_FAILED;
+    const STATUS_CANCELLED = PaymentStatus::STATUS_CANCELED;
+    const STATUS_EXPIRED = PaymentStatus::STATUS_EXPIRED;
 
-    const STATUSES = [self::STATUS_OPEN, self::STATUS_PAID, self::STATUS_FAILED, self::STATUS_CANCELLED, self::STATUS_EXPIRED];
-
+    const STATUSES = [
+        self::STATUS_OPEN,
+        self::STATUS_PENDING,
+        self::STATUS_PAID,
+        self::STATUS_FAILED,
+        self::STATUS_CANCELLED,
+        self::STATUS_EXPIRED
+    ];
 
     /**
-     * @var array
+     * Payment constructor.
+     * @param array $attributes
      */
-    protected $fillable = ['amount', 'description', 'status', 'user_id'];
+    public function __construct(array $attributes = [])
+    {
+        $this->fillables('amount', 'description', 'status', 'options', 'products', 'external_id');
+        $this->casts(['products' => 'array']);
+        parent::__construct($attributes);
+    }
+
+    /**
+     * The User
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * The Payment Url
@@ -26,7 +57,7 @@ class Payment extends Model
      */
     public function getUrlAttribute(): string
     {
-        return $this->external->getCheckoutUrl();
+        return $this->external->getCheckoutUrl() ?? '';
     }
 
     /**
@@ -34,34 +65,122 @@ class Payment extends Model
      */
     public function prepare()
     {
-        $this->attributes['status'] = Payment::STATUS_OPEN;
-        $price = (string) $this->amount;
-
         $external = Mollie::api()->payments->create([
             'amount' => [
                 'currency' => 'EUR',
-                'value' => $price
+                'value' => (string)number_format($this->amount, 2)
             ],
             'description' => $this->description,
-            'redirectUrl' => 'http://local.eyecons.com/payment/success',
-//            'webhookUrl' => route('webhooks.mollie'),
-//            'metadata' => [
-//                'order_id' => '12345',
-//            ],
+            'redirectUrl' => route('payments.success', ['id' => $this->id]),
+//            'webhookUrl' => route('webhooks.mollie'), // TODO add webhook
+            'metadata' => [
+                'payment_id' => $this->id,
+            ],
         ]);
 
-        $this->attributes['external_id'] = $external->id;
+        $this->update([
+            'status' => Payment::STATUS_OPEN,
+            'external_id' => $external->id
+        ]);
     }
 
-    public function check()
+    /**
+     * Check Payment Status
+     * @return Payment
+     */
+    public function check(): Payment
     {
+        $payments = new PaymentRepository;
         $external = $this->external;
+        /* @var External $external */
 
-        return $external->status;
+        if (!in_array($external->status, self::STATUSES)) {
+            error('Unknown Payment Status', [
+                'id' => $this->id,
+                'status' => $external->status
+            ]);
+
+            return $this;
+        }
+
+        $update = $payments->update([
+            'status' => $external->status
+        ], $this->id);
+
+        if (!$update->updated_at || !$update->updated_at->ne($this->updated_at)) {
+            return $update;
+        }
+
+        if (config('mvc-payments.broadcasting.enabled', false)) {
+            $event = config('mvc-payments.broadcasting.event');
+            event(new $event($update));
+        }
+
+        $config = config('mvc-mail.messages.payment', []);
+
+        if ($external->isPaid() && Arr::get($config, 'paid.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
+        }
+
+        if ($external->isExpired() && Arr::get($config, 'expired.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
+        }
+
+        if ($external->isCanceled() && Arr::get($config, 'cancelled.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
+        }
+
+        if ($external->isFailed() && Arr::get($config, 'failed.enabled', false)) {
+            Mail::send(new PaymentUpdated($update));
+        }
+
+        return $update;
     }
 
-    public function getExternalAttribute()
+    /**
+     * The External Payment
+     * @return External
+     */
+    public function getExternalAttribute(): External
     {
         return Mollie::api()->payments->get($this->external_id);
+    }
+
+    /**
+     * The Products
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getProductsAttribute(): Collection
+    {
+        $products = $this->products_raw;
+
+        if (!$products) {
+            return new Collection;
+        }
+
+        $ids = collect($products)->map(function (array $product) {
+            return $product['id'];
+        })->toArray();
+
+        $collection = ProductRepository::withParams(['id' => $ids])->get();
+
+        foreach ($collection as $product) {
+            $key = array_search($product->id, array_column($products, 'id'));
+            $options = $products[$key];
+            Arr::forget($options, 'id');
+            $product->options = array_merge($product->options ?? [], $options);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * The Raw Products
+     * @return array
+     */
+    public function getProductsRawAttribute(): array
+    {
+        return json_decode($this->attributes['products'], true) ?? [];
     }
 }

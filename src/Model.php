@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Storage;
 class Model extends BaseModel
 {
     /**
+     * Model constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        foreach ($this->associations as $association) {
+            $this->fillables($association['post_field']);
+        }
+        $this->casts(['options' => 'array']);
+        parent::__construct($attributes);
+    }
+
+    /**
      * @var array
      */
     protected $files = [];
@@ -296,5 +309,17 @@ class Model extends BaseModel
     public function uniques(...$uniques)
     {
         $this->unique = array_merge($this->unique, $uniques);
+    }
+
+
+    /**
+     * Get value from Options
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    public function option(string $key, $default = null)
+    {
+        return Arr::get($this->options ?? [], $key, $default);
     }
 }

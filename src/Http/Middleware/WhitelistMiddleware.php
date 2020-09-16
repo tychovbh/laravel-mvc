@@ -19,9 +19,10 @@ class WhitelistMiddleware
             return $next($request);
         }
 
-        $whitelist = config('mvc-security.whitelist');
+        $whitelist = config('mvc-security.whitelist', []);
+        $disabled = get_route_info($request, 'disabled', []);
 
-        if (in_array($request->ip(), $whitelist)) {
+        if (in_array($request->ip(), $whitelist) || in_array('whitelist', $disabled)) {
             return $next($request);
         }
 

@@ -17,7 +17,7 @@ class User extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('name', 'email', 'password', 'token', 'avatar', 'is_admin', 'role_id', 'role');
+        $this->fillables('name', 'email', 'password', 'token', 'avatar', 'is_admin');
         $this->hiddens('password');
         $this->associations([
             [
@@ -72,6 +72,15 @@ class User extends Model
     public function user_roles(): HasMany
     {
         return $this->hasMany(UserRole::class);
+    }
+
+    /**
+     * The payments.
+     * @return HasMany
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     /**
