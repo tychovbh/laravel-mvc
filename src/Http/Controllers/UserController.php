@@ -61,7 +61,10 @@ class UserController extends AbstractController
             Mail::send(new UserCreated($user->email));
         }
 
-        if (!$token && config('mvc-auth.email_verify_enabled') && !$request->get('verify_disabled', false)) {
+        if (
+            !$token && config('mvc-auth.email_verify_enabled')
+            && !boolean($request->get('verify_disabled', false))
+        ) {
             $this->createVerifyTokenAndSendEmail($user->resource);
         }
 
