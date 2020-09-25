@@ -23,14 +23,21 @@ class PaymentUpdated extends Mailable implements ShouldQueue
     public $user;
 
     /**
+     * @var string
+     */
+    public $template;
+
+    /**
      * Create a new message instance.
      *
      * @param Payment $payment
+     * @param string $template
      */
-    public function __construct(Payment $payment)
+    public function __construct(Payment $payment, string $template = '')
     {
         $this->payment = $payment;
         $this->user = $payment->user ?? new User;
+        $this->template = $template === '' ? $this->payment->status : $template;
     }
 
     /**
@@ -40,7 +47,7 @@ class PaymentUpdated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $config = config('mvc-mail.messages.payment.' . $this->payment->status);
+        $config = config('mvc-mail.messages.payment.' . $this->template);
 
         return $this
             ->to($this->user->email)
