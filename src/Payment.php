@@ -32,6 +32,11 @@ class Payment extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $columns = ['id', 'external_id', 'amount', 'description', 'status', 'options', 'products', 'user_id', 'created_at', 'updated_at'];
+
+    /**
      * Payment constructor.
      * @param array $attributes
      */
