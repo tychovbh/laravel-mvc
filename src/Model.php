@@ -340,6 +340,6 @@ class Model extends BaseModel
             return Schema::hasColumn($this->getTable(), $key);
         }
 
-        return Arr::has($this->columns, $key);
+        return in_array($key, $this->columns);
     }
 }
