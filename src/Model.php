@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class Model extends BaseModel
@@ -37,6 +38,11 @@ class Model extends BaseModel
      * @var array
      */
     protected $unique = [];
+
+    /**
+     * @var array
+     */
+    protected $columns = [];
 
     /**
      * Return files
@@ -321,5 +327,19 @@ class Model extends BaseModel
     public function option(string $key, $default = null)
     {
         return Arr::get($this->options ?? [], $key, $default);
+    }
+
+    /**
+     * Check if database has column
+     * @param string $key
+     * @return bool
+     */
+    public function hasColumn(string $key): bool
+    {
+        if (empty($this->columns)) {
+            return Schema::hasColumn($this->getTable(), $key);
+        }
+
+        return Arr::has($this->columns, $key);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
+use Tychovbh\Mvc\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -163,7 +163,7 @@ if (!function_exists('has_column')) {
      */
     function has_column(Model $model, string $key)
     {
-        return Schema::hasColumn($model->getTable(), $key);
+        return $model->hasColumn($key);
     }
 }
 
