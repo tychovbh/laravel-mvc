@@ -237,7 +237,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Store resource
+     * Store resource.
      * @param $uri
      * @param JsonResource $resource
      * @param array $data
