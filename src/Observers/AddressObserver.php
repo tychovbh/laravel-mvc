@@ -9,6 +9,6 @@ class AddressObserver
 {
     public function creating(Address $address)
     {
-        $address = PdokService::search($address, $address->zipcode, $address->house_number);
+        $address = new Address(PdokService::search($address->zipcode, $address->house_number, $address->country));
     }
 }

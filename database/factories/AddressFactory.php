@@ -20,8 +20,8 @@ use Tychovbh\Mvc\Address;
 
 $factory->define(Address::class, function (Faker $faker) {
     return [
-        'zipcode' => '2352 CZ',
-        'house_number' => 38,
-        'country' => 'Nederland'
+        'zipcode' => $faker->postcode,
+        'house_number' => $faker->numberBetween(0, 100),
+        'country' => $faker->country
     ];
 });

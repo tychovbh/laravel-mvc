@@ -14,6 +14,6 @@ class AddressRoute extends AbstractRoutes implements Routes
         $instance = self::instance();
         $instance->index('addresses', $options);
         $instance->show('addresses', $options);
-        $instance->store('addresses', $options);
+        $instance->store('addresses', $options, ['validate']);
     }
 }

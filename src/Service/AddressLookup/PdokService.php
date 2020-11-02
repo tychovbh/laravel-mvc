@@ -3,18 +3,19 @@
 namespace Tychovbh\Mvc\Service\AddressLookup;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 
 class PdokService
 {
     /**
-     * @param $address
      * @param $zipcode
      * @param $house_number
+     * @param $country
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public static function search($address, $zipcode, $house_number)
+    public static function search(string $zipcode, int $house_number, string $country): array
     {
         $zipcode = str_replace(' ', '', $zipcode);
 
@@ -25,10 +26,12 @@ class PdokService
 
         $fullAddress = json_decode($res->getBody()->getContents(), 1);
 
-        $address->street = Arr::get($fullAddress, 'response.docs.0.straatnaam');
-        $address->city = Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam');
-        $address->country = 'Nederland';
-
-        return $address;
+        return [
+            'street' => Arr::get($fullAddress, 'response.docs.0.straatnaam'),
+            'house_number' => Arr::get($fullAddress, 'response.docs.0.huisnummer'),
+            'zipcode' => Arr::get($fullAddress, 'response.docs.0.postcode'),
+            'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam'),
+            'country' => $country
+        ];
     }
 }
