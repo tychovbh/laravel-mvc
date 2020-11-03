@@ -23,4 +23,14 @@ return [
             ],
         ]
     ],
+    [
+        'table' => 'countries',
+        'update_by' => 'name',
+        'items' => [
+            [
+                'name' => 'nl',
+                'label' => 'Netherlands'
+            ]
+        ]
+    ]
 ];

@@ -7,9 +7,12 @@ namespace Tychovbh\Tests\Mvc;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
+use Tychovbh\Mvc\Routes\AddressRoute;
+use Tychovbh\Mvc\Routes\CountryRoute;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
 use Tychovbh\Mvc\Routes\PaymentRoute;
 use Tychovbh\Mvc\Routes\ProductRoute;
@@ -169,6 +172,8 @@ class TestCase extends BaseTestCase
         PasswordResetRoute::routes();
         PaymentRoute::routes();
         ProductRoute::routes();
+        AddressRoute::routes();
+        CountryRoute::routes();
     }
 
     /**
@@ -237,7 +242,7 @@ class TestCase extends BaseTestCase
     }
 
     /**
-     * Store resource.
+     * Store resource
      * @param $uri
      * @param JsonResource $resource
      * @param array $data

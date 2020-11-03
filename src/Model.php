@@ -269,6 +269,15 @@ class Model extends BaseModel
     }
 
     /**
+     * Add columns
+     * @param mixed ...$columns
+     */
+    public function columns(...$columns)
+    {
+        $this->columns = array_merge($this->columns, $columns);
+    }
+
+    /**
      * Add files
      * @param mixed ...$files
      */
