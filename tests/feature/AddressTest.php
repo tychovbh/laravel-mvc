@@ -5,6 +5,7 @@ namespace Tychovbh\Tests\Mvc\feature;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
+use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Http\Resources\AddressResource;
 use Tychovbh\Mvc\Service\AddressLookup\PdokService;
 use Tychovbh\Tests\Mvc\TestCase;
@@ -35,11 +36,16 @@ class AddressTest extends TestCase
      */
     public function itCanStore()
     {
-        $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'house_number' => '38', 'country' => 'Nederland']);
+        /* @var Address $address*/
+        $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'house_number' => '38']);
+        $country = Country::where('name', 'nl')->first();
+        $params = $address->toArray();
+        $params['country'] = $country->name;
 
-        $finalAddress = PdokService::search($address->zipcode, $address->house_number);
+        $address->fill(PdokService::search($address->zipcode, $address->house_number));
+        $address->country_id = $country->id;
 
-        $this->store('addresses.store', AddressResource::make($finalAddress), $address->toArray());
+        $this->store('addresses.store', AddressResource::make($address), $params);
     }
 
     /**
@@ -47,10 +53,10 @@ class AddressTest extends TestCase
      */
     public function itCannotStoreZipcodeMissing()
     {
-        $address = factory(Address::class)->make(['house_number' => '38', 'country' => 'Nederland']);
+        $address = factory(Address::class)->make(['house_number' => '38']);
         Arr::forget($address, 'zipcode');
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
-            ['zipcode' => message('field.required', 'house_number')]);
+            ['zipcode' => [message('field.required', 'zipcode')]]);
     }
 
     /**
@@ -58,10 +64,10 @@ class AddressTest extends TestCase
      */
     public function itCannotStoreHouseNumberMissing()
     {
-        $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'country' => 'Nederland']);
+        $address = factory(Address::class)->make(['zipcode' => '2352 CZ']);
         Arr::forget($address, 'house_number');
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
-            ['house_number' => message('field.required', 'house_number')]);
+            ['house_number' => [message('field.required', 'house_number')]]);
     }
 
     /**

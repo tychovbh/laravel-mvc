@@ -19,7 +19,10 @@ class CreateAddressesTable extends Migration
             $table->string('street')->nullable();
             $table->string('city')->nullable();
             $table->integer('house_number');
-            $table->string('country')->nullable();
+
+            $table->unsignedBigInteger('country_id');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

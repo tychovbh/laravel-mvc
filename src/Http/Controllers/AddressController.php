@@ -6,7 +6,6 @@ namespace Tychovbh\Mvc\Http\Controllers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Tychovbh\Mvc\Http\Controllers\AbstractController;
 
 class AddressController extends AbstractController
 {

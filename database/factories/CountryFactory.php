@@ -6,7 +6,6 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
 
 /*
@@ -20,10 +19,9 @@ use Tychovbh\Mvc\Country;
 |
 */
 
-$factory->define(Address::class, function (Faker $faker) {
+$factory->define(Country::class, function (Faker $faker) {
     return [
-        'zipcode' => $faker->postcode,
-        'house_number' => $faker->numberBetween(0, 100),
-        'country_id' => factory(Country::class)->create()->id
+        'name' => $faker->country,
+        'label' => $faker->country
     ];
 });

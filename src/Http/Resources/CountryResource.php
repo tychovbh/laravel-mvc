@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AddressResource extends JsonResource
+class CountryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,8 @@ class AddressResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'zipcode' => $this->zipcode,
-            'house_number' => $this->house_number,
-            'street' => $this->street,
-            'city' =>$this->city,
-            'country_id' => $this->country_id
+            'name' => $this->name,
+            'label' => $this->label
         ];
     }
 }
