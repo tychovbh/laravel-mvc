@@ -11,11 +11,10 @@ class PdokService
     /**
      * @param $zipcode
      * @param $house_number
-     * @param $country
      * @return mixed
      * @throws GuzzleException
      */
-    public static function search(string $zipcode, int $house_number, string $country): array
+    public static function search(string $zipcode, int $house_number): array
     {
         $zipcode = str_replace(' ', '', $zipcode);
 
@@ -31,7 +30,7 @@ class PdokService
             'house_number' => Arr::get($fullAddress, 'response.docs.0.huisnummer'),
             'zipcode' => Arr::get($fullAddress, 'response.docs.0.postcode'),
             'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam'),
-            'country' => $country
+            'country' => 'nl'
         ];
     }
 }

@@ -23,7 +23,7 @@ class StoreAddress extends FormRequest
     public function rules(): array
     {
         return [
-            'zipcode' => 'required|string',
+            'zipcode' => 'required|string|min:6',
             'house_number' => 'required|integer'
         ];
     }

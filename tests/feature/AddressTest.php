@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\feature;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Http\Resources\AddressResource;
@@ -30,15 +31,15 @@ class AddressTest extends TestCase
 
     /**
      * @test
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function itCanStore()
     {
         $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'house_number' => '38', 'country' => 'Nederland']);
 
-        $finalAddress = PdokService::search($address->zipcode, $address->house_number, $address->country);
+        $finalAddress = PdokService::search($address->zipcode, $address->house_number);
 
-        $this->store('addresses.store', AddressResource::make($address), $finalAddress);
+        $this->store('addresses.store', AddressResource::make($finalAddress), $address->toArray());
     }
 
     /**
@@ -48,7 +49,8 @@ class AddressTest extends TestCase
     {
         $address = factory(Address::class)->make(['house_number' => '38', 'country' => 'Nederland']);
         Arr::forget($address, 'zipcode');
-        $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400);
+        $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
+            ['zipcode' => message('field.required', 'house_number')]);
     }
 
     /**
@@ -58,7 +60,8 @@ class AddressTest extends TestCase
     {
         $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'country' => 'Nederland']);
         Arr::forget($address, 'house_number');
-        $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400);
+        $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
+            ['house_number' => message('field.required', 'house_number')]);
     }
 
     /**
