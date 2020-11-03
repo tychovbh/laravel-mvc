@@ -26,6 +26,10 @@ class Address extends Model
         parent::__construct($attributes);
     }
 
+    /**
+     * The Countries
+     * @return BelongsTo
+     */
     public function country()
     {
         return $this->belongsTo(Country::class);

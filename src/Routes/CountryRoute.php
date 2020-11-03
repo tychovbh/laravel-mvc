@@ -15,5 +15,7 @@ class CountryRoute extends AbstractRoutes implements Routes
         $instance->index('countries', $options);
         $instance->show('countries', $options);
         $instance->store('countries', $options);
+        $instance->update('countries', $options);
+        $instance->destroy('countries', $options);
     }
 }
