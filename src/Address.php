@@ -30,7 +30,7 @@ class Address extends Model
      * The Countries
      * @return BelongsTo
      */
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }

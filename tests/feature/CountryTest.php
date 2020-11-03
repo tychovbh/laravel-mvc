@@ -36,7 +36,7 @@ class CountryTest extends TestCase
      */
     public function itCanStore()
     {
-        $country = factory(Country::class)->create();
+        $country = factory(Country::class)->make();
         $this->store('countries.store', CountryResource::make($country), $country->toArray());
     }
 
@@ -46,7 +46,9 @@ class CountryTest extends TestCase
     public function itCanUpdate()
     {
         $country = factory(Country::class)->create();
-        $this->update('countries.update', CountryResource::make($country), $country->toArray());
+        $update = factory(Country::class)->make();
+        $update->id = $country->id;
+        $this->update('countries.update', CountryResource::make($update), $update->toArray());
     }
 
     /**
