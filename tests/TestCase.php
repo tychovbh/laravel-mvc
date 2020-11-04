@@ -264,7 +264,7 @@ class TestCase extends BaseTestCase
         ] : [])
             ->assertStatus($status)
             ->assertJson(
-                $assert ?? $resource->response($this->app['request'])->getData(true)
+                !empty($assert) ? $assert : $resource->response($this->app['request'])->getData(true)
             );
     }
 
