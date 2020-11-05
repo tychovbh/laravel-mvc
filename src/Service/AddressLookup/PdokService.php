@@ -30,7 +30,7 @@ class PdokService
             'house_number' => Arr::get($fullAddress, 'response.docs.0.huisnummer'),
             'zipcode' => Arr::get($fullAddress, 'response.docs.0.postcode'),
             'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam'),
-//            'country' => 'nl'
+            'country_id' => 1
         ];
     }
 }

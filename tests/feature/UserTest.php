@@ -368,8 +368,7 @@ class UserTest extends TestCase
      */
     public function itCanDestroy()
     {
-        $user = factory(User::class)->create();
-        $this->destroy('users.destroy', UserResource::make($user));
+        $this->destroy('users.destroy', factory(User::class)->create());
     }
 }
 

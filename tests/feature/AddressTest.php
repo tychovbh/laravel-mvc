@@ -36,14 +36,33 @@ class AddressTest extends TestCase
      */
     public function itCanStore()
     {
-        /* @var Address $address*/
+        /* @var Address $address */
         $address = factory(Address::class)->make(['zipcode' => '2352 CZ', 'house_number' => '38']);
+        $country = Country::where('name', 'nl')->first();
+        $address->id = 1;
+
+        $address->country_id = $country->id;
+
+        $params = $address->toArray();
+        $params['country'] = $country->name;
+
+        $this->store('addresses.store', AddressResource::make($address), $params);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanStoreViaZipcodeAndHouseNumber()
+    {
+        $address = new Address(['zipcode' => '2352 CZ', 'house_number' => '38']);
+
         $country = Country::where('name', 'nl')->first();
         $params = $address->toArray();
         $params['country'] = $country->name;
 
-        $address->fill(PdokService::search($address->zipcode, $address->house_number));
+        $address->id = 1;
         $address->country_id = $country->id;
+        $address->fill(PdokService::search($address->zipcode, $address->house_number));
 
         $this->store('addresses.store', AddressResource::make($address), $params);
     }

@@ -53,8 +53,7 @@ class FormTest extends TestCase
      */
     public function itCanDelete()
     {
-        $form = factory(Form::class)->create();
-        $this->destroy('forms.destroy', (new FormResource($form)));
+        $this->destroy('forms.destroy', factory(Form::class)->create());
     }
 }
 
