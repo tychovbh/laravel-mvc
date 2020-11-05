@@ -22,7 +22,7 @@ use Tychovbh\Mvc\Country;
 
 $factory->define(Address::class, function (Faker $faker) {
     return [
-        'zipcode' => $faker->postcode,
+        'zipcode' => $faker->randomNumber(4) .$faker->randomLetter . $faker->randomLetter,
         'house_number' => $faker->numberBetween(0, 100),
         'street' => $faker->streetAddress,
         'city' => $faker->city,

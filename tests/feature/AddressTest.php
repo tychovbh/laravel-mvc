@@ -18,7 +18,7 @@ class AddressTest extends TestCase
     public function itCanIndex()
     {
         $address = factory(Address::class, 2)->create();
-        $this->index('addresses.index', AddressResource::collection($address));
+        $test = $this->index('addresses.index', AddressResource::collection($address));
     }
 
     /**
@@ -32,13 +32,12 @@ class AddressTest extends TestCase
 
     /**
      * @test
-     * @throws GuzzleException
      */
     public function itCanStore()
     {
         $address = factory(Address::class)->make();
         $address->id = 1;
-        $this->store('addresses.store', AddressResource::make($address), $address->toArray());
+        $test= $this->store('addresses.store', AddressResource::make($address), $address->toArray());
     }
 
     /**
@@ -67,7 +66,10 @@ class AddressTest extends TestCase
         $address = factory(Address::class)->make(['house_number' => '38']);
         Arr::forget($address, 'zipcode');
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
-            ['zipcode' => [message('field.required', 'zipcode')]]);
+            [
+                'zipcode' => [message('field.required', 'zipcode')]
+            ]
+        );
     }
 
     /**
@@ -78,7 +80,10 @@ class AddressTest extends TestCase
         $address = factory(Address::class)->make(['zipcode' => '2352 CZ']);
         Arr::forget($address, 'house_number');
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 400,
-            ['house_number' => [message('field.required', 'house_number')]]);
+            [
+                'house_number' => [message('field.required', 'house_number')]
+            ]
+        );
     }
 
     /**

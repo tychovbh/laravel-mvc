@@ -207,8 +207,8 @@ trait TestHelper
     ): array
     {
         $request = $this->getWithoutCache($this->indexName() . '.index', $params, $token, $tokenParams)
-            ->seeStatusCode(200)
-            ->seeResourceCollection($collection, $except);
+            ->seeResourceCollection($collection, $except)
+            ->seeStatusCode(200);
 
         return $this->content($request);
     }
@@ -228,8 +228,8 @@ trait TestHelper
             'paginate' => $paginate,
             'page' => $page,
         ], $params))
-            ->seeStatusCode(200)
-            ->seeResourceCollection($collection::collection($model::paginate($paginate)));
+            ->seeResourceCollection($collection::collection($model::paginate($paginate)))
+            ->seeStatusCode(200);
 
         return $this->content($request);
     }
@@ -254,8 +254,8 @@ trait TestHelper
         $request = $this->getWithoutCache($this->indexName() . '.show', array_merge($params, [
             'id' => $resource->id,
         ]), $token, $tokenParams)
-            ->seeStatusCode(200)
-            ->seeResource($resource);
+            ->seeResource($resource)
+            ->seeStatusCode(200);
 
         return $this->content($request);
     }
@@ -272,10 +272,10 @@ trait TestHelper
         $this->getWithoutCache($this->indexName() . '.show', array_merge($params, [
             'id' => $id,
         ]), $token, $tokenParams)
-            ->seeStatusCode(404)
             ->seeJson([
                 'message' => message('model.notfound', ucfirst($this->showName()), 'ID', $id)
-            ]);
+            ])
+            ->seeStatusCode(404);
     }
 
     /**
@@ -289,8 +289,8 @@ trait TestHelper
     public function store(Resource $resource, array $params = [], array $tokenParams = [], array $except = []): array
     {
         $request = $this->post(route($this->indexName() . '.store'), $params, $this->token($tokenParams))
-            ->seeStatusCode(200)
-            ->seeResource($resource, $except);
+            ->seeResource($resource, $except)
+            ->seeStatusCode(200);
 
         return $this->content($request);
     }
@@ -304,8 +304,8 @@ trait TestHelper
     public function cantStore(array $params = [], array $messages = [], array $tokenParams = [])
     {
         $this->post(route($this->indexName() . '.store'), $params, $this->token($tokenParams))
-            ->seeStatusCode(400)
-            ->seeJson($messages);
+            ->seeJson($messages)
+            ->seeStatusCode(400);
     }
 
     /**
@@ -321,8 +321,8 @@ trait TestHelper
         $request = $this->put(route($this->indexName() . '.update', [
             'id' => $resource->id
         ]), $params, $this->token($tokenParams))
-            ->seeStatusCode(200)
-            ->seeResource($resource, $except);
+            ->seeResource($resource, $except)
+            ->seeStatusCode(200);
 
         return $this->content($request);
     }
@@ -339,8 +339,8 @@ trait TestHelper
         $this->put(route($this->indexName() . '.update', [
             'id' => $id
         ]), $params, $this->token($tokenParams))
-            ->seeStatusCode(400)
-            ->seeJson($messages);
+            ->seeJson($messages)
+            ->seeStatusCode(400);
     }
 
     /**
@@ -354,10 +354,10 @@ trait TestHelper
     public function destroy(int $id, array $tokenParams = [], string $route = null, bool $notSeeInDatabase = true): TestCase
     {
         $request = $this->delete($route ?? route($this->indexName() . '.destroy', ['id' => $id]), [], $this->token($tokenParams))
-            ->seeStatusCode(200)
             ->seeJson([
                 'deleted' => true
-            ]);
+            ])
+            ->seeStatusCode(200);
 
         if ($notSeeInDatabase) {
             $this->notSeeInDatabase($this->indexName(), [
@@ -378,10 +378,11 @@ trait TestHelper
     public function cantDestroy(int $id, string $message, int $status = 401): TestCase
     {
         return $this->delete(route($this->indexName() . '.destroy', ['id' => $id]), [], $this->token())
-            ->seeStatusCode($status)
             ->seeJson([
                 'message' => $message
-            ]);
+            ])
+            ->seeStatusCode($status);
+
     }
 
     /**

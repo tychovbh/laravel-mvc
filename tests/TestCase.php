@@ -190,16 +190,17 @@ class TestCase extends BaseTestCase
      * Index resource
      * @param $uri
      * @param JsonResource $expected
+     * @param array $params
      * @param array $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function index($uri, JsonResource $expected, array $headers = [])
+    public function index($uri, JsonResource $expected, array $params = [], array $headers = [])
     {
-        $response = parent::get(route($uri), $headers)
-            ->assertStatus(200)
+        $response = parent::get(route($uri, $params), $headers)
             ->assertJson(
                 $expected->response($this->app['request'])->getData(true)
-            );
+            )
+            ->assertStatus(200);
 
         return $response;
     }
@@ -214,13 +215,11 @@ class TestCase extends BaseTestCase
      */
     public function show($uri, JsonResource $expected, int $status = 200, array $assert = [])
     {
-        $response = parent::get(route($uri, ['id' => $expected->id]))
-            ->assertStatus($status)
+        return parent::get(route($uri, ['id' => $expected->id]))
             ->assertJson(
                 $assert ?? $expected->response($this->app['request'])->getData(true)
-            );
-
-        return $response;
+            )
+            ->assertStatus($status);
     }
 
     /**
@@ -259,14 +258,15 @@ class TestCase extends BaseTestCase
         int $status = 201,
         array $assert = [],
         int $user_id = null
-    ) {
+    )
+    {
         return parent::post(route($uri), $params, $user_id ? [
             'HTTP_Authorization' => 'Bearer ' . token($user_id)
         ] : [])
-            ->assertStatus($status)
             ->assertJson(
                 !empty($assert) ? $assert : $expected->response($this->app['request'])->getData(true)
-            );
+            )
+            ->assertStatus($status);
     }
 
     /**
@@ -279,10 +279,10 @@ class TestCase extends BaseTestCase
     public function update($uri, JsonResource $expected, array $params)
     {
         $response = parent::put(route($uri, ['id' => $expected->id]), $params)
-            ->assertStatus(200)
             ->assertJson(
                 $expected->response($this->app['request'])->getData(true)
-            );
+            )
+            ->assertStatus(200);
 
         return $response;
     }
@@ -296,8 +296,8 @@ class TestCase extends BaseTestCase
     public function destroy($uri, Model $model)
     {
         $response = parent::delete(route($uri, ['id' => $model->id]))
-            ->assertStatus(200)
-            ->assertJson(['deleted' => 1]);
+            ->assertJson(['deleted' => 1])
+            ->assertStatus(200);
 
         $uri = explode('.', $uri);
 
