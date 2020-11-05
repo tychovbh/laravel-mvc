@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Events\PaymentUpdated;
+use Tychovbh\Mvc\Model;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\AddressRoute;
@@ -188,16 +189,16 @@ class TestCase extends BaseTestCase
     /**
      * Index resource
      * @param $uri
-     * @param JsonResource $resource
+     * @param JsonResource $expected
      * @param array $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function index($uri, JsonResource $resource, array $headers = [])
+    public function index($uri, JsonResource $expected, array $headers = [])
     {
         $response = parent::get(route($uri), $headers)
             ->assertStatus(200)
             ->assertJson(
-                $resource->response($this->app['request'])->getData(true)
+                $expected->response($this->app['request'])->getData(true)
             );
 
         return $response;
@@ -206,17 +207,17 @@ class TestCase extends BaseTestCase
     /**
      * Show resource
      * @param $uri
-     * @param JsonResource $resource
+     * @param JsonResource $expected
      * @param int $status
      * @param mixed $assert
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function show($uri, JsonResource $resource, int $status = 200, array $assert = [])
+    public function show($uri, JsonResource $expected, int $status = 200, array $assert = [])
     {
-        $response = parent::get(route($uri, ['id' => $resource->id]))
+        $response = parent::get(route($uri, ['id' => $expected->id]))
             ->assertStatus($status)
             ->assertJson(
-                $assert ?? $resource->response($this->app['request'])->getData(true)
+                $assert ?? $expected->response($this->app['request'])->getData(true)
             );
 
         return $response;
@@ -244,8 +245,8 @@ class TestCase extends BaseTestCase
     /**
      * Store resource
      * @param $uri
-     * @param JsonResource $resource
-     * @param array $data
+     * @param JsonResource $expected
+     * @param array $params
      * @param int $status
      * @param array $assert
      * @param int|null $user_id
@@ -253,34 +254,34 @@ class TestCase extends BaseTestCase
      */
     public function store(
         $uri,
-        JsonResource $resource,
-        array $data = [],
+        JsonResource $expected,
+        array $params = [],
         int $status = 201,
         array $assert = [],
         int $user_id = null
     ) {
-        return parent::post(route($uri), $data, $user_id ? [
+        return parent::post(route($uri), $params, $user_id ? [
             'HTTP_Authorization' => 'Bearer ' . token($user_id)
         ] : [])
             ->assertStatus($status)
             ->assertJson(
-                !empty($assert) ? $assert : $resource->response($this->app['request'])->getData(true)
+                !empty($assert) ? $assert : $expected->response($this->app['request'])->getData(true)
             );
     }
 
     /**
      * Update resource
      * @param $uri
-     * @param JsonResource $resource
+     * @param JsonResource $expected
      * @param array $params
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function update($uri, JsonResource $resource, array $params)
+    public function update($uri, JsonResource $expected, array $params)
     {
-        $response = parent::put(route($uri, ['id' => $resource->id]), $params)
+        $response = parent::put(route($uri, ['id' => $expected->id]), $params)
             ->assertStatus(200)
             ->assertJson(
-                $resource->response($this->app['request'])->getData(true)
+                $expected->response($this->app['request'])->getData(true)
             );
 
         return $response;
@@ -289,19 +290,19 @@ class TestCase extends BaseTestCase
     /**
      * Destroy resource
      * @param $uri
-     * @param JsonResource $resource
+     * @param Model $model
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function destroy($uri, JsonResource $resource)
+    public function destroy($uri, Model $model)
     {
-        $response = parent::delete(route($uri, ['id' => $resource->id]))
+        $response = parent::delete(route($uri, ['id' => $model->id]))
             ->assertStatus(200)
             ->assertJson(['deleted' => 1]);
 
         $uri = explode('.', $uri);
 
         $this->assertDatabaseMissing($uri[0], [
-            'id' => $resource->id
+            'id' => $model->id
         ]);
 
         return $response;

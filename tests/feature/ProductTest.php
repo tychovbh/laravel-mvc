@@ -52,8 +52,7 @@ class ProductTest extends TestCase
      */
     public function itCanDelete()
     {
-        $product = factory(Product::class)->create();
-        $this->destroy('products.destroy', (new ProductResource($product)));
+        $this->destroy('products.destroy', factory(Product::class)->create());
     }
 }
 

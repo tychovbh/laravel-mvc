@@ -56,7 +56,6 @@ class CountryTest extends TestCase
      */
     public function itCanDestroy()
     {
-        $country = factory(Country::class)->create();
-        $this->destroy('countries.destroy', CountryResource::make($country));
+        $this->destroy('countries.destroy',  factory(Country::class)->create());
     }
 }

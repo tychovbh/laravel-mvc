@@ -29,8 +29,7 @@ class PdokService
             'street' => Arr::get($fullAddress, 'response.docs.0.straatnaam'),
             'house_number' => Arr::get($fullAddress, 'response.docs.0.huisnummer'),
             'zipcode' => Arr::get($fullAddress, 'response.docs.0.postcode'),
-            'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam'),
-            'country' => 'nl'
+            'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam')
         ];
     }
 }
