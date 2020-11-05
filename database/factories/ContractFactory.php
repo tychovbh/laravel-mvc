@@ -22,12 +22,7 @@ use Tychovbh\Mvc\Contract;
 $factory->define(Contract::class, function (Faker $faker) {
     return [
         'file' => 'file.' . $faker->fileExtension,
-        'status' => $faker->randomElement([
-            Contract::STATUS_CONCEPT,
-            Contract::STATUS_SENT,
-            Contract::STATUS_SIGNED,
-            Contract::STATUS_DENIED,
-        ]),
+        'status' => $faker->randomElement(Contract::STATUSES),
         'signed_at' => $faker->dateTime()->getTimestamp()
     ];
 });

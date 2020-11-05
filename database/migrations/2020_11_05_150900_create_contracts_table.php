@@ -17,12 +17,7 @@ class CreateContractsTable extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('file');
-            $table->enum('status', [
-                Contract::STATUS_CONCEPT,
-                Contract::STATUS_SENT,
-                Contract::STATUS_SIGNED,
-                Contract::STATUS_DENIED,
-                ]);
+            $table->enum('status', Contract::STATUSES);
             $table->timestamp('signed_at')->nullable();
             $table->json('options')->nullable();
 
