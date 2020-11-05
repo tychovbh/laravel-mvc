@@ -24,6 +24,8 @@ $factory->define(Address::class, function (Faker $faker) {
     return [
         'zipcode' => $faker->postcode,
         'house_number' => $faker->numberBetween(0, 100),
+        'street' => $faker->streetAddress,
+        'city' => $faker->city,
         'country_id' => factory(Country::class)->create()->id
     ];
 });
