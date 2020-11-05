@@ -123,6 +123,6 @@ class MvcServiceProvider extends ServiceProvider
     private function observers()
     {
         Payment::observe(PaymentObserver::class);
-//        Address::observe(AddressObserver::class);
+        Address::observe(AddressObserver::class);
     }
 }
