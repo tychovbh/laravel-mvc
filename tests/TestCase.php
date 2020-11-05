@@ -13,6 +13,7 @@ use Tychovbh\Mvc\Model;
 use Tychovbh\Mvc\MvcServiceProvider;
 use Faker\Factory;
 use Tychovbh\Mvc\Routes\AddressRoute;
+use Tychovbh\Mvc\Routes\ContractRoute;
 use Tychovbh\Mvc\Routes\CountryRoute;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
 use Tychovbh\Mvc\Routes\PaymentRoute;
@@ -175,6 +176,7 @@ class TestCase extends BaseTestCase
         ProductRoute::routes();
         AddressRoute::routes();
         CountryRoute::routes();
+        ContractRoute::routes();
     }
 
     /**
