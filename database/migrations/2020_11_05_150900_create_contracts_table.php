@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Tychovbh\Mvc\Contract;
 
 class CreateContractsTable extends Migration
 {
@@ -16,8 +17,13 @@ class CreateContractsTable extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('file');
-            $table->enum('status', ['concept', 'sent', 'signed', 'denied']);
-            $table->timestamp('signed_at');
+            $table->enum('status', [
+                Contract::STATUS_CONCEPT,
+                Contract::STATUS_SENT,
+                Contract::STATUS_SIGNED,
+                Contract::STATUS_DENIED,
+                ]);
+            $table->timestamp('signed_at')->nullable();
             $table->json('options')->nullable();
 
             $table->timestamps();
