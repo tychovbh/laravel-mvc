@@ -114,6 +114,14 @@ class TestCase extends BaseTestCase
                 ],
             ]
         ]));
+
+        Config::set('mvc-signrequest', [
+                'token' => 'd3a60fbb9c08bbfbb7525cb704ac1984b2f9db',
+//                'subdomain' => 'https://signrequest.com/api/v1/documents/'
+                'subdomain' => 'https://bespokeweb.signrequest.com'
+            ]
+        );
+
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);

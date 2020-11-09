@@ -18,5 +18,6 @@ class PdokTest extends TestCase
     {
         $search = PdokService::search('2352 CZ', '38');
         $this->assertEquals('Touwbaan', $search['street']);
+        $this->assertEquals('Leiderdorp', $search['city']);
     }
 }
