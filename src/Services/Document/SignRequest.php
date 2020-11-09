@@ -24,9 +24,9 @@ class SignRequest implements DocumentInterface
         try {
             $contents = $file->get();
 
-            $this->request('post', '/api/v1/documents/', [
+            return $this->request('post', '/documents/', [
                 'file_from_content' => base64_encode($contents),
-                'file_from_content_name' => $file->getFilename(),
+                'file_from_content_name' => $file->getClientOriginalName(),
             ]);
         } catch (\Exception $exception) {
             $message = $exception->getMessage();
@@ -40,7 +40,11 @@ class SignRequest implements DocumentInterface
 
     public function show(string $id)
     {
-        // TODO: Implement show() method.
+        try {
+            return $this->request('get', '/documents/' . $id . '/');
+        } catch(\Exception $exception) {
+            $message = $exception->getMessage();
+        }
     }
 
     public function signedStatus(string $id)
@@ -62,6 +66,11 @@ class SignRequest implements DocumentInterface
 
         $response = $this->client->request($method, config('mvc-signrequest.subdomain') . $endpoint, $options);
 
-        return json_decode($response->getBody(), true);
+        $data = json_decode($response->getBody(), true);
+
+        return [
+            'id' => $data['uuid'],
+            'status' => $data['status']
+        ];
     }
 }

@@ -28,6 +28,7 @@ class SignRequestTest extends TestCase
         $file = UploadedFile::fake()->image('photo1.jpg');
         $document = $this->signRequest()->create($file);
         $this->assertTrue(Arr::has($document, 'id'));
+        $this->assertTrue($document['status'] === 'co');
     }
 
     /**
@@ -43,7 +44,9 @@ class SignRequestTest extends TestCase
      */
     public function itCanShow()
     {
-
+        $id = '5ca5e0f4-b413-49eb-aa46-bc6ddce20ad4';
+        $document = $this->signRequest()->show($id);
+        $this->assertTrue(Arr::has($document, 'id'));
     }
 
     /**
