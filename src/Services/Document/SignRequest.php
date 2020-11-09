@@ -24,12 +24,12 @@ class SignRequest implements DocumentInterface
         try {
             $contents = $file->get();
 
-            $this->request('post', '/api/v1/documents', [
+            $this->request('post', '/api/v1/documents/', [
                 'file_from_content' => base64_encode($contents),
                 'file_from_content_name' => $file->getFilename(),
             ]);
         } catch (\Exception $exception) {
-            //
+            $message = $exception->getMessage();
         }
     }
 
@@ -56,7 +56,7 @@ class SignRequest implements DocumentInterface
             ],
         ];
 
-        if (!empty($data)) {
+        if (!empty($params)) {
             $options['json'] = $params;
         }
 
