@@ -1,6 +1,0 @@
-<?php
-
-return [
-    'token' => '',
-    'subdomain' => '',
-];

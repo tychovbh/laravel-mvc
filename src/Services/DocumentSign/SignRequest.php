@@ -3,9 +3,11 @@
 
 namespace Tychovbh\Mvc\Services\DocumentSign;
 
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class SignRequest implements DocumentSignInterface
 {
@@ -16,12 +18,35 @@ class SignRequest implements DocumentSignInterface
     private $client;
 
     /**
+     * @var Collection
+     */
+    private $signers;
+
+    /**
      * SignRequest constructor.
      * @param Client $client
      */
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->signers = collect([]);
+    }
+
+    /**
+     * @param string $email
+     * @param string $firstname
+     * @param string $lastname
+     * @return $this
+     */
+    public function signer(string $email, string $firstname = '', string $lastname = '')
+    {
+        $this->signers = $this->signers->push([
+            'email' => $email,
+            'firstname' => $firstname,
+            'lastname' => $lastname
+        ]);
+
+        return $this;
     }
 
     /**
@@ -54,19 +79,21 @@ class SignRequest implements DocumentSignInterface
     /**
      * Creates a SignRequest
      * @param string $id
-     * @param array $sender
-     * @param array $signers
+     * @param string $from_name
+     * @param string $from_email
      * @param string $message
      * @return array
      */
-    public function sign(string $id, array $sender, array $signers, string $message = ''): array
+    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array
     {
         try {
+            if(empty($this->signers->toArray())) throw new Exception('At least one signer is required (See signer method)');
+
             $response = $this->request('post', '/signrequests', [
-                'from_email' => $sender['email'],
-                'from_email_name' => $sender['name'],
-                'document' => config('mvc-signrequest.subdomain') . '/documents/' . $id . '/',
-                'signers' => $signers,
+                'from_email' => $from_email,
+                'from_email_name' => $from_name,
+                'document' => config('mvc-document-sign.subdomain') . '/documents/' . $id . '/',
+                'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
 
@@ -177,7 +204,7 @@ class SignRequest implements DocumentSignInterface
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Token ' . config('mvc-signrequest.token'),
+                'Authorization' => 'Token ' . config('mvc-document-sign.token'),
             ],
         ];
 
@@ -185,7 +212,7 @@ class SignRequest implements DocumentSignInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-signrequest.subdomain') . $endpoint . '/', $options);
+        $response = $this->client->request($method, config('mvc-document-sign.subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }

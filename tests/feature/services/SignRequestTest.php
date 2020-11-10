@@ -53,16 +53,9 @@ class SignRequestTest extends TestCase
      */
     public function itCanSign(array $document)
     {
-        $sign = $this->signRequest()->sign($document['id'],
-            [
-                'email' => 'noreply@rentbay.nl',
-                'name' => 'Rentbay'
-            ],
-            [
-                [
-                    'email' => 'bixit94918@x1post.com'
-                ]
-            ]);
+        $sign = $this->signRequest()
+            ->signer('bixit94918@x1post.com')
+            ->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
         $this->assertTrue(Arr::has($sign, 'id'));
 
         return $sign;

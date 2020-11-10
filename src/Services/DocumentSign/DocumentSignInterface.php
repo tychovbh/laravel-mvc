@@ -10,45 +10,45 @@ interface DocumentSignInterface
      * Creates a Document
      * @param UploadedFile $file
      * @param string $webhook
-     * @return mixed
+     * @return array
      */
-    public function create(UploadedFile $file, string $webhook = null);
+    public function create(UploadedFile $file, string $webhook = null): array;
 
     /**
      * Creates a SignRequest
      * @param string $id
-     * @param array $sender
-     * @param array $recipients
+     * @param string $from_name
+     * @param string $from_email
      * @param string $message
-     * @return mixed
+     * @return array
      */
-    public function sign(string $id, array $sender, array $recipients, string $message = '');
+    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array;
 
     /**
      * Shows a Document
      * @param string $id
-     * @return mixed
+     * @return array
      */
-    public function show(string $id);
+    public function show(string $id): array;
 
     /**
      * Shows a SignRequest
      * @param string $id
-     * @return mixed
+     * @return array
      */
-    public function signShow(string $id);
+    public function signShow(string $id): array;
 
     /**
      * Cancels a SignRequest
      * @param string $id
-     * @return mixed
+     * @return array
      */
-    public function signCancel(string $id);
+    public function signCancel(string $id): array;
 
     /**
      * Deletes a Document
      * @param string $id
-     * @return mixed
+     * @return array
      */
-    public function destroy(string $id);
+    public function destroy(string $id): bool;
 }
