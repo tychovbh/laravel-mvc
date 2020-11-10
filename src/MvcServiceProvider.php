@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc;
 
 use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
@@ -21,6 +22,7 @@ use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
+use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -102,6 +104,9 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function register()
     {
+//        $this->app->bind(SignRequest::class, function ($app, Client $client) {
+//            return new SignRequest($client);
+//        });
         $this->app->register(
             OffsetPaginationServiceProvider::class
         );

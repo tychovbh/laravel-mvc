@@ -1,17 +1,17 @@
 <?php
 
-namespace Tychovbh\Mvc\Service\AddressLookup;
+namespace Tychovbh\Mvc\Services\AddressLookup;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 
-class PdokService
+class PdokService implements AddressLookupInterface
 {
     /**
-     * @param $zipcode
-     * @param $house_number
-     * @return mixed
+     * @param string $zipcode
+     * @param int $house_number
+     * @return array
      * @throws GuzzleException
      */
     public static function search(string $zipcode, int $house_number): array
