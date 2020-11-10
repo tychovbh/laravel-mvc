@@ -75,8 +75,8 @@ class SignRequestTest extends TestCase
      */
     public function itCanShowSign(array $sign)
     {
-        $document = $this->signRequest()->signShow($sign['id']);
-        $this->assertTrue(Arr::has($document, 'id'));
+        $sign = $this->signRequest()->signShow($sign['id']);
+        $this->assertTrue(Arr::has($sign, 'id'));
     }
 
     /**
