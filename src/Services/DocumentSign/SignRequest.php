@@ -88,7 +88,7 @@ class SignRequest implements DocumentSignInterface
     public function sign(string $id, string $from_name, string $from_email, string $message = ''): array
     {
         try {
-            if(!$this->signers->count()) {
+            if (!$this->signers->count()) {
                 throw new Exception('At least one signer is required (See signer method)');
             }
 
@@ -167,7 +167,7 @@ class SignRequest implements DocumentSignInterface
             return [
                 'cancelled' => Arr::get($response, 'cancelled', '')
             ];
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             error('SignRequestService signCancel error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
@@ -186,7 +186,7 @@ class SignRequest implements DocumentSignInterface
             $this->request('delete', '/documents/' . $id);
 
             return true;
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             error('SignRequestService destroy error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
