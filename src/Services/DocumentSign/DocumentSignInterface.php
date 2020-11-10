@@ -1,10 +1,10 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\Document;
+namespace Tychovbh\Mvc\Services\DocumentSign;
 
 use Illuminate\Http\UploadedFile;
 
-interface DocumentInterface
+interface DocumentSignInterface
 {
     /**
      * @param UploadedFile $file
@@ -32,5 +32,17 @@ interface DocumentInterface
      * @param string $id
      * @return mixed
      */
-    public function signedStatus(string $id);
+    public function signShow(string $id);
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public function signCancel(string $id);
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public function destroy(string $id);
 }

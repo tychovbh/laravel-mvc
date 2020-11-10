@@ -22,7 +22,7 @@ use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
-use Tychovbh\Mvc\Services\Document\SignRequest;
+use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider

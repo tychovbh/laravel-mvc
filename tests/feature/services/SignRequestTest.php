@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use Tychovbh\Mvc\Services\Document\SignRequest;
+use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class SignRequestTest extends TestCase
@@ -29,42 +29,75 @@ class SignRequestTest extends TestCase
         $document = $this->signRequest()->create($file);
         $this->assertTrue(Arr::has($document, 'id'));
         $this->assertTrue($document['status'] === 'co');
+
+        return $document;
     }
 
     /**
      * @test
+     * @depends itCanCreate
+     * @param array $document
      */
-    public function itCanSign()
+    public function itCanShow(array $document)
     {
-        $id = '2027be9b-ccec-4979-a557-ddf84cbf4007';
+        $show = $this->signRequest()->show($document['id']);
+        $this->assertTrue(Arr::has($show, 'id'));
 
-        $document = $this->signRequest()->sign($id,
+        return $document;
+    }
+
+    /**
+     * @test
+     * @depends itCanShow
+     * @param array $document
+     */
+    public function itCanSign(array $document)
+    {
+        $sign = $this->signRequest()->sign($document['id'],
             [
                 'email' => 'noreply@rentbay.nl',
                 'name' => 'Rentbay'
             ],
             [
                 [
-                    'email' => 'thvrijn2002@gmail.com'
+                    'email' => 'bixit94918@x1post.com'
                 ]
             ]);
+        $this->assertTrue(Arr::has($sign, 'id'));
+
+        return $sign;
     }
 
     /**
      * @test
+     * @depends itCanSign
+     * @param array $sign
      */
-    public function itCanShow()
+    public function itCanShowSign(array $sign)
     {
-        $id = '2027be9b-ccec-4979-a557-ddf84cbf4007';
-        $document = $this->signRequest()->show($id);
+        $document = $this->signRequest()->signShow($sign['id']);
         $this->assertTrue(Arr::has($document, 'id'));
     }
 
     /**
      * @test
+     * @depends itCanSign
+     * @param array $sign
      */
-    public function itCanShowSignedStatus()
+    public function itCanCancelSign(array $sign)
     {
+        $sign = $this->signRequest()->signCancel($sign['id']);
+        $this->assertTrue($sign['cancelled'] === true);
+    }
 
+    /**
+     * @test
+     * @depends itCanCreate
+     * @param array $document
+     */
+    public function itCanDestroy(array $document)
+    {
+        $destroyed = $this->signRequest()->destroy($document['id']);
+        $this->assertTrue($destroyed);
     }
 }
