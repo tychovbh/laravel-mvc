@@ -7,6 +7,15 @@ use Illuminate\Http\UploadedFile;
 interface DocumentSignInterface
 {
     /**
+     * Adds a Signer to the Signers list
+     * @param string $email
+     * @param string $firstname
+     * @param string $lastname
+     * @return $this
+     */
+    public function signer(string $email, string $firstname = '', string $lastname = ''): DocumentSignInterface;
+
+    /**
      * Creates a Document
      * @param UploadedFile $file
      * @param string $webhook

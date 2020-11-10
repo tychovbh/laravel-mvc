@@ -9,8 +9,3 @@ return [
         ]
     ]
 ];
-
-//return [
-//    'token' => '',
-//    'subdomain' => '',
-//];

@@ -117,8 +117,13 @@ class TestCase extends BaseTestCase
 
         // SANDBOX account
         Config::set('mvc-document-sign', [
-                'token' => '69d3a60fbb9c08bbfbb7525cb704ac1984b2f9db',
-                'subdomain' => 'https://bespokeweb.signrequest.com/api/v1'
+                'default' => 'signrequest',
+                'providers' => [
+                    'signrequest' => [
+                        'token' => '69d3a60fbb9c08bbfbb7525cb704ac1984b2f9db',
+                        'subdomain' => 'https://bespokeweb.signrequest.com/api/v1',
+                    ]
+                ]
             ]
         );
 

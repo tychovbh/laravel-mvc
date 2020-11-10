@@ -33,12 +33,13 @@ class SignRequest implements DocumentSignInterface
     }
 
     /**
+     * Adds a Signer to the Signers list
      * @param string $email
      * @param string $firstname
      * @param string $lastname
      * @return $this
      */
-    public function signer(string $email, string $firstname = '', string $lastname = '')
+    public function signer(string $email, string $firstname = '', string $lastname = ''): DocumentSignInterface
     {
         $this->signers = $this->signers->push([
             'email' => $email,
@@ -92,7 +93,7 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
-                'document' => config('mvc-document-sign.subdomain') . '/documents/' . $id . '/',
+                'document' => config('mvc-document-sign.providers.signrequest.subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
@@ -204,7 +205,7 @@ class SignRequest implements DocumentSignInterface
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Token ' . config('mvc-document-sign.token'),
+                'Authorization' => 'Token ' . config('mvc-document-sign.providers.signrequest.token'),
             ],
         ];
 
@@ -212,7 +213,7 @@ class SignRequest implements DocumentSignInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-document-sign.subdomain') . $endpoint . '/', $options);
+        $response = $this->client->request($method, config('mvc-document-sign.providers.signrequest.subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }
