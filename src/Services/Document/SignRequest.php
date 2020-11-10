@@ -24,25 +24,49 @@ class SignRequest implements DocumentInterface
         try {
             $contents = $file->get();
 
-            return $this->request('post', '/documents/', [
+            $response = $this->request('post', '/documents', [
                 'file_from_content' => base64_encode($contents),
                 'file_from_content_name' => $file->getClientOriginalName(),
             ]);
+
+            return [
+                'id' => $response['uuid'],
+                'status' => $response['status']
+            ];
         } catch (\Exception $exception) {
             $message = $exception->getMessage();
         }
     }
 
-    public function sign(string $id, string $sender, string $recipients, string $message = '')
+    public function sign(string $id, array $sender, array $signers, string $message = '')
     {
-        // TODO: Implement sign() method.
+        try {
+            $response = $this->request('post', '/signrequests', [
+                'from_email' => $sender['email'],
+                'from_email_name' => $sender['name'],
+                'document' => config('mvc-signrequest.subdomain') . '/documents/' . $id . '/',
+                'signers' => $signers,
+                'message' => $message
+            ]);
+
+            return [
+                'id' => $response['uuid'],
+                'status' => $response['status']
+            ];
+        } catch (\Exception $exception) {
+            $message = $exception->getMessage();
+        }
     }
 
     public function show(string $id)
     {
         try {
-            return $this->request('get', '/documents/' . $id . '/');
-        } catch(\Exception $exception) {
+            $response = $this->request('get', '/documents/' . $id);
+            return [
+                'id' => $response['uuid'],
+                'status' => $response['status']
+            ];
+        } catch (\Exception $exception) {
             $message = $exception->getMessage();
         }
     }
@@ -64,13 +88,8 @@ class SignRequest implements DocumentInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-signrequest.subdomain') . $endpoint, $options);
+        $response = $this->client->request($method, config('mvc-signrequest.subdomain') . $endpoint . '/', $options);
 
-        $data = json_decode($response->getBody(), true);
-
-        return [
-            'id' => $data['uuid'],
-            'status' => $data['status']
-        ];
+        return json_decode($response->getBody(), true);
     }
 }

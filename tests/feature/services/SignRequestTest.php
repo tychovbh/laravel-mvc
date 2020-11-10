@@ -25,7 +25,7 @@ class SignRequestTest extends TestCase
     public function itCanCreate()
     {
         Storage::fake('photos');
-        $file = UploadedFile::fake()->image('photo1.jpg');
+        $file = UploadedFile::fake()->image('photo2.jpg');
         $document = $this->signRequest()->create($file);
         $this->assertTrue(Arr::has($document, 'id'));
         $this->assertTrue($document['status'] === 'co');
@@ -36,7 +36,18 @@ class SignRequestTest extends TestCase
      */
     public function itCanSign()
     {
+        $id = '2027be9b-ccec-4979-a557-ddf84cbf4007';
 
+        $document = $this->signRequest()->sign($id,
+            [
+                'email' => 'noreply@rentbay.nl',
+                'name' => 'Rentbay'
+            ],
+            [
+                [
+                    'email' => 'thvrijn2002@gmail.com'
+                ]
+            ]);
     }
 
     /**
@@ -44,7 +55,7 @@ class SignRequestTest extends TestCase
      */
     public function itCanShow()
     {
-        $id = '5ca5e0f4-b413-49eb-aa46-bc6ddce20ad4';
+        $id = '2027be9b-ccec-4979-a557-ddf84cbf4007';
         $document = $this->signRequest()->show($id);
         $this->assertTrue(Arr::has($document, 'id'));
     }

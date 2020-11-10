@@ -15,12 +15,12 @@ interface DocumentInterface
 
     /**
      * @param string $id
-     * @param string $sender
-     * @param string $recipients
+     * @param array $sender
+     * @param array $recipients
      * @param string $message
      * @return mixed
      */
-    public function sign(string $id, string $sender, string $recipients, string $message = '');
+    public function sign(string $id, array $sender, array $recipients, string $message = '');
 
     /**
      * @param string $id
