@@ -88,7 +88,9 @@ class SignRequest implements DocumentSignInterface
     public function sign(string $id, string $from_name, string $from_email, string $message = ''): array
     {
         try {
-            if(empty($this->signers->toArray())) throw new Exception('At least one signer is required (See signer method)');
+            if(!$this->signers->count()) {
+                throw new Exception('At least one signer is required (See signer method)');
+            }
 
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
