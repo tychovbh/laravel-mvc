@@ -46,7 +46,7 @@ class HtmlConverter implements HtmlConverterInterface
                     $converter->toJpg();
                     break;
             }
-            $converter->save($path);
+            $converter->save(storage_path($path));
         } catch (\Exception $exception) {
             error('HtmlConverter save error', [
                 'message' => $exception->getMessage(),

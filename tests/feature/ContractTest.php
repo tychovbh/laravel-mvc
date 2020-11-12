@@ -4,6 +4,7 @@ namespace Tychovbh\Tests\Mvc\feature;
 
 use Tychovbh\Mvc\Contract;
 use Tychovbh\Mvc\Http\Resources\ContractResource;
+use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverter;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class ContractTest extends TestCase
@@ -32,8 +33,10 @@ class ContractTest extends TestCase
     public function itCanStore()
     {
         $contract = factory(Contract::class)->make();
+        $store = $contract->toArray();
         $contract->id = 1;
-        $this->store('contracts.store', ContractResource::make($contract), $contract->toArray());
+        $contract->file = 'contracts/file.pdf';
+        $this->store('contracts.store', ContractResource::make($contract), $store);
     }
 
     /**

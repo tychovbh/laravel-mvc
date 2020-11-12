@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Http\Resources\AddressResource;
-use Tychovbh\Mvc\Service\AddressLookup\PdokService;
+use Tychovbh\Mvc\Services\AddressLookup\PdokService;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class AddressTest extends TestCase
@@ -37,7 +37,7 @@ class AddressTest extends TestCase
     {
         $address = factory(Address::class)->make();
         $address->id = 1;
-        $test= $this->store('addresses.store', AddressResource::make($address), $address->toArray());
+        $this->store('addresses.store', AddressResource::make($address), $address->toArray());
     }
 
     /**

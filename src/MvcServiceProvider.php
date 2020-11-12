@@ -21,6 +21,7 @@ use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
+use Tychovbh\Mvc\Observers\ContractObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Urameshibr\Providers\FormRequestServiceProvider;
@@ -129,5 +130,6 @@ class MvcServiceProvider extends ServiceProvider
     {
         Payment::observe(PaymentObserver::class);
         Address::observe(AddressObserver::class);
+        Contract::observe(ContractObserver::class);
     }
 }
