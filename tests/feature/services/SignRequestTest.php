@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tychovbh\Tests\Mvc\feature\services;
-
 
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;

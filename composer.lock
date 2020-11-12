@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "285994f0b391565647ced71b94338494",
+    "content-hash": "62908f7a5311110f712d721cc9d1e550",
     "packages": [
         {
             "name": "altelma/laravel-signrequest",
@@ -51,6 +51,107 @@
             ],
             "description": "Send signrequest in Laravel'",
             "time": "2018-05-10T02:07:33+00:00"
+        },
+        {
+            "name": "anam/phantomjs-linux-x86-binary",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anam-hossain/phantomjs-linux-x86-binary.git",
+                "reference": "cb90cd0e7bd4ad34f52e6834783b1c5adae15014"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anam-hossain/phantomjs-linux-x86-binary/zipball/cb90cd0e7bd4ad34f52e6834783b1c5adae15014",
+                "reference": "cb90cd0e7bd4ad34f52e6834783b1c5adae15014",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/phantomjs"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Anam\\PhantomLinux\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Anam hossain",
+                    "email": "enam33@gmail.com"
+                }
+            ],
+            "description": "PhantomJS static linked binary for 64 bit linux systems. Most of Linux distributions are supported including Ubuntu, Debian, Fedora and CentOS.",
+            "homepage": "http://phantomjs.org/download.html",
+            "keywords": [
+                "binary",
+                "phantomjs",
+                "phantomjs binary"
+            ],
+            "time": "2016-04-05T05:24:48+00:00"
+        },
+        {
+            "name": "anam/phantommagick",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anam-hossain/phantommagick.git",
+                "reference": "7da1cb92198717e5aba7a4a8c9b8eb61c3ae12eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anam-hossain/phantommagick/zipball/7da1cb92198717e5aba7a4a8c9b8eb61c3ae12eb",
+                "reference": "7da1cb92198717e5aba7a4a8c9b8eb61c3ae12eb",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Anam\\PhantomMagick\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anam hossain",
+                    "email": "enam33@gmail.com"
+                }
+            ],
+            "description": "PhantomMagick provides a simple API to ease the process of converting HTML to PDF or images",
+            "homepage": "https://github.com/anam-hossain/phantommagick",
+            "keywords": [
+                "Html 2 jpg",
+                "Html 2 pdf",
+                "Laravel pdf",
+                "Phantom",
+                "Screen capture",
+                "converter",
+                "html to image",
+                "html to pdf",
+                "html to png",
+                "image converter",
+                "invoice",
+                "laravel",
+                "pdf",
+                "pdf converter",
+                "phantomjs"
+            ],
+            "time": "2017-08-07T09:06:12+00:00"
         },
         {
             "name": "chelout/offset-pagination",
@@ -6060,8 +6161,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "chelout/offset-pagination": 20,
-        "altelma/laravel-signrequest": 20
+        "altelma/laravel-signrequest": 20,
+        "chelout/offset-pagination": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
