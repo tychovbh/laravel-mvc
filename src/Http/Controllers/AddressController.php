@@ -16,6 +16,7 @@ class AddressController extends AbstractController
     public function store(Request $request): JsonResource
     {
         try {
+            $test = $this->resource($this->repository::withParams($request->toArray()));
             return new $this->resource($this->repository::withParams($request->toArray())->first());
         } catch (ModelNotFoundException $exception) {
             return parent::store($request);

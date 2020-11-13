@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Http\Resources\AddressResource;
-use Tychovbh\Mvc\Service\AddressLookup\PdokService;
+use Tychovbh\Mvc\Services\AddressLookup\PdokService;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class AddressTest extends TestCase
@@ -17,8 +17,8 @@ class AddressTest extends TestCase
      */
     public function itCanIndex()
     {
-        $address = factory(Address::class, 2)->create();
-        $test = $this->index('addresses.index', AddressResource::collection($address));
+        $addresses = factory(Address::class, 2)->create();
+        $this->index('addresses.index', AddressResource::collection($addresses));
     }
 
     /**
@@ -37,7 +37,7 @@ class AddressTest extends TestCase
     {
         $address = factory(Address::class)->make();
         $address->id = 1;
-        $test= $this->store('addresses.store', AddressResource::make($address), $address->toArray());
+        $this->store('addresses.store', AddressResource::make($address), $address->toArray());
     }
 
     /**
@@ -45,7 +45,8 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
-        $address = new Address(['zipcode' => '2352 CZ', 'house_number' => '38']);
+        $addresses = factory(Address::class, 2)->create();
+        $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
         $country = Country::where('name', 'nl')->first();
         $params = $address->toArray();
