@@ -3,9 +3,8 @@
 namespace Tychovbh\Mvc\Observers;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
-use Tychovbh\Mvc\Service\AddressLookup\PdokService;
+use Tychovbh\Mvc\Services\AddressLookup\PdokService;
 
 class AddressObserver
 {

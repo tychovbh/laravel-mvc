@@ -12,8 +12,8 @@ class Address extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillable(['zipcode', 'street', 'city', 'house_number', 'country_id']);
-        $this->columns(['zipcode', 'street', 'city', 'house_number', 'country_id']);
+        $this->fillables('zipcode', 'street', 'city', 'house_number', 'country_id');
+        $this->columns('zipcode', 'street', 'city', 'house_number', 'country_id');
         $this->associations([
             [
             'relation' => 'country',
