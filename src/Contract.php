@@ -22,8 +22,8 @@ class Contract extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillable(['file', 'status', 'signed_at', 'options']);
-        $this->columns(['file', 'status', 'signed_at', 'options']);
+        $this->fillables('file', 'status', 'signed_at', 'options');
+        $this->columns('file', 'status', 'signed_at', 'options');
         parent::__construct($attributes);
     }
 }

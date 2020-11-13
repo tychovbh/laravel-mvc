@@ -35,8 +35,9 @@ class AddressTest extends TestCase
      */
     public function itCanStore()
     {
+        $addresses = factory(Address::class, 2)->create();
         $address = factory(Address::class)->make();
-        $address->id = 1;
+        $address->id = 3;
         $this->store('addresses.store', AddressResource::make($address), $address->toArray());
     }
 
@@ -52,7 +53,7 @@ class AddressTest extends TestCase
         $params = $address->toArray();
         $params['country'] = $country->name;
 
-        $address->id = 1;
+        $address->id = 3;
         $address->country_id = $country->id;
         $address->fill(PdokService::search($address->zipcode, $address->house_number));
 
@@ -92,6 +93,7 @@ class AddressTest extends TestCase
      */
     public function itFindsExistingRecordInsteadOfStoring()
     {
+        $addresses = factory(Address::class, 2)->create();
         $address = factory(Address::class)->create();
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 200);
     }
