@@ -35,7 +35,7 @@ class AddressTest extends TestCase
      */
     public function itCanStore()
     {
-        $addresses = factory(Address::class, 2)->create();
+        factory(Address::class, 2)->create();
         $address = factory(Address::class)->make();
         $address->id = 3;
         $this->store('addresses.store', AddressResource::make($address), $address->toArray());
@@ -46,7 +46,7 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
-        $addresses = factory(Address::class, 2)->create();
+        factory(Address::class, 2)->create();
         $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
         $country = Country::where('name', 'nl')->first();
@@ -93,7 +93,7 @@ class AddressTest extends TestCase
      */
     public function itFindsExistingRecordInsteadOfStoring()
     {
-        $addresses = factory(Address::class, 2)->create();
+        factory(Address::class, 2)->create();
         $address = factory(Address::class)->create();
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 200);
     }
