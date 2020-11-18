@@ -2,8 +2,6 @@
 
 namespace Tychovbh\Mvc;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 class Country extends Model
 {
     /**
@@ -12,8 +10,8 @@ class Country extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->columns(['name', 'label']);
-        $this->fillable(['name', 'label']);
+        $this->fillables('name', 'label');
+        $this->columns('name', 'label');
 
         parent::__construct($attributes);
     }

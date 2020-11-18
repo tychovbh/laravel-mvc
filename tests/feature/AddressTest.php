@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Tests\Mvc\feature;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
@@ -17,8 +16,8 @@ class AddressTest extends TestCase
      */
     public function itCanIndex()
     {
-        $address = factory(Address::class, 2)->create();
-        $test = $this->index('addresses.index', AddressResource::collection($address));
+        $addresses = factory(Address::class, 2)->create();
+        $this->index('addresses.index', AddressResource::collection($addresses));
     }
 
     /**
@@ -35,8 +34,9 @@ class AddressTest extends TestCase
      */
     public function itCanStore()
     {
+        factory(Address::class, 2)->create();
         $address = factory(Address::class)->make();
-        $address->id = 1;
+        $address->id = 3;
         $this->store('addresses.store', AddressResource::make($address), $address->toArray());
     }
 
@@ -45,13 +45,14 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
-        $address = new Address(['zipcode' => '2352 CZ', 'house_number' => '38']);
+        factory(Address::class, 2)->create();
+        $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
         $country = Country::where('name', 'nl')->first();
         $params = $address->toArray();
         $params['country'] = $country->name;
 
-        $address->id = 1;
+        $address->id = 3;
         $address->country_id = $country->id;
         $address->fill(PdokService::search($address->zipcode, $address->house_number));
 
@@ -91,6 +92,7 @@ class AddressTest extends TestCase
      */
     public function itFindsExistingRecordInsteadOfStoring()
     {
+        factory(Address::class, 2)->create();
         $address = factory(Address::class)->create();
         $this->store('addresses.store', AddressResource::make($address), $address->toArray(), 200);
     }
