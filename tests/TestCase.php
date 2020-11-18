@@ -170,7 +170,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.email_verify_enabled', true);
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
-
+        $app['config']->set('view.paths.0', __DIR__ . '/resources/views');
         $app['config']->set('mvc-payments.return', 'https://localhost:3000/payments/{id}');
         $app['config']->set('mvc-payments.broadcasting', [
             'enabled' => true,
