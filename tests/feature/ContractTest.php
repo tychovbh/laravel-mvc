@@ -34,6 +34,7 @@ class ContractTest extends TestCase
     {
         $contract = factory(Contract::class)->make();
         $store = $contract->toArray();
+        $store['template'] = 'contract';
         $contract->id = 1;
         $contract->file = 'contracts/file.pdf';
         $this->store('contracts.store', ContractResource::make($contract), $store);

@@ -351,4 +351,13 @@ class Model extends BaseModel
 
         return in_array($key, $this->columns);
     }
+
+    /**
+     * Unsets an attribute
+     * @param $key
+     */
+    public function unsetAttribute($key)
+    {
+        Arr::forget($this->attributes, $key);
+    }
 }
