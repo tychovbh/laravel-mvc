@@ -50,18 +50,12 @@ class SignRequest implements DocumentSignInterface
         return $this;
     }
 
-    /**
-     * Creates a Document
-     * @param UploadedFile $file
-     * @param string|null $webhook
-     * @return array
-     */
-    public function create(UploadedFile $file, string $webhook = null): array
+    private function createRequest(string $file, $name, $webhook = null)
     {
         try {
             $response = $this->request('post', '/documents', [
-                'file_from_content' => base64_encode($file->get()),
-                'file_from_content_name' => $file->getClientOriginalName(),
+                'file_from_content' =>base64_encode($file),
+                'file_from_content_name' => $name,
                 'events_callback_url' => $webhook
             ]);
 
@@ -70,11 +64,33 @@ class SignRequest implements DocumentSignInterface
                 'status' => Arr::get($response, 'status', '')
             ];
         } catch (\Exception $exception) {
-            error('SignRequestService create error', [
+            error('SignRequestService createFromUpload error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
         }
+    }
+
+    /**
+     * Creates a Document
+     * @param string $path
+     * @param string|null $name
+     * @return array
+     */
+    public function create(string $path, string $name): array
+    {
+        return $this->createRequest(file_get_contents($path), $name);
+    }
+
+    /**
+     * Creates a Document from upload
+     * @param UploadedFile $file
+     * @param string|null $webhook
+     * @return array
+     */
+    public function createFromUpload(UploadedFile $file, string $webhook = null): array
+    {
+        return $this->createRequest($file->get(), $file->getClientOriginalName(), $webhook);
     }
 
     /**
@@ -145,6 +161,7 @@ class SignRequest implements DocumentSignInterface
 
             return [
                 'id' => Arr::get($response, 'uuid', $id),
+                'status' => Arr::get($response, 'status')
             ];
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [

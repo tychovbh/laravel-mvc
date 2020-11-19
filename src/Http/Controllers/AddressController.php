@@ -18,7 +18,7 @@ class AddressController extends AbstractController
         try {
             return new $this->resource($this->repository::withParams($request->toArray())->first());
         } catch (ModelNotFoundException $exception) {
-            return parent::store($request);
+             return parent::store($request);
         }
     }
 }

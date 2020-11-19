@@ -17,11 +17,19 @@ interface DocumentSignInterface
 
     /**
      * Creates a Document
-     * @param UploadedFile $file
-     * @param string $webhook
+     * @param string $path
+     * @param string|null $name
      * @return array
      */
-    public function create(UploadedFile $file, string $webhook = null): array;
+    public function create(string $path, string $name): array;
+
+    /**
+     * Creates a Document
+     * @param UploadedFile $file
+     * @param string|null $webhook
+     * @return array
+     */
+    public function createFromUpload(UploadedFile $file, string $webhook = null): array;
 
     /**
      * Creates a SignRequest

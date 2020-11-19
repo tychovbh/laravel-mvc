@@ -33,7 +33,9 @@ class PaymentTest extends TestCase
         $data['products'] = $products;
         $payment->products = $products;
         $payment->status = Payment::STATUS_OPEN;
-        $response = $this->store('payments.store', PaymentResource::make($payment), $data);
+        $response = $this->store('payments.store', PaymentResource::make($payment), $data, 201, [
+            'data' => ['status' => 'open']
+        ]);
 
         return json_decode($response->getContent(), true)['data'];
     }

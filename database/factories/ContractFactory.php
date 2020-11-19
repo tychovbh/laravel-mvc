@@ -23,6 +23,6 @@ $factory->define(Contract::class, function (Faker $faker) {
     return [
         'file' => 'file.' . $faker->fileExtension,
         'status' => $faker->randomElement(Contract::STATUSES),
-        'signed_at' => $faker->dateTime()->getTimestamp()
+        'signed_at' => $faker->dateTime()->getTimestamp(),
     ];
 });
