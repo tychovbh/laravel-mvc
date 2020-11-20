@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 
 class SignRequest implements DocumentSignInterface
 {
-
     /**
      * @var Client
      */
@@ -54,7 +53,7 @@ class SignRequest implements DocumentSignInterface
     {
         try {
             $response = $this->request('post', '/documents', [
-                'file_from_content' =>base64_encode($file),
+                'file_from_content' => base64_encode($file),
                 'file_from_content_name' => $name,
                 'events_callback_url' => $webhook
             ]);
@@ -111,7 +110,7 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
-                'document' => config('mvc-document-sign.providers.signrequest.subdomain') . '/documents/' . $id . '/',
+                'document' => config('mvc-document-sign.providers.SignRequest.subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
@@ -224,7 +223,7 @@ class SignRequest implements DocumentSignInterface
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Token ' . config('mvc-document-sign.providers.signrequest.token'),
+                'Authorization' => 'Token ' . config('mvc-document-sign.providers.SignRequest.token'),
             ],
         ];
 
@@ -232,7 +231,7 @@ class SignRequest implements DocumentSignInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-document-sign.providers.signrequest.subdomain') . $endpoint . '/', $options);
+        $response = $this->client->request($method, config('mvc-document-sign.providers.SignRequest.subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }

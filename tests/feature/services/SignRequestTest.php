@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
-use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverter;
+use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class SignRequestTest extends TestCase

@@ -3,7 +3,7 @@
 namespace Tychovbh\Tests\Mvc\feature\services;
 
 use Illuminate\Support\Facades\Storage;
-use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverter;
+use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class HtmlConverterTest extends TestCase
@@ -13,7 +13,7 @@ class HtmlConverterTest extends TestCase
      */
     public function itCanAddPage()
     {
-        $htmlConverter = new HtmlConverter();
+        $htmlConverter = new PhantomMagickConverter();
         $html = '<html lang="en"><h1>test</h1></html>';
         $response = $htmlConverter->page($html);
         $this->assertTrue($response->pages[0] === $html);
@@ -24,7 +24,7 @@ class HtmlConverterTest extends TestCase
      */
     public function itCanSave()
     {
-        $htmlConverter = new HtmlConverter();
+        $htmlConverter = new PhantomMagickConverter();
         $htmlConverter->page('<html lang="nl"><h1>pdf</h1></html>')
             ->save('documents/file.pdf');
         $this->assertFileExists(storage_path('documents/file.pdf'));
@@ -35,7 +35,7 @@ class HtmlConverterTest extends TestCase
      */
     public function itCanSavePng()
     {
-        $htmlConverter = new HtmlConverter();
+        $htmlConverter = new PhantomMagickConverter();
         $type = 'png';
         $htmlConverter->page('<html lang="nl"><h1>' . $type . '</h1></html>')
             ->save('documents/file.' . $type, $type);
@@ -47,7 +47,7 @@ class HtmlConverterTest extends TestCase
      */
     public function itCanSaveJpg()
     {
-        $htmlConverter = new HtmlConverter();
+        $htmlConverter = new PhantomMagickConverter();
         $type = 'jpg';
         $htmlConverter->page('<html lang="nl"><h1>' . $type .'</h1></html>')
             ->save('documents/file.' . $type, $type);

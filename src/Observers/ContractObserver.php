@@ -2,24 +2,29 @@
 
 namespace Tychovbh\Mvc\Observers;
 
-use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Contract;
-use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverter;
+use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 
+/**
+ * @property DocumentSignInterface documentSign
+ */
 class ContractObserver
 {
+    public function __construct(DocumentSignInterface $documentSign)
+    {
+        $this->documentSign = $documentSign;
+    }
+
     /**
      * @param Contract $contract
      */
     public function creating(Contract $contract)
     {
-        $page = view($contract->template);
-        $html = $page->render();
-        $htmlConverter = new HtmlConverter();
-        $path = 'contracts/file.pdf';
-        $htmlConverter->page($html)->save($path);
-        $contract->file = $path;
-        $contract->unsetAttribute('template');
-        $test = '';
+        $contract->toPdf();
+    }
+
+    public function created(Contract $contract)
+    {
+        $contract->sign($this->documentSign);
     }
 }

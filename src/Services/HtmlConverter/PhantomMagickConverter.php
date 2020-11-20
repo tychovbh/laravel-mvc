@@ -5,7 +5,7 @@ namespace Tychovbh\Mvc\Services\HtmlConverter;
 use Illuminate\Support\Collection;
 use Anam\PhantomMagick\Converter;
 
-class HtmlConverter implements HtmlConverterInterface
+class PhantomMagickConverter implements HtmlConverterInterface
 {
     /**
      * @var Collection
@@ -48,7 +48,7 @@ class HtmlConverter implements HtmlConverterInterface
             }
             $converter->save(storage_path($path));
         } catch (\Exception $exception) {
-            error('HtmlConverter save error', [
+            error('PhantomMagickConverter save error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);

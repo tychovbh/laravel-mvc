@@ -23,6 +23,8 @@ use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\ContractObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
+use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
+use Tychovbh\Mvc\Services\DocumentSign\DocuSign;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
@@ -105,12 +107,18 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function register()
     {
-//        $this->app->bind(SignRequest::class, function ($app, Client $client) {
-//            return new SignRequest($client);
-//        });
         $this->app->register(
             OffsetPaginationServiceProvider::class
         );
+
+        $this->app->singleton(DocumentSignInterface::class, function ($app) {
+            $client = $app->make(Client::class);
+            $service = config('mvc-document-sign.default');
+
+            $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
+
+            return new $service($client);
+        });
     }
 
     /**
