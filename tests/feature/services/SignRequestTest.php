@@ -6,7 +6,9 @@ use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
+use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 use Tychovbh\Tests\Mvc\TestCase;
 

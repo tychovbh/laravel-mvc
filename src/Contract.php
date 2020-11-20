@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
+use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 
 class Contract extends Model
@@ -33,7 +34,7 @@ class Contract extends Model
         parent::__construct($attributes);
     }
 
-    public function toPdf()
+    public function toPdf(HtmlConverterInterface $htmlConverter)
     {
         if (!$this->template) {
             return;
@@ -41,7 +42,6 @@ class Contract extends Model
 
         $page = view($this->template);
         $html = $page->render();
-        $htmlConverter = new PhantomMagickConverter();
         $path = 'contracts/contract.pdf';
         $htmlConverter->page($html)->save($path);
         $this->file = $path;

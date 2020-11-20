@@ -129,6 +129,24 @@ class TestCase extends BaseTestCase
             ]
         );
 
+        Config::set('mvc-html-converter', [
+            'default' => 'PhantomMagickConverter',
+            'providers' => [
+                'PhantomMagickConverter' => [
+
+                ]
+            ]
+        ]);
+
+        Config::set('mvc-address-lookup', [
+            'default' => 'PdokService',
+            'providers' => [
+                'PdokService' => [
+
+                ]
+            ]
+        ]);
+
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);

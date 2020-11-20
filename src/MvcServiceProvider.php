@@ -23,9 +23,11 @@ use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\ContractObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
+use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocuSign;
 use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
+use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -114,10 +116,23 @@ class MvcServiceProvider extends ServiceProvider
         $this->app->singleton(DocumentSignInterface::class, function ($app) {
             $client = $app->make(Client::class);
             $service = config('mvc-document-sign.default');
-
             $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
 
             return new $service($client);
+        });
+
+        $this->app->singleton(HtmlConverterInterface::class, function () {
+            $service = config('mvc-html-converter.default');
+            $service = 'Tychovbh\\Mvc\\Services\\HtmlConverter\\' . $service;
+
+            return new $service();
+        });
+
+        $this->app->singleton(AddressLookupInterface::class, function () {
+            $service = config('mvc-address-lookup.default');
+            $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
+
+            return new $service();
         });
     }
 
