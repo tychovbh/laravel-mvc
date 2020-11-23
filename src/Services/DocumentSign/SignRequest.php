@@ -22,6 +22,11 @@ class SignRequest implements DocumentSignInterface
     private $signers;
 
     /**
+     * @var Arr
+     */
+    private $config;
+
+    /**
      * SignRequest constructor.
      * @param Client $client
      */
@@ -29,6 +34,7 @@ class SignRequest implements DocumentSignInterface
     {
         $this->client = $client;
         $this->signers = collect([]);
+        $this->config = config('mvc-document-sign.providers.SignRequest');
     }
 
     /**
@@ -49,7 +55,13 @@ class SignRequest implements DocumentSignInterface
         return $this;
     }
 
-    private function createRequest(string $file, $name, $webhook = null)
+    /**
+     * @param string $file
+     * @param $name
+     * @param null $webhook
+     * @return array
+     */
+    private function createRequest(string $file, string $name, $webhook = null): array
     {
         try {
             $response = $this->request('post', '/documents', [
@@ -63,7 +75,7 @@ class SignRequest implements DocumentSignInterface
                 'status' => Arr::get($response, 'status', '')
             ];
         } catch (\Exception $exception) {
-            error('SignRequestService createFromUpload error', [
+            error('SignRequestService create error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
@@ -71,9 +83,9 @@ class SignRequest implements DocumentSignInterface
     }
 
     /**
-     * Creates a Document
+     * Creates a Documentq
      * @param string $path
-     * @param string|null $name
+     * @param string $name
      * @return array
      */
     public function create(string $path, string $name): array
@@ -110,7 +122,7 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
-                'document' => config('mvc-document-sign.providers.SignRequest.subdomain') . '/documents/' . $id . '/',
+                'document' => Arr::get($this->config, 'subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
@@ -223,7 +235,7 @@ class SignRequest implements DocumentSignInterface
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Token ' . config('mvc-document-sign.providers.SignRequest.token'),
+                'Authorization' => 'Token ' . Arr::get($this->config, 'token'),
             ],
         ];
 
@@ -231,7 +243,7 @@ class SignRequest implements DocumentSignInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-document-sign.providers.SignRequest.subdomain') . $endpoint . '/', $options);
+        $response = $this->client->request($method, Arr::get($this->config, 'subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }

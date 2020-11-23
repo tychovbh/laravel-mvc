@@ -12,6 +12,9 @@ class PhantomMagickConverter implements HtmlConverterInterface
      */
     public $pages;
 
+    /**
+     * PhantomMagickConverter constructor.
+     */
     public function __construct()
     {
         $this->pages = collect([]);
@@ -19,16 +22,21 @@ class PhantomMagickConverter implements HtmlConverterInterface
 
     /**
      * @param string $html
-     * @return Collection|mixed
+     * @return HtmlConverterInterface
      */
-    public function page(string $html)
+    public function page(string $html): HtmlConverterInterface
     {
         $this->pages = $this->pages->push($html);
 
         return $this;
     }
 
-    public function save(string $path, string $type = 'pdf')
+    /**
+     * @param string $path
+     * @param string $type
+     * @return bool
+     */
+    public function save(string $path, string $type = 'pdf'): bool
     {
         try {
             $converter = new Converter();
@@ -47,11 +55,13 @@ class PhantomMagickConverter implements HtmlConverterInterface
                     break;
             }
             $converter->save(storage_path($path));
+            return true;
         } catch (\Exception $exception) {
             error('PhantomMagickConverter save error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
+            return false;
         }
     }
 }

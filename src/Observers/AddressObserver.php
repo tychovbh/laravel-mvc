@@ -13,6 +13,10 @@ use Tychovbh\Mvc\Services\AddressLookup\PdokService;
 class AddressObserver
 {
 
+    /**
+     * AddressObserver constructor.
+     * @param AddressLookupInterface $addressLookup
+     */
     public function __construct(AddressLookupInterface $addressLookup)
     {
         $this->addressLookup = $addressLookup;

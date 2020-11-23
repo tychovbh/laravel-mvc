@@ -131,18 +131,13 @@ class TestCase extends BaseTestCase
 
         Config::set('mvc-html-converter', [
             'default' => 'PhantomMagickConverter',
-            'providers' => [
-                'PhantomMagickConverter' => [
-
-                ]
-            ]
         ]);
 
         Config::set('mvc-address-lookup', [
             'default' => 'PdokService',
             'providers' => [
                 'PdokService' => [
-
+                    'base-url' => 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free'
                 ]
             ]
         ]);

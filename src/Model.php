@@ -356,7 +356,7 @@ class Model extends BaseModel
      * Unsets an attribute
      * @param $key
      */
-    public function unsetAttribute($key)
+    public function unsetAttribute(string $key)
     {
         Arr::forget($this->attributes, $key);
     }

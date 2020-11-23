@@ -19,7 +19,7 @@ class PdokService implements AddressLookupInterface
         $zipcode = str_replace(' ', '', $zipcode);
 
         $client = new Client();
-        $res = $client->request('GET', 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free', [
+        $res = $client->request('GET', config('mvc-address-lookup.providers.PdokService.base-url'), [
             'query' => ['fq' => $zipcode, 'q' => $house_number]
         ]);
 

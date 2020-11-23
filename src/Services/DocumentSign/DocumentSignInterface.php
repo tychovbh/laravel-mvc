@@ -18,7 +18,7 @@ interface DocumentSignInterface
     /**
      * Creates a Document
      * @param string $path
-     * @param string|null $name
+     * @param string $name
      * @return array
      */
     public function create(string $path, string $name): array;
@@ -65,7 +65,7 @@ interface DocumentSignInterface
     /**
      * Deletes a Document
      * @param string $id
-     * @return array
+     * @return bool
      */
     public function destroy(string $id): bool;
 }

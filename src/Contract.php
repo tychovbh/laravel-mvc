@@ -2,12 +2,9 @@
 
 namespace Tychovbh\Mvc;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
-use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
-use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 
 class Contract extends Model
 {
@@ -30,10 +27,14 @@ class Contract extends Model
     public function __construct(array $attributes = [])
     {
         $this->fillables('file', 'status', 'signed_at', 'options', 'template', 'external_id', 'user_id');
-        $this->columns('file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
+        $this->columns('id', 'file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
         parent::__construct($attributes);
     }
 
+    /**
+     * Converts html file to pdf
+     * @param HtmlConverterInterface $htmlConverter
+     */
     public function toPdf(HtmlConverterInterface $htmlConverter)
     {
         if (!$this->template) {
@@ -48,6 +49,10 @@ class Contract extends Model
         $this->unsetAttribute('template');
     }
 
+    /**
+     * Generates file and sends a SignRequest
+     * @param DocumentSignInterface $documentSign
+     */
     public function sign(DocumentSignInterface $documentSign)
     {
         if (!$this->file) {

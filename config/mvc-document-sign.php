@@ -4,8 +4,8 @@ return [
     'default' => env('DOCUMENT_SIGN_PROVIDER', 'SignRequest'),
     'providers' => [
         'SignRequest' => [
-            'token' => '',
-            'subdomain' => '',
+            'token' => env('DOCUMENT_SIGN_PROVIDER_TOKEN', ''),
+            'subdomain' => env('DOCUMENT_SIGN_PROVIDER_SUBDOMAIN', ''),
         ]
     ]
 ];
