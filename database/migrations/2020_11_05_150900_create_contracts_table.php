@@ -16,10 +16,14 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->enum('status', Contract::STATUSES);
             $table->timestamp('signed_at')->nullable();
             $table->json('options')->nullable();
+            $table->string('external_id')->nullable();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });

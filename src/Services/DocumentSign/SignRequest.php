@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 
 class SignRequest implements DocumentSignInterface
 {
-
     /**
      * @var Client
      */
@@ -23,6 +22,11 @@ class SignRequest implements DocumentSignInterface
     private $signers;
 
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
      * SignRequest constructor.
      * @param Client $client
      */
@@ -30,6 +34,7 @@ class SignRequest implements DocumentSignInterface
     {
         $this->client = $client;
         $this->signers = collect([]);
+        $this->config = config('mvc-document-sign.providers.SignRequest');
     }
 
     /**
@@ -51,17 +56,17 @@ class SignRequest implements DocumentSignInterface
     }
 
     /**
-     * Creates a Document
-     * @param UploadedFile $file
-     * @param string|null $webhook
+     * @param string $file
+     * @param string $name
+     * @param string $webhook
      * @return array
      */
-    public function create(UploadedFile $file, string $webhook = null): array
+    private function createRequest(string $file, string $name, string $webhook = null): array
     {
         try {
             $response = $this->request('post', '/documents', [
-                'file_from_content' => base64_encode($file->get()),
-                'file_from_content_name' => $file->getClientOriginalName(),
+                'file_from_content' => base64_encode($file),
+                'file_from_content_name' => $name,
                 'events_callback_url' => $webhook
             ]);
 
@@ -75,6 +80,29 @@ class SignRequest implements DocumentSignInterface
                 'line' => $exception->getLine(),
             ]);
         }
+    }
+
+    /**
+     * Creates a Document
+     * @param string $path
+     * @param string $name
+     * @param string|null $webhook
+     * @return array
+     */
+    public function create(string $path, string $name, string $webhook = null): array
+    {
+        return $this->createRequest(file_get_contents($path), $name);
+    }
+
+    /**
+     * Creates a Document from upload
+     * @param UploadedFile $file
+     * @param string $webhook
+     * @return array
+     */
+    public function createFromUpload(UploadedFile $file, string $webhook = null): array
+    {
+        return $this->createRequest($file->get(), $file->getClientOriginalName(), $webhook);
     }
 
     /**
@@ -95,7 +123,7 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
-                'document' => config('mvc-document-sign.providers.signrequest.subdomain') . '/documents/' . $id . '/',
+                'document' => Arr::get($this->config, 'subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
@@ -145,6 +173,7 @@ class SignRequest implements DocumentSignInterface
 
             return [
                 'id' => Arr::get($response, 'uuid', $id),
+                'status' => Arr::get($response, 'status')
             ];
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [
@@ -207,7 +236,7 @@ class SignRequest implements DocumentSignInterface
     {
         $options = [
             'headers' => [
-                'Authorization' => 'Token ' . config('mvc-document-sign.providers.signrequest.token'),
+                'Authorization' => 'Token ' . Arr::get($this->config, 'token'),
             ],
         ];
 
@@ -215,7 +244,7 @@ class SignRequest implements DocumentSignInterface
             $options['json'] = $params;
         }
 
-        $response = $this->client->request($method, config('mvc-document-sign.providers.signrequest.subdomain') . $endpoint . '/', $options);
+        $response = $this->client->request($method, Arr::get($this->config, 'subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }

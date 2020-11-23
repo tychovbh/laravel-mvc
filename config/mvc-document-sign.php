@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'default' => 'signrequest',
+    'default' => env('DOCUMENT_SIGN_PROVIDER', 'SignRequest'),
     'providers' => [
-        'signrequest' => [
-            'token' => '',
-            'subdomain' => '',
+        'SignRequest' => [
+            'token' => env('SIGNREQUEST_TOKEN', ''),
+            'subdomain' => env('SIGNREQUEST_SUBDOMAIN', ''),
         ]
     ]
 ];

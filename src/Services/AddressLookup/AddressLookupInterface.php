@@ -14,5 +14,5 @@ interface AddressLookupInterface
      * @return mixed
      * @throws GuzzleException
      */
-    public static function search(string $zipcode, int $house_number): array;
+    public function search(string $zipcode, int $house_number): array;
 }

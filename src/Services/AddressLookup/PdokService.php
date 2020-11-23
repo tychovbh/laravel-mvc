@@ -9,17 +9,36 @@ use Illuminate\Support\Arr;
 class PdokService implements AddressLookupInterface
 {
     /**
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * PdokService constructor.
+     */
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+        $this->config = config('mvc-address-lookup.providers.PdokService');
+    }
+
+    /**
      * @param string $zipcode
      * @param int $house_number
      * @return array
      * @throws GuzzleException
      */
-    public static function search(string $zipcode, int $house_number): array
+    public function search(string $zipcode, int $house_number): array
     {
         $zipcode = str_replace(' ', '', $zipcode);
 
         $client = new Client();
-        $res = $client->request('GET', 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free', [
+        $res = $client->request('GET', Arr::get($this->config, 'base_url'), [
             'query' => ['fq' => $zipcode, 'q' => $house_number]
         ]);
 

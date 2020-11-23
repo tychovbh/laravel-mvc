@@ -7,7 +7,6 @@ namespace Tychovbh\Tests\Mvc;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Tychovbh\Mvc\Country;
 use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Model;
 use Tychovbh\Mvc\MvcServiceProvider;
@@ -115,17 +114,42 @@ class TestCase extends BaseTestCase
             ]
         ]));
 
-        // SANDBOX account
         Config::set('mvc-document-sign', [
-                'default' => 'signrequest',
+                'default' => 'SignRequest',
                 'providers' => [
-                    'signrequest' => [
+                    // SANDBOX account
+                    'SignRequest' => [
                         'token' => '69d3a60fbb9c08bbfbb7525cb704ac1984b2f9db',
                         'subdomain' => 'https://bespokeweb.signrequest.com/api/v1',
+                    ],
+                    'DocuSign' => [
+
                     ]
                 ]
             ]
         );
+
+        Config::set('mvc-html-converter', [
+            'default' => 'PhantomMagickConverter',
+        ]);
+
+        Config::set('mvc-address-lookup', [
+            'default' => 'PdokService',
+            'providers' => [
+                'PdokService' => [
+                    'base_url' => 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free'
+                ]
+            ]
+        ]);
+
+        Config::set('mvc-contracts', [
+            'pdf' => [
+                'enabled' => true
+            ],
+            'document_sign' => [
+                'enabled' => true
+            ]
+        ]);
 
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
@@ -170,7 +194,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('mvc-auth.email_verify_enabled', true);
         $app['config']->set('mvc-auth.url', 'https://localhost:3000/users/create/{reference}');
         $app['config']->set('mvc-auth.password_reset_url', 'https://localhost:3000/users/password_reset/{reference}');
-
+        $app['config']->set('view.paths.0', __DIR__ . '/resources/views');
         $app['config']->set('mvc-payments.return', 'https://localhost:3000/payments/{id}');
         $app['config']->set('mvc-payments.broadcasting', [
             'enabled' => true,

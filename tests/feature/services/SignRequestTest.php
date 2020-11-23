@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tychovbh\Tests\Mvc\feature\services;
-
 
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
@@ -24,9 +22,9 @@ class SignRequestTest extends TestCase
      */
     public function itCanCreate()
     {
-        Storage::fake('photos');
-        $file = UploadedFile::fake()->image('photo2.jpg');
-        $document = $this->signRequest()->create($file);
+        $path = __DIR__ . '/SignRequestTestPdf.pdf';
+        $document = $this->signRequest()->create($path, 'SignRequestTestPdf.pdf');
+
         $this->assertTrue(Arr::has($document, 'id'));
         $this->assertTrue($document['status'] === 'co');
 
@@ -35,7 +33,21 @@ class SignRequestTest extends TestCase
 
     /**
      * @test
-     * @depends itCanCreate
+     */
+    public function itCanCreateFromUpload()
+    {
+        Storage::fake();
+        $file = UploadedFile::fake()->image('contract.jpg');
+        $document = $this->signRequest()->createFromUpload($file);
+        $this->assertTrue(Arr::has($document, 'id'));
+        $this->assertTrue($document['status'] === 'co');
+
+        return $document;
+    }
+
+    /**
+     * @test
+     * @depends itCanCreateFromUpload
      * @param array $document
      */
     public function itCanShow(array $document)
@@ -48,17 +60,32 @@ class SignRequestTest extends TestCase
 
     /**
      * @test
-     * @depends itCanShow
+     * @depends itCanCreate
      * @param array $document
      */
     public function itCanSign(array $document)
     {
         $sign = $this->signRequest()
-            ->signer('bixit94918@x1post.com')
+            ->signer('sanad48180@ummoh.com')
             ->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
         $this->assertTrue(Arr::has($sign, 'id'));
 
+        $sign['document_id'] = $document['id'];
         return $sign;
+    }
+
+    /**
+     * @test
+     * @depends itCanSign
+     * @param array $sign
+     */
+    public function itCanVerifyIfDocumentIsSigned(array $sign)
+    {
+        $this->markTestSkipped('TO MAKE THIS TEST WORK YOU WILL HAVE TO GO TO itCanSign TEST AND CHANGE THE SIGNER EMAIL TO YOUR EMAIL, AND THEN SIGN THE DOCUMENT');
+
+        $document = $this->signRequest()->show($sign['document_id']);
+
+        $this->assertTrue($document['status'] === 'si');
     }
 
     /**

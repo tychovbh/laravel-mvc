@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\feature;
 
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
@@ -46,6 +46,7 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
+        $pdokService = new PdokService(new Client());
         factory(Address::class, 2)->create();
         $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
@@ -55,7 +56,7 @@ class AddressTest extends TestCase
 
         $address->id = 3;
         $address->country_id = $country->id;
-        $address->fill(PdokService::search($address->zipcode, $address->house_number));
+        $address->fill($pdokService->search($address->zipcode, $address->house_number));
 
         $this->store('addresses.store', AddressResource::make($address), $params);
     }

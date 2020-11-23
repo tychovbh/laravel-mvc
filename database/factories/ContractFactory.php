@@ -7,6 +7,7 @@
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,8 @@ use Tychovbh\Mvc\Contract;
 
 $factory->define(Contract::class, function (Faker $faker) {
     return [
-        'file' => 'file.' . $faker->fileExtension,
         'status' => $faker->randomElement(Contract::STATUSES),
-        'signed_at' => $faker->dateTime()->getTimestamp()
+        'signed_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
+        'user_id' =>  factory(User::Class)->create()->id
     ];
 });

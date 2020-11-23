@@ -4,6 +4,7 @@ namespace Tychovbh\Mvc;
 
 use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use GuzzleHttp\Client;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
@@ -21,8 +22,11 @@ use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Observers\AddressObserver;
+use Tychovbh\Mvc\Observers\ContractObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
-use Tychovbh\Mvc\Services\DocumentSign\SignRequest;
+use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
+use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
+use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -104,12 +108,32 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function register()
     {
-//        $this->app->bind(SignRequest::class, function ($app, Client $client) {
-//            return new SignRequest($client);
-//        });
         $this->app->register(
             OffsetPaginationServiceProvider::class
         );
+
+        $this->app->bind(DocumentSignInterface::class, function (Application $app) {
+            $client = $app->make(Client::class);
+            $service = config('mvc-document-sign.default');
+            $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
+
+            return new $service($client);
+        });
+
+        $this->app->bind(HtmlConverterInterface::class, function () {
+            $service = config('mvc-html-converter.default');
+            $service = 'Tychovbh\\Mvc\\Services\\HtmlConverter\\' . $service;
+
+            return new $service();
+        });
+
+        $this->app->bind(AddressLookupInterface::class, function (Application $app) {
+            $client = $app->make(Client::class);
+            $service = config('mvc-address-lookup.default');
+            $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
+
+            return new $service($client);
+        });
     }
 
     /**
@@ -129,5 +153,6 @@ class MvcServiceProvider extends ServiceProvider
     {
         Payment::observe(PaymentObserver::class);
         Address::observe(AddressObserver::class);
+        Contract::observe(ContractObserver::class);
     }
 }
