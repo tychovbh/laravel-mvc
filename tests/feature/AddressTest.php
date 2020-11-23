@@ -45,6 +45,7 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
+        $pdokService = new PdokService();
         factory(Address::class, 2)->create();
         $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
@@ -54,7 +55,7 @@ class AddressTest extends TestCase
 
         $address->id = 3;
         $address->country_id = $country->id;
-        $address->fill(PdokService::search($address->zipcode, $address->house_number));
+        $address->fill($pdokService->search($address->zipcode, $address->house_number));
 
         $this->store('addresses.store', AddressResource::make($address), $params);
     }

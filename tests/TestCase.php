@@ -137,8 +137,17 @@ class TestCase extends BaseTestCase
             'default' => 'PdokService',
             'providers' => [
                 'PdokService' => [
-                    'base-url' => 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free'
+                    'base_url' => 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free'
                 ]
+            ]
+        ]);
+
+        Config::set('mvc-contracts', [
+            'pdf' => [
+                'enabled' => true
+            ],
+            'document_sign' => [
+                'enabled' => true
             ]
         ]);
 

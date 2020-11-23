@@ -29,7 +29,7 @@ class AddressObserver
     public function creating(Address $address)
     {
         if (!$address->street) {
-            $address->fill($this->addressLookup::search($address->zipcode, $address->house_number));
+            $address->fill($this->addressLookup->search($address->zipcode, $address->house_number));
         }
     }
 }

@@ -19,9 +19,10 @@ interface DocumentSignInterface
      * Creates a Document
      * @param string $path
      * @param string $name
+     * @param string|null $webhook
      * @return array
      */
-    public function create(string $path, string $name): array;
+    public function create(string $path, string $name, string $webhook = null): array;
 
     /**
      * Creates a Document

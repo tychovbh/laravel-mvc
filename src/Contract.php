@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
@@ -21,6 +22,11 @@ class Contract extends Model
     ];
 
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
      * Address constructor.
      * @param array $attributes
      */
@@ -28,6 +34,7 @@ class Contract extends Model
     {
         $this->fillables('file', 'status', 'signed_at', 'options', 'template', 'external_id', 'user_id');
         $this->columns('id', 'file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
+        $this->config = config('mvc-contracts');
         parent::__construct($attributes);
     }
 
@@ -37,7 +44,7 @@ class Contract extends Model
      */
     public function toPdf(HtmlConverterInterface $htmlConverter)
     {
-        if (!$this->template) {
+        if (!$this->template || !config('mvc-contracts.pdf.enabled')) {
             return;
         }
 
@@ -55,7 +62,7 @@ class Contract extends Model
      */
     public function sign(DocumentSignInterface $documentSign)
     {
-        if (!$this->file) {
+        if (!$this->file || !config('mvc-contracts.document_sign.enabled')) {
             return;
         }
 

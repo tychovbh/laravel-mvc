@@ -22,7 +22,7 @@ class SignRequest implements DocumentSignInterface
     private $signers;
 
     /**
-     * @var Arr
+     * @var array
      */
     private $config;
 
@@ -57,11 +57,11 @@ class SignRequest implements DocumentSignInterface
 
     /**
      * @param string $file
-     * @param $name
-     * @param null $webhook
+     * @param string $name
+     * @param string $webhook
      * @return array
      */
-    private function createRequest(string $file, string $name, $webhook = null): array
+    private function createRequest(string $file, string $name, string $webhook = null): array
     {
         try {
             $response = $this->request('post', '/documents', [
@@ -83,12 +83,13 @@ class SignRequest implements DocumentSignInterface
     }
 
     /**
-     * Creates a Documentq
+     * Creates a Document
      * @param string $path
      * @param string $name
+     * @param string|null $webhook
      * @return array
      */
-    public function create(string $path, string $name): array
+    public function create(string $path, string $name, string $webhook = null): array
     {
         return $this->createRequest(file_get_contents($path), $name);
     }
@@ -96,7 +97,7 @@ class SignRequest implements DocumentSignInterface
     /**
      * Creates a Document from upload
      * @param UploadedFile $file
-     * @param string|null $webhook
+     * @param string $webhook
      * @return array
      */
     public function createFromUpload(UploadedFile $file, string $webhook = null): array
