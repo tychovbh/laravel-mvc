@@ -9,6 +9,11 @@ use Illuminate\Support\Arr;
 class PdokService implements AddressLookupInterface
 {
     /**
+     * @var Client
+     */
+    private $client;
+
+    /**
      * @var array
      */
     private $config;
@@ -16,8 +21,9 @@ class PdokService implements AddressLookupInterface
     /**
      * PdokService constructor.
      */
-    public function __construct()
+    public function __construct(Client $client)
     {
+        $this->client = $client;
         $this->config = config('mvc-address-lookup.providers.PdokService');
     }
 

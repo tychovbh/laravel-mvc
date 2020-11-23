@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\feature;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Address;
 use Tychovbh\Mvc\Country;
@@ -45,7 +46,7 @@ class AddressTest extends TestCase
      */
     public function itCanStoreViaZipcodeAndHouseNumber()
     {
-        $pdokService = new PdokService();
+        $pdokService = new PdokService(new Client());
         factory(Address::class, 2)->create();
         $address = new Address(['zipcode' => '2352cz', 'house_number' => '38']);
 
