@@ -21,6 +21,7 @@ class PhantomMagickConverter implements HtmlConverterInterface
     }
 
     /**
+     * Adds a page to pages
      * @param string $html
      * @return HtmlConverterInterface
      */
@@ -32,6 +33,7 @@ class PhantomMagickConverter implements HtmlConverterInterface
     }
 
     /**
+     * Converts all the pages to specified type
      * @param string $path
      * @param string $type
      * @return bool
