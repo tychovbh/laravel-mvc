@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Tychovbh\Mvc\Contract;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 
-class MvcUpdateContract extends Command
+class MvcContractUpdate extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mvc:contracts-update';
+    protected $signature = 'mvc-contract:update';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class MvcUpdateContract extends Command
     public function handle(DocumentSignInterface $documentSign)
     {
         try {
-            $contracts = Contract::all()->whereNotNull('external_id')->whereNull('signed_at');
+            $contracts = Contract::whereNotNull('external_id')->whereNull('signed_at')->get();
 
             foreach ($contracts as $contract) {
                 $document = $documentSign->show($contract['external_id']);
@@ -62,10 +62,11 @@ class MvcUpdateContract extends Command
                         $contract['status'] = Contract::STATUS_SIGNED;
                         break;
                 }
+                $contract->save();
             }
             return $this->line('All contracts are updated');
         } catch (\Exception $exception) {
-            return $this->warn('Something went wrong');
+            return $this->warn($exception->getMessage());
         }
     }
 }

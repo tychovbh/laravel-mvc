@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
@@ -39,6 +40,15 @@ class Contract extends Model
     }
 
     /**
+     * The Users
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Converts html file to pdf
      * @param HtmlConverterInterface $htmlConverter
      */
@@ -68,8 +78,7 @@ class Contract extends Model
 
         $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
         $this->external_id = $document['id'];
-
-        $documentSign->signer('hidot23263@verumst.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+        $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
         $this->save();
     }
 }
