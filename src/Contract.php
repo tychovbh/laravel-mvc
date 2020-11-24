@@ -15,10 +15,10 @@ class Contract extends Model
     const STATUS_DENIED = 'denied';
 
     const STATUSES = [
-      self::STATUS_CONCEPT,
-      self::STATUS_SENT,
-      self::STATUS_SIGNED,
-      self::STATUS_DENIED,
+        self::STATUS_CONCEPT,
+        self::STATUS_SENT,
+        self::STATUS_SIGNED,
+        self::STATUS_DENIED,
     ];
 
     /**
@@ -69,7 +69,7 @@ class Contract extends Model
         $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
         $this->external_id = $document['id'];
 
-        $documentSign->signer('test@live.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+        $documentSign->signer('hidot23263@verumst.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
         $this->save();
     }
 }
