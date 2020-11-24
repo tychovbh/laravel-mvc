@@ -2,6 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
@@ -15,10 +16,10 @@ class Contract extends Model
     const STATUS_DENIED = 'denied';
 
     const STATUSES = [
-      self::STATUS_CONCEPT,
-      self::STATUS_SENT,
-      self::STATUS_SIGNED,
-      self::STATUS_DENIED,
+        self::STATUS_CONCEPT,
+        self::STATUS_SENT,
+        self::STATUS_SIGNED,
+        self::STATUS_DENIED,
     ];
 
     /**
@@ -36,6 +37,15 @@ class Contract extends Model
         $this->columns('id', 'file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
         $this->config = config('mvc-contracts');
         parent::__construct($attributes);
+    }
+
+    /**
+     * The Users
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -66,10 +76,19 @@ class Contract extends Model
             return;
         }
 
-        $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
-        $this->external_id = $document['id'];
+        try {
+            $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
+            $this->external_id = $document['id'];
+            $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+            $this->save();
+            return true;
+        } catch (\Exception $exception) {
+            error('Contract sign error', [
+                'message' => $exception->getMessage(),
+                'line' => $exception->getLine(),
+            ]);
+            return false;
+        }
 
-        $documentSign->signer('test@live.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
-        $this->save();
     }
 }
