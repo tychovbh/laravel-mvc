@@ -20,17 +20,7 @@ class MvcContractsUpdate extends Command
      *
      * @var string
      */
-    protected $description = 'This command updates the signed_at from a contract, when the status is si(signed)';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'This command updates contracts information';
 
     /**
      * Execute the console command.

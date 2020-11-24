@@ -81,11 +81,13 @@ class Contract extends Model
             $this->external_id = $document['id'];
             $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
             $this->save();
+            return true;
         } catch (\Exception $exception) {
             error('Contract sign error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
+            return false;
         }
 
     }
