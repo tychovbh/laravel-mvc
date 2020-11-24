@@ -76,9 +76,17 @@ class Contract extends Model
             return;
         }
 
-        $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
-        $this->external_id = $document['id'];
-        $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
-        $this->save();
+        try {
+            $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
+            $this->external_id = $document['id'];
+            $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+            $this->save();
+        } catch (\Exception $exception) {
+            error('Contract sign error', [
+                'message' => $exception->getMessage(),
+                'line' => $exception->getLine(),
+            ]);
+        }
+
     }
 }

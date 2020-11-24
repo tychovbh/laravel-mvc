@@ -14,7 +14,7 @@ use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
-use Tychovbh\Mvc\Console\Commands\MvcContractUpdate;
+use Tychovbh\Mvc\Console\Commands\MvcContractsUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
 use Tychovbh\Mvc\Console\Commands\MvcUserToken;
 use Tychovbh\Mvc\Console\Commands\VendorPublish;
@@ -78,7 +78,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcUserCreate::class,
             MvcUserToken::class,
             MvcPaymentsCheck::class,
-            MvcContractUpdate::class
+            MvcContractsUpdate::class
         ]);
 
         $this->config('mvc-messages');
