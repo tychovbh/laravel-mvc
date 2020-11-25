@@ -4,7 +4,6 @@ namespace Tychovbh\Mvc;
 
 use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use GuzzleHttp\Client;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
@@ -114,7 +113,7 @@ class MvcServiceProvider extends ServiceProvider
             OffsetPaginationServiceProvider::class
         );
 
-        $this->app->bind(DocumentSignInterface::class, function (Application $app) {
+        $this->app->bind(DocumentSignInterface::class, function ($app) {
             $client = $app->make(Client::class);
             $service = config('mvc-document-sign.default');
             $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
@@ -129,7 +128,7 @@ class MvcServiceProvider extends ServiceProvider
             return new $service();
         });
 
-        $this->app->bind(AddressLookupInterface::class, function (Application $app) {
+        $this->app->bind(AddressLookupInterface::class, function ($app) {
             $client = $app->make(Client::class);
             $service = config('mvc-address-lookup.default');
             $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
