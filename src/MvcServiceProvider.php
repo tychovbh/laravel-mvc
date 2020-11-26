@@ -148,12 +148,23 @@ class MvcServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot Observers.
+     * @throws \Exception
      */
     private function observers()
     {
-        Payment::observe(PaymentObserver::class);
-        Address::observe(AddressObserver::class);
-        Contract::observe(ContractObserver::class);
+        $this->observe(Payment::class, PaymentObserver::class);
+        $this->observe(Address::class, AddressObserver::class);
+        $this->observe(Contract::class, ContractObserver::class);
+    }
+
+    /**
+     * @param string $class
+     * @param string $observer
+     * @throws \Exception
+     */
+    private function observe(string $class, string $observer)
+    {
+        $class = project_or_package_class('Model', $class);
+        $class::observe($observer);
     }
 }
