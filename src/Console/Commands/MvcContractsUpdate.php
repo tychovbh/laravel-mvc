@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Contract;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 
@@ -53,7 +54,7 @@ class MvcContractsUpdate extends Command
                     $contract->status = Contract::STATUS_DENIED;
                     break;
                 case 'si':
-                    $contract->signed_at = now();
+                    $contract->signed_at = Carbon::now();
                     $contract->status = Contract::STATUS_SIGNED;
                     break;
             }
