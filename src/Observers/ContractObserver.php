@@ -12,19 +12,25 @@ use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
  */
 class ContractObserver
 {
+    /**
+     * ContractObserver constructor.
+     * @param DocumentSignInterface $documentSign
+     * @param HtmlConverterInterface $htmlConverter
+     */
     public function __construct(DocumentSignInterface $documentSign, HtmlConverterInterface $htmlConverter)
     {
         $this->documentSign = $documentSign;
         $this->htmlConverter = $htmlConverter;
     }
 
-    public function creating(Contract $contract)
-    {
-        $contract->toPdf($this->htmlConverter);
-    }
-
+    /**
+     * Created event
+     * @param Contract $contract
+     * @throws \Throwable
+     */
     public function created(Contract $contract)
     {
+        $contract->toPdf($this->htmlConverter);
         $contract->sign($this->documentSign);
     }
 }

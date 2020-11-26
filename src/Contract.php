@@ -51,19 +51,22 @@ class Contract extends Model
     /**
      * Converts html file to pdf
      * @param HtmlConverterInterface $htmlConverter
+     * @param array $data
+     * @throws \Throwable
      */
-    public function toPdf(HtmlConverterInterface $htmlConverter)
+    public function toPdf(HtmlConverterInterface $htmlConverter, array $data = [])
     {
         if (!$this->template || !config('mvc-contracts.pdf.enabled')) {
             return;
         }
+        $page = view($this->template, array_merge([
+            'contract' => $this
+        ], $data));
 
-        $page = view($this->template);
         $html = $page->render();
         $path = 'contracts/contract.pdf';
         $htmlConverter->page($html)->save($path);
         $this->file = $path;
-        $this->unsetAttribute('template');
     }
 
     /**

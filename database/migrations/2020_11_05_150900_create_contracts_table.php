@@ -17,6 +17,7 @@ class CreateContractsTable extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('file')->nullable();
+            $table->string('template')->nullable();
             $table->enum('status', Contract::STATUSES);
             $table->timestamp('signed_at')->nullable();
             $table->json('options')->nullable();
