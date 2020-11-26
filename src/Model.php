@@ -133,17 +133,28 @@ class Model extends BaseModel
      * Save belongs to relation
      * @param array $association
      * @param string $relation
-     * @param string $value
+     * @param $value
      * @param array $options
      */
-    protected function saveBelongsTo(array $association, string $relation, string $value, array $options = [])
+    protected function saveBelongsTo(array $association, string $relation, $value, array $options = [])
     {
-        $this->attributes[$relation . '_id'] = $association['model']::where(
-            $association['table_field'],
-            $value
-        )
-            ->firstOrFail()
-            ->id;
+        $search = is_array($value) ? Arr::get($value, $association['table_field']) : $value;
+        $model = null;
+        $create = Arr::get($association, 'create', false);
+
+        if ($search) {
+            $method = $create ? 'first' : 'firstOrFail';
+            $model = $association['model']::where($association['table_field'], $search)->{$method}();
+        }
+
+        if (!$model && $create) {
+            $model = new $association['model']($value);
+            $model->save();
+        }
+
+        if ($model) {
+            $this->attributes[$relation . '_id'] = $model->id;
+        }
     }
 
     /**
