@@ -2,16 +2,22 @@
 
 namespace Tychovbh\Tests\Mvc\feature\commands;
 
+use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Contract;
 use Tychovbh\Tests\Mvc\TestCase;
 
-class MvcUpdateContractTest extends TestCase
+class MvcContractUpdateTest extends TestCase
 {
     /**
      * @test
      */
     public function itCanUpdateContracts()
     {
+        $timestamp = strtotime('2020-11-27T09:07:10.580407Z');
+
+        $newTime = Carbon::createFromTimestamp($timestamp, 'Europe/Amsterdam');
+
+
         $contract = factory(Contract::class)->make(['signed_at' => null, 'status' => Contract::STATUS_CONCEPT]);
         $contract->template = 'contract';
         $contract->save();

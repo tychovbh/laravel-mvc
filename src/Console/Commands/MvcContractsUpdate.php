@@ -36,6 +36,7 @@ class MvcContractsUpdate extends Command
         foreach ($contracts as $contract) {
             try {
                 $document = $documentSign->show($contract['external_id']);
+                $signRequest = $documentSign->signShow($document['signrequest_id']);
             } catch (\Exception $exception) {
                 $this->error($exception->getMessage());
                 continue;
@@ -54,7 +55,7 @@ class MvcContractsUpdate extends Command
                     $contract->status = Contract::STATUS_DENIED;
                     break;
                 case 'si':
-                    $contract->signed_at = Carbon::now();
+                    $contract->signed_at = Carbon::createFromTimestamp(strtotime($signRequest['signed_on']), 'Europe/Amsterdam');
                     $contract->status = Contract::STATUS_SIGNED;
                     break;
             }

@@ -151,7 +151,8 @@ class SignRequest implements DocumentSignInterface
 
             return [
                 'id' => Arr::get($response, 'uuid', ''),
-                'status' => Arr::get($response, 'status', '')
+                'status' => Arr::get($response, 'status', ''),
+                'signrequest_id' => Arr::get($response, 'signrequest.uuid', '')
             ];
         } catch (\Exception $exception) {
             error('SignRequestService show error', [
@@ -170,10 +171,10 @@ class SignRequest implements DocumentSignInterface
     {
         try {
             $response = $this->request('get', '/signrequests/' . $id);
-
             return [
                 'id' => Arr::get($response, 'uuid', $id),
-                'status' => Arr::get($response, 'status')
+                'status' => Arr::get($response, 'status'),
+                'signed_on' => Arr::get($response, 'signers.1.signed_on')
             ];
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [

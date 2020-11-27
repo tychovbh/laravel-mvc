@@ -28,6 +28,13 @@ class Contract extends Model
     private $config;
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['signed_at'];
+
+    /**
      * Address constructor.
      * @param array $attributes
      */
@@ -82,7 +89,8 @@ class Contract extends Model
         try {
             $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
             $this->external_id = $document['id'];
-            $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+            //$this->user->email
+            $documentSign->signer('woloso2290@btsese.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
             $this->save();
             return true;
         } catch (\Exception $exception) {
