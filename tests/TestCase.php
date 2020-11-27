@@ -148,7 +148,9 @@ class TestCase extends BaseTestCase
             ],
             'document_sign' => [
                 'enabled' => true,
-                'return' => 'http://localhost/contracts/{id}'
+                'return' => 'http://localhost/contracts/{id}',
+                'from_email' => 'noreply@rentbay.nl',
+                'from_name' => 'rentbay'
             ]
         ]);
 

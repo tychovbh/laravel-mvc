@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
@@ -84,18 +85,20 @@ class Contract extends Model
     {
         $config = config('mvc-contracts.document_sign');
 
-        if (!$this->file || !$config['enabled']) {
+        if (!$this->file || !Arr::get($config, 'enabled', '')) {
             return;
         }
 
         try {
             $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
             $this->external_id = $document['id'];
-            $redirectUrl = str_replace('{id}', $this->id, $config['return']);
-            //$this->user->email
-            $documentSign->signer('tisobo1293@5y5u.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl', '', $redirectUrl);
-            $this->save();
-            return true;
+
+            $redirectUrl = '';
+            if (Arr::has($config, 'return')) {
+                $redirectUrl = str_replace('{id}', $this->id, Arr::get($config, 'return', ''));
+            }
+            $documentSign->signer($this->user->email)->sign($document['id'], Arr::get($config, 'from_name'), Arr::get($config, 'from_email'), '', $redirectUrl);
+            return $this->save();
         } catch (\Exception $exception) {
             error('Contract sign error', [
                 'message' => $exception->getMessage(),
