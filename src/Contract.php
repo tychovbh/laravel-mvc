@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
@@ -79,18 +78,22 @@ class Contract extends Model
     /**
      * Generates file and sends a SignRequest
      * @param DocumentSignInterface $documentSign
+     * @return bool|void
      */
     public function sign(DocumentSignInterface $documentSign)
     {
-        if (!$this->file || !config('mvc-contracts.document_sign.enabled')) {
+        $config = config('mvc-contracts.document_sign');
+
+        if (!$this->file || !$config['enabled']) {
             return;
         }
 
         try {
             $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
             $this->external_id = $document['id'];
+            $redirectUrl = str_replace('{id}', $this->id, $config['return']);
             //$this->user->email
-            $documentSign->signer('woloso2290@btsese.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
+            $documentSign->signer('tisobo1293@5y5u.com')->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl', '', $redirectUrl);
             $this->save();
             return true;
         } catch (\Exception $exception) {

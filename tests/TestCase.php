@@ -147,7 +147,8 @@ class TestCase extends BaseTestCase
                 'enabled' => true
             ],
             'document_sign' => [
-                'enabled' => true
+                'enabled' => true,
+                'return' => 'http://localhost/contracts/{id}'
             ]
         ]);
 

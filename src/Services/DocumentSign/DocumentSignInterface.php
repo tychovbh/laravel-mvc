@@ -38,9 +38,10 @@ interface DocumentSignInterface
      * @param string $from_name
      * @param string $from_email
      * @param string $message
+     * @param string $redirect_url
      * @return array
      */
-    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array;
+    public function sign(string $id, string $from_name, string $from_email, string $message = '', string $redirect_url = ''): array;
 
     /**
      * Shows a Document

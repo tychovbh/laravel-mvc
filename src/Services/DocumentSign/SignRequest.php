@@ -111,9 +111,10 @@ class SignRequest implements DocumentSignInterface
      * @param string $from_name
      * @param string $from_email
      * @param string $message
+     * @param string $redirect_url
      * @return array
      */
-    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array
+    public function sign(string $id, string $from_name, string $from_email, string $message = '', string $redirect_url = ''): array
     {
         try {
             if (!$this->signers->count()) {
@@ -123,6 +124,8 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
+                'redirect_url' => $redirect_url,
+                'redirect_url_declined' => $redirect_url,
                 'document' => Arr::get($this->config, 'subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
@@ -171,6 +174,7 @@ class SignRequest implements DocumentSignInterface
     {
         try {
             $response = $this->request('get', '/signrequests/' . $id);
+
             return [
                 'id' => Arr::get($response, 'uuid', $id),
                 'status' => Arr::get($response, 'status'),
