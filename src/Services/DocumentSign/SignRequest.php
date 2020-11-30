@@ -176,18 +176,16 @@ class SignRequest implements DocumentSignInterface
         try {
             $response = $this->request('get', '/signrequests/' . $id);
 
-            $signers = [];
 
-            foreach (Arr::get($response, 'signers') as $index => $signer) {
+            $signers = array_map(function ($signer) {
                 $timestamp = Arr::get($signer, 'signed_on');
 
-                $value = [
+                return [
                     'email' => Arr::get($signer, 'email'),
-                    'signed_at' => $timestamp ? Carbon::createFromTimestamp(strtotime($timestamp), 'Europe/Amsterdam')->format('Y-m-d H:i:s') : null
+                    'signed_at' => $timestamp ? Carbon::createFromTimestamp(strtotime($timestamp), 'Europe/Amsterdam')->format('Y-m-d H:i:s') : null,
+                    'needs_to_sign' => Arr::get($signer, 'needs_to_sign')
                 ];
-
-                Arr::set($signers, $index, $value);
-            }
+            }, Arr::get($response, 'signers'));
 
             return [
                 'id' => Arr::get($response, 'uuid', $id),
