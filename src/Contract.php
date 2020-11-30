@@ -28,11 +28,13 @@ class Contract extends Model
     private $config;
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that should be cast.
      *
      * @var array
      */
-    protected $dates = ['signed_at'];
+    protected $casts = [
+        'signers' => 'array',
+    ];
 
     /**
      * Address constructor.
@@ -40,8 +42,8 @@ class Contract extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('file', 'status', 'signed_at', 'options', 'template', 'external_id', 'user_id');
-        $this->columns('id', 'file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
+        $this->fillables('file', 'status', 'signers', 'options', 'template', 'external_id', 'user_id');
+        $this->columns('id', 'file', 'status', 'signers', 'options', 'external_id', 'user_id');
         $this->config = config('mvc-contracts');
         parent::__construct($attributes);
     }
@@ -85,7 +87,7 @@ class Contract extends Model
     {
         $config = config('mvc-contracts.document_sign');
 
-        if (!$this->file || !Arr::get($config, 'enabled', '')) {
+        if (!$this->file || !Arr::get($config, 'enabled', false)) {
             return;
         }
 
@@ -94,10 +96,16 @@ class Contract extends Model
             $this->external_id = $document['id'];
 
             $redirectUrl = '';
-            if (Arr::has($config, 'return')) {
-                $redirectUrl = str_replace('{id}', $this->id, Arr::get($config, 'return', ''));
-            }
-            $documentSign->signer($this->user->email)->sign($document['id'], Arr::get($config, 'from_name'), Arr::get($config, 'from_email'), '', $redirectUrl);
+            Arr::has($config, 'return') && $redirectUrl = str_replace('{id}', $this->id, Arr::get($config, 'return', ''));
+
+            $documentSign->signer($this->user->email)
+                ->sign(
+                    $document['id'],
+                    Arr::get($config, 'from_name'),
+                    Arr::get($config, 'from_email'),
+                    '',
+                    $redirectUrl
+                );
             return $this->save();
         } catch (\Exception $exception) {
             error('Contract sign error', [

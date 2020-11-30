@@ -31,7 +31,7 @@ class MvcContractsUpdate extends Command
      */
     public function handle(DocumentSignInterface $documentSign)
     {
-        $contracts = Contract::whereNotNull('external_id')->whereNull('signed_at')->get();
+        $contracts = Contract::whereNotNull('external_id')->whereNull('signers')->get();
         $updated = 0;
         foreach ($contracts as $contract) {
             try {
@@ -55,8 +55,8 @@ class MvcContractsUpdate extends Command
                     $contract->status = Contract::STATUS_DENIED;
                     break;
                 case 'si':
-                    $contract->signed_at = Carbon::createFromTimestamp(strtotime($signRequest['signed_on']), 'Europe/Amsterdam');
                     $contract->status = Contract::STATUS_SIGNED;
+                    $contract->signers = $signRequest['signers'];
                     break;
             }
 

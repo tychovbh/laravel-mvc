@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class SignRequest implements DocumentSignInterface
@@ -175,10 +176,23 @@ class SignRequest implements DocumentSignInterface
         try {
             $response = $this->request('get', '/signrequests/' . $id);
 
+            $signers = [];
+
+            foreach (Arr::get($response, 'signers') as $index => $signer) {
+                $timestamp = Arr::get($signer, 'signed_on');
+
+                $value = [
+                    'email' => Arr::get($signer, 'email'),
+                    'signed_at' => $timestamp ? Carbon::createFromTimestamp(strtotime($timestamp), 'Europe/Amsterdam')->format('Y-m-d H:i:s') : null
+                ];
+
+                Arr::set($signers, $index, $value);
+            }
+
             return [
                 'id' => Arr::get($response, 'uuid', $id),
                 'status' => Arr::get($response, 'status'),
-                'signed_on' => Arr::get($response, 'signers.1.signed_on')
+                'signers' => $signers
             ];
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [
