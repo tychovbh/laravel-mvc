@@ -85,7 +85,7 @@ if (!function_exists('model')) {
             $class->getNamespaceName(),
             'Repository',
         ], [
-            'App',
+            'App\\Models',
             '',
         ], $model);
 
