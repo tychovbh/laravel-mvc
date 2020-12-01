@@ -93,13 +93,13 @@ class Contract extends Model
 
         try {
             $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
-            $this->external_id = $document['id'];
+            $this->external_id = $document->doc_id;
 
             $redirectUrl = Arr::has($config, 'return') ? str_replace('{id}', $this->id, $config['return']) : null;
 
             $documentSign->signer('lalida1330@5y5u.com')//$this->user->email
                 ->sign(
-                    $document['id'],
+                    $document->doc_id,
                     Arr::get($config, 'from_name'),
                     Arr::get($config, 'from_email'),
                     '',

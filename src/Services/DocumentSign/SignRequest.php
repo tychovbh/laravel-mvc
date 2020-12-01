@@ -180,7 +180,7 @@ class SignRequest implements DocumentSignInterface
 
             foreach (Arr::get($response, 'signers') as $signer) {
                 $timestamp = null;
-                if (Arr::has($signer, 'signed_on')) {
+                if (Arr::get($signer, 'signed_on')) {
                     $timestamp = Carbon::createFromTimestamp(
                         strtotime($signer['signed_on']),
                         'Europe/Amsterdam'

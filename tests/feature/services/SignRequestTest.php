@@ -66,7 +66,7 @@ class SignRequestTest extends TestCase
     public function itCanSign(DocumentSign $document)
     {
         $sign = $this->signRequest()
-            ->signer('thvrijn2002@gmail.com')
+            ->signer('your@email.com')
             ->sign($document->doc_id, 'Rentbay', 'noreply@rentbay.nl');
 
         $this->assertTrue(!empty($sign->sign_id));

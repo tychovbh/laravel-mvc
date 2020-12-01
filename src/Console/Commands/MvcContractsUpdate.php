@@ -62,11 +62,11 @@ class MvcContractsUpdate extends Command
                     $signed_count = 0;
 
                     foreach ($signers as $signer) {
-                        if ($signer->needs_to_sign) {
+                        if ($signer['needs_to_sign']) {
                             $signers_count++;
                         }
 
-                        if ($signer->signed_at) {
+                        if ($signer['signed_at']) {
                             $signed_count++;
                         }
                     }
