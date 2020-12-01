@@ -449,3 +449,30 @@ if (!function_exists('boolean')) {
         return (bool)filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 }
+
+if (!function_exists('file_replace')) {
+
+    /**
+     * Open default file
+     * @param string $file
+     * @param array $replacements
+     * @param string $destination
+     * @param string $dir
+     * @return string
+     */
+    function file_replace(string $file, array $replacements, string $destination = null, string $dir = __DIR__)
+    {
+        $contents = default_file($file, $dir);
+
+        foreach ($replacements as $str => $replacement) {
+            $contents = str_replace($str, $replacement, $contents);
+        }
+
+        if ($destination) {
+            make_directories($destination);
+        }
+
+        file_put_contents($destination ?? $file, $contents);
+    }
+}
+
