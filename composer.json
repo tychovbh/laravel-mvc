@@ -39,7 +39,7 @@
         "urameshibr/lumen-form-request": "^1.5"
     },
     "require-dev": {
-        "mockery/mockery": "^1.2",
+        "mockery/mockery": "^1.4",
         "orchestra/testbench": "4.0",
         "phpunit/phpunit": "^8.1",
         "squizlabs/php_codesniffer": "^2.3",

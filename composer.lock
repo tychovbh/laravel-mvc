@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84b84dce018cbfacb066496b1db89a29",
+    "content-hash": "fc32f7bce7d3a2546714926665a6251c",
     "packages": [
         {
             "name": "anam/phantomjs-linux-x86-binary",
