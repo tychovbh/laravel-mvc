@@ -69,11 +69,11 @@ class MvcContractsUpdate extends Command
 
     /**
      * Updates contract to signed
-     * @param $documentSign
-     * @param $contract
-     * @param $document
+     * @param DocumentSignInterface $documentSign
+     * @param Contract $contract
+     * @param DocumentSign $document
      */
-    public function addSigned(DocumentSignInterface $documentSign, Contract $contract, DocumentSign $document)
+    private function addSigned(DocumentSignInterface $documentSign, Contract $contract, DocumentSign $document)
     {
         $documentSign = $documentSign->signShow($document->sign_id);
         $contract->status = Contract::STATUS_SENT;

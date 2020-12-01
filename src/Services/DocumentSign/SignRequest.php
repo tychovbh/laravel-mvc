@@ -209,21 +209,23 @@ class SignRequest implements DocumentSignInterface
     /**
      * Cancels a SignRequest
      * @param string $id
-     * @return DocumentSign
+     * @return Bool
      */
-    public function signCancel(string $id): DocumentSign
+    public function signCancel(string $id): Bool
     {
         try {
             $response = $this->request('post', '/signrequests/' . $id . '/cancel_signrequest');
 
-            return new DocumentSign([
-                'cancelled' => Arr::get($response, 'cancelled')
-            ]);
+            if (Arr::get($response, 'cancelled') === true) {
+                return true;
+            }
+            return false;
         } catch (\Exception $exception) {
             error('SignRequestService signCancel error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
+            return false;
         }
     }
 

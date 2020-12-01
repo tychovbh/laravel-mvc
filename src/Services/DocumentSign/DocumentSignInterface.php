@@ -60,9 +60,9 @@ interface DocumentSignInterface
     /**
      * Cancels a SignRequest
      * @param string $id
-     * @return DocumentSign
+     * @return Bool
      */
-    public function signCancel(string $id): DocumentSign;
+    public function signCancel(string $id): Bool;
 
     /**
      * Deletes a Document
