@@ -476,3 +476,38 @@ if (!function_exists('file_replace')) {
     }
 }
 
+if (!function_exists('default_file')) {
+
+    /**
+     * Open default file
+     * @param string $file
+     * @param string $dir
+     * @return string
+     */
+    function default_file(string $file, string $dir = __DIR__): string
+    {
+        return file_get_contents(sprintf('%s/../files/%s', $dir, $file));
+    }
+}
+
+
+if (!function_exists('make_directories')) {
+
+    /**
+     * @param string $path
+     */
+    function make_directories(string $path)
+    {
+        $dirs = explode('/', $path);
+        array_pop($dirs);
+        if (!$dirs) {
+            return;
+        }
+
+        try {
+            mkdir(implode('/', $dirs), 0777, true);
+        } catch (\Exception $exception) {
+            //
+        }
+    }
+}
