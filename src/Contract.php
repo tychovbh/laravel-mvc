@@ -97,7 +97,7 @@ class Contract extends Model
 
             $redirectUrl = Arr::has($config, 'return') ? str_replace('{id}', $this->id, $config['return']) : null;
 
-            $documentSign->signer($this->user->email)
+            $documentSign->signer('lalida1330@5y5u.com')//$this->user->email
                 ->sign(
                     $document['id'],
                     Arr::get($config, 'from_name'),

@@ -1,0 +1,39 @@
+<?php
+namespace Tychovbh\Mvc\Services\DocumentSign;
+
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+
+class DocumentSign
+{
+    /**
+     * @var string
+     */
+    public $id;
+
+    /**
+     * @var string
+     */
+    public $sign_id;
+
+    /**
+     * @var Collection
+     */
+    public $signers;
+
+    public function __construct(array $data = [])
+    {
+        $this->id = Arr::get($data, 'id', null);
+        $this->sign_id = Arr:: get($data, 'sign_id', null);
+        $this->signers = collect([]);
+    }
+
+    public function signer(string $email, $signed_at, bool $needs_to_sign = false)
+    {
+        $this->signers = $this->signers->push([
+            'email' => $email,
+            'signed_at' => $signed_at,
+            'needs_to_sign' => $needs_to_sign
+        ]);
+    }
+}

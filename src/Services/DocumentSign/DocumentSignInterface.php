@@ -53,9 +53,9 @@ interface DocumentSignInterface
     /**
      * Shows a SignRequest
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function signShow(string $id): array;
+    public function signShow(string $id): DocumentSign;
 
     /**
      * Cancels a SignRequest

@@ -169,35 +169,40 @@ class SignRequest implements DocumentSignInterface
     /**
      * Shows a SignRequest
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function signShow(string $id): array
+    public function signShow(string $id): DocumentSign
     {
+        $documentSign = new DocumentSign();
         try {
             $response = $this->request('get', '/signrequests/' . $id);
 
+            foreach (Arr::get($response, 'signers') as $signer) {
+                $timestamp = null;
+                if (Arr::has($signer, 'signed_on')) {
+                    $timestamp = Carbon::createFromTimestamp(
+                        strtotime($signer['signed_on']),
+                        'Europe/Amsterdam'
+                    )
+                        ->format('Y-m-d H:i:s');
+                }
 
-            $signers = array_map(function ($signer) {
-                $timestamp = Arr::get($signer, 'signed_on');
+                $documentSign->signer(
+                    Arr::get($signer, 'email'),
+                    $timestamp,
+                    Arr::get($signer, 'needs_to_sign')
+                );
+            }
 
-                return [
-                    'email' => Arr::get($signer, 'email'),
-                    'signed_at' => $timestamp ? Carbon::createFromTimestamp(strtotime($timestamp), 'Europe/Amsterdam')->format('Y-m-d H:i:s') : null,
-                    'needs_to_sign' => Arr::get($signer, 'needs_to_sign')
-                ];
-            }, Arr::get($response, 'signers'));
-
-            return [
-                'id' => Arr::get($response, 'uuid', $id),
-                'status' => Arr::get($response, 'status'),
-                'signers' => $signers
-            ];
+            return $documentSign;
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
         }
+
+        return $documentSign;
     }
 
     /**

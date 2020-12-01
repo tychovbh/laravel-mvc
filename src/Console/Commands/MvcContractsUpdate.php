@@ -57,16 +57,24 @@ class MvcContractsUpdate extends Command
                     break;
                 case 'si':
                     $contract->status = Contract::STATUS_SENT;
-                    $signers = count(array_filter($documentSign['signers'], function ($signer) {
-                        return $signer['needs_to_sign'];
-                    }));
-                    $signed = count(array_filter($documentSign['signers'], function ($signer) {
-                        return $signer['signed_at'] && $signer['needs_to_sign'];
-                    }));
-                    if ($signed === $signers) {
+                    $signers = $documentSign->signers;
+                    $signers_count = 0;
+                    $signed_count = 0;
+
+                    foreach ($signers as $signer) {
+                        if (Arr::get($signer, 'needs_to_sign', false)) {
+                            $signers_count++;
+                        }
+
+                        if (Arr::get($signer, 'signed_at', false)) {
+                            $signed_count++;
+                        }
+                    }
+
+                    if ($signed_count === $signers_count) {
                         $contract->status = Contract::STATUS_SIGNED;
                     }
-                    $contract->signers = $documentSign['signers'];
+                    $contract->signers = $signers;
                     break;
             }
 
