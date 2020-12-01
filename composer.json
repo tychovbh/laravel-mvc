@@ -30,13 +30,13 @@
         "mollie/laravel-mollie": "^2.0",
         "rbdwllr/reallysimplejwt": "^3.1",
         "squizlabs/php_codesniffer": "^3.5",
+        "tychovbh/laravel-package-skeleton": "^1.5",
         "urameshibr/lumen-form-request": "^1.5"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "4.0",
-        "phpunit/phpunit": "^8.1",
-        "tychovbh/laravel-package-skeleton": "^1.5"
+        "phpunit/phpunit": "^8.1"
     },
     "autoload": {
         "psr-4": {
