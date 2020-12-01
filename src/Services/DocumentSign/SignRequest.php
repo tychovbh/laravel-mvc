@@ -71,7 +71,7 @@ class SignRequest implements DocumentSignInterface
                 'events_callback_url' => $webhook
             ]);
             return new DocumentSign([
-                'doc_id' => Arr::get($response, 'uuid'),
+                'id' => Arr::get($response, 'uuid'),
                 'sign_id' => Arr::get($response, 'signrequest.uuid'),
                 'status' => Arr::get($response, 'status')
             ]);
@@ -133,7 +133,7 @@ class SignRequest implements DocumentSignInterface
             ]);
 
             return new DocumentSign([
-                'doc_id' => $id,
+                'id' => $id,
                 'sign_id' => Arr::get($response, 'uuid')
             ]);
         } catch (\Exception $exception) {

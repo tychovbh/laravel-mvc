@@ -26,7 +26,7 @@ class SignRequestTest extends TestCase
         $path = __DIR__ . '/SignRequestTestPdf.pdf';
         $document = $this->signRequest()->create($path, 'SignRequestTestPdf.pdf');
 
-        $this->assertTrue(!empty($document->doc_id));
+        $this->assertTrue(!empty($document->id));
         $this->assertTrue($document->status === 'co');
 
         return $document;
@@ -40,7 +40,7 @@ class SignRequestTest extends TestCase
         Storage::fake();
         $file = UploadedFile::fake()->image('contract.jpg');
         $document = $this->signRequest()->createFromUpload($file);
-        $this->assertTrue(!empty($document->doc_id));
+        $this->assertTrue(!empty($document->id));
         $this->assertTrue($document->status === 'co');
 
         return $document;
@@ -53,8 +53,8 @@ class SignRequestTest extends TestCase
      */
     public function itCanShow(DocumentSign $document)
     {
-        $this->signRequest()->show($document->doc_id);
-        $this->assertTrue(!empty($document->doc_id));
+        $this->signRequest()->show($document->id);
+        $this->assertTrue(!empty($document->id));
     }
 
     /**
@@ -65,25 +65,25 @@ class SignRequestTest extends TestCase
      */
     public function itCanSign(DocumentSign $document)
     {
-        $sign = $this->signRequest()
+        $document = $this->signRequest()
             ->signer('your@email.com')
-            ->sign($document->doc_id, 'Rentbay', 'noreply@rentbay.nl');
+            ->sign($document->id, 'Rentbay', 'noreply@rentbay.nl');
 
-        $this->assertTrue(!empty($sign->sign_id));
+        $this->assertTrue(!empty($document->sign_id));
 
-        return $sign;
+        return $document;
     }
 
     /**
      * @test
      * @depends itCanSign
-     * @param DocumentSign $sign
+     * @param DocumentSign $document
      */
-    public function itCanVerifyIfDocumentIsSigned(DocumentSign $sign)
+    public function itCanVerifyIfDocumentIsSigned(DocumentSign $document)
     {
         $this->markTestSkipped('TO MAKE THIS TEST WORK YOU WILL HAVE TO GO TO itCanSign TEST AND CHANGE THE SIGNER EMAIL TO YOUR EMAIL, AND THEN SIGN THE DOCUMENT');
 
-        $document = $this->signRequest()->show($sign->doc_id);
+        $document = $this->signRequest()->show($document->id);
 
         $this->assertTrue($document->status === 'si');
     }
@@ -91,23 +91,23 @@ class SignRequestTest extends TestCase
     /**
      * @test
      * @depends itCanSign
-     * @param DocumentSign $sign
+     * @param DocumentSign $document
      */
-    public function itCanShowSign(DocumentSign $sign)
+    public function itCanShowSign(DocumentSign $document)
     {
-        $sign = $this->signRequest()->signShow($sign->sign_id);
-        $this->assertTrue(!empty($sign->sign_id));
+        $document = $this->signRequest()->signShow($document->sign_id);
+        $this->assertTrue(!empty($document->sign_id));
     }
 
     /**
      * @test
      * @depends itCanSign
-     * @param DocumentSign $sign
+     * @param DocumentSign $document
      */
-    public function itCanCancelSign(DocumentSign $sign)
+    public function itCanCancelSign(DocumentSign $document)
     {
-        $sign = $this->signRequest()->signCancel($sign->sign_id);
-        $this->assertTrue($sign->cancelled === true);
+        $document = $this->signRequest()->signCancel($document->sign_id);
+        $this->assertTrue($document->cancelled === true);
     }
 
     /**
@@ -117,7 +117,7 @@ class SignRequestTest extends TestCase
      */
     public function itCanDestroy(DocumentSign $document)
     {
-        $destroyed = $this->signRequest()->destroy($document->doc_id);
+        $destroyed = $this->signRequest()->destroy($document->id);
         $this->assertTrue($destroyed);
     }
 }

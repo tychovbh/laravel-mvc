@@ -10,7 +10,7 @@ class DocumentSign
     /**
      * @var string
      */
-    public $doc_id;
+    public $id;
 
     /**
      * @var string
@@ -38,7 +38,7 @@ class DocumentSign
      */
     public function __construct(array $data = [])
     {
-        $this->doc_id = Arr::get($data, 'doc_id', null);
+        $this->id = Arr::get($data, 'id', null);
         $this->sign_id = Arr::get($data, 'sign_id', null);
         $this->status = Arr::get($data, 'status', null);
         $this->cancelled = Arr::get($data, 'cancelled', null);
