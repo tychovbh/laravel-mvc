@@ -45,6 +45,12 @@ class DocumentSign
         $this->signers = collect([]);
     }
 
+    /**
+     * Adds a signer to the collection
+     * @param string $email
+     * @param $signed_at
+     * @param bool $needs_to_sign
+     */
     public function signer(string $email, $signed_at, bool $needs_to_sign = false)
     {
         $this->signers = $this->signers->push([

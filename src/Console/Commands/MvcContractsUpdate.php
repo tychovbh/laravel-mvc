@@ -4,6 +4,7 @@ namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
 use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\Services\DocumentSign\DocumentSign;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 
 class MvcContractsUpdate extends Command
@@ -35,7 +36,6 @@ class MvcContractsUpdate extends Command
         foreach ($contracts as $contract) {
             try {
                 $document = $documentSign->show($contract['external_id']);
-                $documentSign = $documentSign->signShow($document->sign_id);
             } catch (\Exception $exception) {
                 $this->error($exception->getMessage());
                 continue;
@@ -54,25 +54,7 @@ class MvcContractsUpdate extends Command
                     $contract->status = Contract::STATUS_DENIED;
                     break;
                 case 'si':
-                    $contract->status = Contract::STATUS_SENT;
-                    $signers = $documentSign->signers;
-                    $signers_count = 0;
-                    $signed_count = 0;
-
-                    foreach ($signers as $signer) {
-                        if ($signer['needs_to_sign']) {
-                            $signers_count++;
-                        }
-
-                        if ($signer['signed_at']) {
-                            $signed_count++;
-                        }
-                    }
-
-                    if ($signed_count === $signers_count) {
-                        $contract->status = Contract::STATUS_SIGNED;
-                    }
-                    $contract->signers = $signers;
+                    $this->addSigned($documentSign, $contract, $document);
                     break;
             }
 
@@ -83,5 +65,35 @@ class MvcContractsUpdate extends Command
         }
 
         $this->line(sprintf('%s contracts updated', $updated));
+    }
+
+    /**
+     * Updates contract to signed
+     * @param $documentSign
+     * @param $contract
+     * @param $document
+     */
+    public function addSigned(DocumentSignInterface $documentSign, Contract $contract, DocumentSign $document)
+    {
+        $documentSign = $documentSign->signShow($document->sign_id);
+        $contract->status = Contract::STATUS_SENT;
+        $signers = $documentSign->signers;
+        $signers_count = 0;
+        $signed_count = 0;
+
+        foreach ($signers as $signer) {
+            if ($signer['needs_to_sign']) {
+                $signers_count++;
+            }
+
+            if ($signer['signed_at']) {
+                $signed_count++;
+            }
+        }
+
+        if ($signed_count === $signers_count) {
+            $contract->status = Contract::STATUS_SIGNED;
+        }
+        $contract->signers = $signers;
     }
 }
