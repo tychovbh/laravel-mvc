@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Repositories\UserRepository;
 use Illuminate\Console\Command;
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 use Illuminate\Support\Arr;
 
 class MvcUserToken extends Command

@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\feature\commands;
 
-use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class MvcUpdateContractTest extends TestCase

@@ -5,7 +5,7 @@ namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserInvite;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class InviteTest extends TestCase

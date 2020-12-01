@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
-use Tychovbh\Mvc\Field;
-use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Models\Field;
+use Tychovbh\Mvc\Models\Form;
 use Tychovbh\Mvc\Http\Resources\FieldResource;
-use Tychovbh\Mvc\Element;
+use Tychovbh\Mvc\Models\Element;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class FieldTest extends TestCase

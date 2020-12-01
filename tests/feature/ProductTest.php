@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
-use Tychovbh\Mvc\Product;
+use Tychovbh\Mvc\Models\Product;
 use Tychovbh\Mvc\Http\Resources\ProductResource;
 use Tychovbh\Tests\Mvc\TestCase;
 

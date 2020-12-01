@@ -5,8 +5,8 @@ namespace Tychovbh\Mvc\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Tychovbh\Mvc\Payment;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Payment;
+use Tychovbh\Mvc\Models\User;
 
 class PaymentUpdated extends Mailable implements ShouldQueue
 {

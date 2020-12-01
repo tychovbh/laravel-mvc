@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Tychovbh\Mvc\Token;
+use Tychovbh\Mvc\Models\Token;
 
 class TokenRepository extends AbstractRepository implements Repository
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tychovbh\Mvc;
+namespace Tychovbh\Mvc\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

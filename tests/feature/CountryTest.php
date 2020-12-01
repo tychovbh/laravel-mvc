@@ -4,8 +4,8 @@
 namespace Tychovbh\Tests\Mvc\feature;
 
 
-use Tychovbh\Mvc\Address;
-use Tychovbh\Mvc\Country;
+use Tychovbh\Mvc\Models\Address;
+use Tychovbh\Mvc\Models\Country;
 use Tychovbh\Mvc\Http\Resources\AddressResource;
 use Tychovbh\Mvc\Http\Resources\CountryResource;
 use Tychovbh\Mvc\Repositories\CountryRepository;

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Tychovbh\Mvc\Repositories\TokenRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 
 /**
  * @property UserRepository users

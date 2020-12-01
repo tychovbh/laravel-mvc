@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Mvc\Observers;
 
-use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 

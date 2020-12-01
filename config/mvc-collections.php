@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 
 return [
     [

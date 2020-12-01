@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Tychovbh\Mvc\TokenType;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\TokenType;
+use Tychovbh\Mvc\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {

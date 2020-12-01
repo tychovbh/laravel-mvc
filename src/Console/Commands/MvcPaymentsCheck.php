@@ -3,7 +3,7 @@
 namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
-use Tychovbh\Mvc\Payment;
+use Tychovbh\Mvc\Models\Payment;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 
 class MvcPaymentsCheck extends Command

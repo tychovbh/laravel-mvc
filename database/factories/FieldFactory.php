@@ -2,8 +2,8 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\DB;
-use Tychovbh\Mvc\Form;
-use Tychovbh\Mvc\Element;
+use Tychovbh\Mvc\Models\Form;
+use Tychovbh\Mvc\Models\Element;
 
 /*
 |--------------------------------------------------------------------------

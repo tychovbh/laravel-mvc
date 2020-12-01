@@ -5,18 +5,18 @@ namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
-use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Models\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Mail\UserVerify;
-use Tychovbh\Mvc\TokenType;
-use Tychovbh\Mvc\Role;
+use Tychovbh\Mvc\Models\TokenType;
+use Tychovbh\Mvc\Models\Role;
 use Tychovbh\Tests\Mvc\TestCase;
 
 use Illuminate\Support\Arr;
-use Tychovbh\Mvc\Token;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Token;
+use Tychovbh\Mvc\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Facades\Mail;
 

@@ -3,7 +3,7 @@
 namespace Tychovbh\Mvc\Observers;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Tychovbh\Mvc\Address;
+use Tychovbh\Mvc\Models\Address;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 
 /**

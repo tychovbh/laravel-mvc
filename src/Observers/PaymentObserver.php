@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Mvc\Observers;
 
-use Tychovbh\Mvc\Payment;
+use Tychovbh\Mvc\Models\Payment;
 
 class PaymentObserver
 {

@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 use Tychovbh\Mvc\Repositories\TokenRepository;
 
 class InviteController extends AbstractController

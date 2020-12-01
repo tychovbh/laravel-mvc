@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Mvc;
+namespace Tychovbh\Mvc\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

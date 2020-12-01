@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Tychovbh\Mvc\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-$factory->define(Tychovbh\Mvc\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,

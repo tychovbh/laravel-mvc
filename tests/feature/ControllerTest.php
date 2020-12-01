@@ -5,7 +5,7 @@ namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Models\Form;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Tests\Mvc\App\TestUser;
 use Tychovbh\Tests\Mvc\App\TestUserResource;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
-use Tychovbh\Mvc\Form;
+use Tychovbh\Mvc\Models\Form;
 use Tychovbh\Mvc\Http\Controllers\FormController;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Tests\Mvc\TestCase;

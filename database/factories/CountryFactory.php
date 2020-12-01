@@ -6,7 +6,7 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Tychovbh\Mvc\Country;
+use Tychovbh\Mvc\Models\Country;
 
 /*
 |--------------------------------------------------------------------------

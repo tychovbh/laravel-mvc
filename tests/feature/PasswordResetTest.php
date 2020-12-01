@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Http\Resources\UserResource;
 use Tychovbh\Mvc\Mail\UserPasswordReset;
-use Tychovbh\Mvc\Token;
-use Tychovbh\Mvc\TokenType;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Token;
+use Tychovbh\Mvc\Models\TokenType;
+use Tychovbh\Mvc\Models\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class PasswordResetTest extends TestCase

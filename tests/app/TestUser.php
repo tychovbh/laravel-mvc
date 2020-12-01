@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\App;
 
-use Tychovbh\Mvc\Model;
+use Tychovbh\Mvc\Models\Model;
 
 class TestUser extends Model
 {

@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 
 /*
 |--------------------------------------------------------------------------

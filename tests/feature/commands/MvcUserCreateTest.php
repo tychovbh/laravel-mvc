@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature\Commands;
 
-use Tychovbh\Mvc\Role;
-use Tychovbh\Mvc\TokenType;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Role;
+use Tychovbh\Mvc\Models\TokenType;
+use Tychovbh\Mvc\Models\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class MvcUserCreateTestTest extends TestCase

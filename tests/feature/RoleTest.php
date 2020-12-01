@@ -5,8 +5,8 @@ namespace Tychovbh\Tests\Mvc\Feature;
 
 use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Http\Resources\RoleResource;
-use Tychovbh\Mvc\Role;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Role;
+use Tychovbh\Mvc\Models\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class RoleTest extends TestCase

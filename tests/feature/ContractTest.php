@@ -2,7 +2,7 @@
 
 namespace Tychovbh\Tests\Mvc\feature;
 
-use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Mvc\Http\Resources\ContractResource;
 use Tychovbh\Tests\Mvc\TestCase;
 

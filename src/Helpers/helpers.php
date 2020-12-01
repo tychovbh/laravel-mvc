@@ -1,6 +1,6 @@
 <?php
 
-use Tychovbh\Mvc\Model;
+use Tychovbh\Mvc\Models\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use ReallySimpleJWT\Token;
 use Tychovbh\Mvc\Repositories\Repository;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\User;
 
 if (!function_exists('repository')) {
     /**

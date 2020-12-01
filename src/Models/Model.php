@@ -1,6 +1,6 @@
 <?php
 
-namespace Tychovbh\Mvc;
+namespace Tychovbh\Mvc\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model as BaseModel;

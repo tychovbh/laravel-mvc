@@ -6,8 +6,8 @@
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Tychovbh\Mvc\Contract;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\Contract;
+use Tychovbh\Mvc\Models\User;
 
 /*
 |--------------------------------------------------------------------------

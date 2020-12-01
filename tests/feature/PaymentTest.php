@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Mail\PaymentUpdated as PaymentUpdatedMail;
 use Tychovbh\Mvc\Http\Resources\PaymentResource;
-use Tychovbh\Mvc\Payment;
-use Tychovbh\Mvc\Product;
+use Tychovbh\Mvc\Models\Payment;
+use Tychovbh\Mvc\Models\Product;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class PaymentTest extends TestCase

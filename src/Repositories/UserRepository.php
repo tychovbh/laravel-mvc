@@ -6,7 +6,7 @@ namespace Tychovbh\Mvc\Repositories;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\User;
 
 class UserRepository extends AbstractRepository implements Repository
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tychovbh\Mvc\Repositories;
 
 use Illuminate\Support\Arr;
-use Tychovbh\Mvc\Payment;
+use Tychovbh\Mvc\Models\Payment;
 
 class PaymentRepository extends AbstractRepository implements Repository
 {

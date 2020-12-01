@@ -5,7 +5,7 @@ namespace Tychovbh\Mvc\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Tychovbh\Mvc\Payment;
+use Tychovbh\Mvc\Models\Payment;
 
 class PaymentController extends AbstractController
 {

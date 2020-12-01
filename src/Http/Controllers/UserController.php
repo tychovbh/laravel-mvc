@@ -8,10 +8,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
 use Tychovbh\Mvc\Mail\UserCreated;
 use Tychovbh\Mvc\Mail\UserVerify;
-use Tychovbh\Mvc\TokenType;
+use Tychovbh\Mvc\Models\TokenType;
 use Tychovbh\Mvc\Repositories\TokenRepository;
 use Tychovbh\Mvc\Repositories\UserRepository;
-use Tychovbh\Mvc\User;
+use Tychovbh\Mvc\Models\User;
 
 /**
  * @property TokenRepository $tokens

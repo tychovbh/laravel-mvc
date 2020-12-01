@@ -4,7 +4,7 @@ namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Tychovbh\Mvc\Contract;
+use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 
 class MvcContractsUpdate extends Command
