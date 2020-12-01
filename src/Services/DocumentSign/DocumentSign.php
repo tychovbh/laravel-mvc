@@ -1,4 +1,5 @@
 <?php
+
 namespace Tychovbh\Mvc\Services\DocumentSign;
 
 use Illuminate\Support\Arr;
@@ -9,7 +10,7 @@ class DocumentSign
     /**
      * @var string
      */
-    public $id;
+    public $doc_id;
 
     /**
      * @var string
@@ -21,10 +22,26 @@ class DocumentSign
      */
     public $signers;
 
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @var bool
+     */
+    public $cancelled;
+
+    /**
+     * DocumentSign constructor.
+     * @param array $data
+     */
     public function __construct(array $data = [])
     {
-        $this->id = Arr::get($data, 'id', null);
-        $this->sign_id = Arr:: get($data, 'sign_id', null);
+        $this->doc_id = Arr::get($data, 'doc_id', null);
+        $this->sign_id = Arr::get($data, 'sign_id', null);
+        $this->status = Arr::get($data, 'status', null);
+        $this->cancelled = Arr::get($data, 'cancelled', null);
         $this->signers = collect([]);
     }
 

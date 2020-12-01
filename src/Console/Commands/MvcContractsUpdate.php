@@ -37,7 +37,7 @@ class MvcContractsUpdate extends Command
         foreach ($contracts as $contract) {
             try {
                 $document = $documentSign->show($contract['external_id']);
-                $documentSign = $documentSign->signShow($document['signrequest_id']);
+                $documentSign = $documentSign->signShow($document->sign_id);
             } catch (\Exception $exception) {
                 $this->error($exception->getMessage());
                 continue;
@@ -45,7 +45,7 @@ class MvcContractsUpdate extends Command
 
             $status = $contract->status;
 
-            switch ($document['status']) {
+            switch ($document->status) {
                 case 'co':
                     $contract->status = Contract::STATUS_CONCEPT;
                     break;
@@ -62,11 +62,11 @@ class MvcContractsUpdate extends Command
                     $signed_count = 0;
 
                     foreach ($signers as $signer) {
-                        if (Arr::get($signer, 'needs_to_sign', false)) {
+                        if ($signer->needs_to_sign) {
                             $signers_count++;
                         }
 
-                        if (Arr::get($signer, 'signed_at', false)) {
+                        if ($signer->signed_at) {
                             $signed_count++;
                         }
                     }
