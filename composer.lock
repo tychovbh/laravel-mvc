@@ -121,22 +121,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tychovbh/laravel-offset-pagination.git",
-                "reference": "d67c14086237dea17c0dde5346a406d677e6e015"
+                "reference": "6a453482a8fcb2bc1cb38f7dd273332bbc972a99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tychovbh/laravel-offset-pagination/zipball/d67c14086237dea17c0dde5346a406d677e6e015",
-                "reference": "d67c14086237dea17c0dde5346a406d677e6e015",
+                "url": "https://api.github.com/repos/tychovbh/laravel-offset-pagination/zipball/6a453482a8fcb2bc1cb38f7dd273332bbc972a99",
+                "reference": "6a453482a8fcb2bc1cb38f7dd273332bbc972a99",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^6.0",
-                "illuminate/http": "^6.0",
-                "illuminate/support": "^6.0",
+                "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0|~7.0|~8.0",
+                "illuminate/http": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0|~7.0|~8.0",
+                "illuminate/support": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0|~7.0|~8.0",
                 "php": "^7.1.3"
             },
             "require-dev": {
-                "orchestra/testbench-core": "3.8.*",
+                "orchestra/testbench-core": "4.0",
                 "phpunit/phpunit": "^7.5|^8.0"
             },
             "default-branch": true,
@@ -180,7 +180,7 @@
             "support": {
                 "source": "https://github.com/tychovbh/laravel-offset-pagination/tree/master"
             },
-            "time": "2019-09-18T13:30:08+00:00"
+            "time": "2020-12-01T09:46:24+00:00"
         },
         {
             "name": "composer/ca-bundle",
