@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class SignRequest implements DocumentSignInterface
@@ -59,9 +60,9 @@ class SignRequest implements DocumentSignInterface
      * @param string $file
      * @param string $name
      * @param string $webhook
-     * @return array
+     * @return DocumentSign
      */
-    private function createRequest(string $file, string $name, string $webhook = null): array
+    private function createRequest(string $file, string $name, string $webhook = null): DocumentSign
     {
         try {
             $response = $this->request('post', '/documents', [
@@ -69,11 +70,11 @@ class SignRequest implements DocumentSignInterface
                 'file_from_content_name' => $name,
                 'events_callback_url' => $webhook
             ]);
-
-            return [
-                'id' => Arr::get($response, 'uuid', ''),
-                'status' => Arr::get($response, 'status', '')
-            ];
+            return new DocumentSign([
+                'id' => Arr::get($response, 'uuid'),
+                'sign_id' => Arr::get($response, 'signrequest.uuid'),
+                'status' => Arr::get($response, 'status')
+            ]);
         } catch (\Exception $exception) {
             error('SignRequestService create error', [
                 'message' => $exception->getMessage(),
@@ -87,9 +88,9 @@ class SignRequest implements DocumentSignInterface
      * @param string $path
      * @param string $name
      * @param string|null $webhook
-     * @return array
+     * @return DocumentSign
      */
-    public function create(string $path, string $name, string $webhook = null): array
+    public function create(string $path, string $name, string $webhook = null): DocumentSign
     {
         return $this->createRequest(file_get_contents($path), $name);
     }
@@ -98,9 +99,9 @@ class SignRequest implements DocumentSignInterface
      * Creates a Document from upload
      * @param UploadedFile $file
      * @param string $webhook
-     * @return array
+     * @return DocumentSign
      */
-    public function createFromUpload(UploadedFile $file, string $webhook = null): array
+    public function createFromUpload(UploadedFile $file, string $webhook = null): DocumentSign
     {
         return $this->createRequest($file->get(), $file->getClientOriginalName(), $webhook);
     }
@@ -111,9 +112,10 @@ class SignRequest implements DocumentSignInterface
      * @param string $from_name
      * @param string $from_email
      * @param string $message
-     * @return array
+     * @param string $redirect_url
+     * @return DocumentSign
      */
-    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array
+    public function sign(string $id, string $from_name, string $from_email, string $message = '', string $redirect_url = ''): DocumentSign
     {
         try {
             if (!$this->signers->count()) {
@@ -123,14 +125,17 @@ class SignRequest implements DocumentSignInterface
             $response = $this->request('post', '/signrequests', [
                 'from_email' => $from_email,
                 'from_email_name' => $from_name,
+                'redirect_url' => $redirect_url,
+                'redirect_url_declined' => $redirect_url,
                 'document' => Arr::get($this->config, 'subdomain') . '/documents/' . $id . '/',
                 'signers' => $this->signers->toArray(),
                 'message' => $message
             ]);
 
-            return [
-                'id' => Arr::get($response, 'uuid', '')
-            ];
+            return new DocumentSign([
+                'id' => $id,
+                'sign_id' => Arr::get($response, 'uuid')
+            ]);
         } catch (\Exception $exception) {
             error('SignRequestService sign error', [
                 'message' => $exception->getMessage(),
@@ -142,17 +147,18 @@ class SignRequest implements DocumentSignInterface
     /**
      * Shows a Document
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function show(string $id): array
+    public function show(string $id): DocumentSign
     {
         try {
             $response = $this->request('get', '/documents/' . $id);
 
-            return [
-                'id' => Arr::get($response, 'uuid', ''),
-                'status' => Arr::get($response, 'status', '')
-            ];
+            return new DocumentSign([
+                'id' => Arr::get($response, 'uuid'),
+                'sign_id' => Arr::get($response, 'signrequest.uuid'),
+                'status' => Arr::get($response, 'status')
+            ]);
         } catch (\Exception $exception) {
             error('SignRequestService show error', [
                 'message' => $exception->getMessage(),
@@ -164,43 +170,62 @@ class SignRequest implements DocumentSignInterface
     /**
      * Shows a SignRequest
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function signShow(string $id): array
+    public function signShow(string $id): DocumentSign
     {
+        $documentSign = new DocumentSign(['sign_id' => $id]);
         try {
             $response = $this->request('get', '/signrequests/' . $id);
 
-            return [
-                'id' => Arr::get($response, 'uuid', $id),
-                'status' => Arr::get($response, 'status')
-            ];
+            foreach (Arr::get($response, 'signers') as $signer) {
+                $timestamp = null;
+                if (Arr::get($signer, 'signed_on')) {
+                    $timestamp = Carbon::createFromTimestamp(
+                        strtotime($signer['signed_on']),
+                        'Europe/Amsterdam'
+                    )
+                        ->format('Y-m-d H:i:s');
+                }
+
+                $documentSign->signer(
+                    Arr::get($signer, 'email'),
+                    $timestamp,
+                    Arr::get($signer, 'needs_to_sign')
+                );
+            }
+
+            return $documentSign;
         } catch (\Exception $exception) {
             error('SignRequestService signShow error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
         }
+
+        return $documentSign;
     }
 
     /**
      * Cancels a SignRequest
      * @param string $id
-     * @return array
+     * @return Bool
      */
-    public function signCancel(string $id): array
+    public function signCancel(string $id): Bool
     {
         try {
             $response = $this->request('post', '/signrequests/' . $id . '/cancel_signrequest');
 
-            return [
-                'cancelled' => Arr::get($response, 'cancelled', '')
-            ];
+            if (Arr::get($response, 'cancelled') === true) {
+                return true;
+            }
+            return false;
         } catch (\Exception $exception) {
             error('SignRequestService signCancel error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
+            return false;
         }
     }
 

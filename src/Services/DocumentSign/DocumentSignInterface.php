@@ -20,17 +20,17 @@ interface DocumentSignInterface
      * @param string $path
      * @param string $name
      * @param string|null $webhook
-     * @return array
+     * @return DocumentSign
      */
-    public function create(string $path, string $name, string $webhook = null): array;
+    public function create(string $path, string $name, string $webhook = null): DocumentSign;
 
     /**
      * Creates a Document
      * @param UploadedFile $file
      * @param string|null $webhook
-     * @return array
+     * @return DocumentSign
      */
-    public function createFromUpload(UploadedFile $file, string $webhook = null): array;
+    public function createFromUpload(UploadedFile $file, string $webhook = null): DocumentSign;
 
     /**
      * Creates a SignRequest
@@ -38,30 +38,31 @@ interface DocumentSignInterface
      * @param string $from_name
      * @param string $from_email
      * @param string $message
-     * @return array
+     * @param string $redirect_url
+     * @return DocumentSign
      */
-    public function sign(string $id, string $from_name, string $from_email, string $message = ''): array;
+    public function sign(string $id, string $from_name, string $from_email, string $message = '', string $redirect_url = ''): DocumentSign;
 
     /**
      * Shows a Document
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function show(string $id): array;
+    public function show(string $id): DocumentSign;
 
     /**
      * Shows a SignRequest
      * @param string $id
-     * @return array
+     * @return DocumentSign
      */
-    public function signShow(string $id): array;
+    public function signShow(string $id): DocumentSign;
 
     /**
      * Cancels a SignRequest
      * @param string $id
-     * @return array
+     * @return Bool
      */
-    public function signCancel(string $id): array;
+    public function signCancel(string $id): Bool;
 
     /**
      * Deletes a Document
