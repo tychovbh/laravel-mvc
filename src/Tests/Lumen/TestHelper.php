@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Tests\Lumen;
 
-use App\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,11 +21,16 @@ trait TestHelper
      */
     public function token(array $params = []): array
     {
-        $user_id = Arr::get($params, 'id') ?? factory(User::class, 1)->create($params)->first()->id;
+        $user = '\\App\\Models\\User';
+        if (class_exists($user)) {
+            $user_id = Arr::get($params, 'id') ?? $user::factory()->create($params)->id;
 
-        return [
-            'HTTP_Authorization' => 'Bearer ' . token($user_id)
-        ];
+            return [
+                'HTTP_Authorization' => 'Bearer ' . token($user_id)
+            ];
+        }
+
+        return [];
     }
 
     /**
@@ -284,13 +288,14 @@ trait TestHelper
      * @param array $params
      * @param array $tokenParams
      * @param array $except
+     * @param int $statusCode
      * @return array
      */
-    public function store(JsonResource $resource, array $params = [], array $tokenParams = [], array $except = []): array
+    public function store(JsonResource $resource, array $params = [], array $tokenParams = [], array $except = [], int $statusCode = 201): array
     {
         $request = $this->post(route($this->indexName() . '.store'), $params, $this->token($tokenParams))
             ->seeResource($resource, $except)
-            ->seeStatusCode(200);
+            ->seeStatusCode($statusCode);
 
         return $this->content($request);
     }
@@ -314,15 +319,16 @@ trait TestHelper
      * @param array $params
      * @param array $tokenParams
      * @param array $except
+     * @param int $statusCode
      * @return array
      */
-    public function update(JsonResource $resource, array $params = [], array $tokenParams = [], array $except = []): array
+    public function update(JsonResource $resource, array $params = [], array $tokenParams = [], array $except = [], int $statusCode = 201): array
     {
         $request = $this->put(route($this->indexName() . '.update', [
             'id' => $resource->id
         ]), $params, $this->token($tokenParams))
             ->seeResource($resource, $except)
-            ->seeStatusCode(200);
+            ->seeStatusCode($statusCode);
 
         return $this->content($request);
     }
