@@ -4,18 +4,36 @@
 namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
 
 
-use Tychovbh\Mvc\Services\ShopService\ShopifyService;
+use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
+use Tychovbh\Mvc\Services\ShopService\Shopify;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class ShopifyTest extends TestCase
 {
+    private function shopifyService()
+    {
+        $guzzle = new Client();
+        return new Shopify($guzzle);
+    }
+
     /**
      * @test
      */
     public function itCanIndexProducts()
     {
-        $shopService = new ShopifyService();
-        $products = $shopService->products();
+        $products = $this->shopifyService()->products();
+        $this->assertTrue(Arr::has($products, '0.id'));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShowProduct()
+    {
+        $id = 5979585118361;
+        $product = $this->shopifyService()->productById($id);
+        $this->assertTrue(Arr::get($product, 'id') === $id);
     }
 
     /**
@@ -23,17 +41,30 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrders()
     {
-        $shopService = new ShopifyService();
-        $orders = $shopService->orders();
+        $orders = $this->shopifyService()->orders(['status' => 'closed']);
+        $this->assertTrue(Arr::has($orders, '0.id'));
     }
 
     /**
      * @test
      */
-    public function itCanIndexDiscountCodes()
+    public function itCanIndexOrdersWithParams()
     {
-        $shopService = new ShopifyService();
-        $discountCodes = $shopService->discountCodes(1);
+        $orders = $this->shopifyService()->orders(['status' => 'closed']);
+
+        foreach ($orders as $order) {
+            $this->assertNotNull($order['closed_at']);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShowOrder()
+    {
+        $id = 2978329854105;
+        $order = $this->shopifyService()->orderById($id);
+        $this->assertTrue(Arr::get($order, 'id') === $id);
     }
 
     /**
@@ -41,7 +72,17 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexCustomers()
     {
-        $shopService = new ShopifyService();
-        $customers = $shopService->customers();
+        $customers = $this->shopifyService()->customers();
+        $this->assertTrue(Arr::has($customers, '0.id'));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShowCustomer()
+    {
+        $id = 4446505730201;
+        $customer = $this->shopifyService()->customerById($id);
+        $this->assertTrue(Arr::get($customer, 'id') === $id);
     }
 }

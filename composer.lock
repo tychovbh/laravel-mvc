@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40cba91ccb8871fd0f6b0a06d5bb6331",
+    "content-hash": "13b02a0278eda1632d22da161bd9077d",
     "packages": [
         {
             "name": "anam/phantomjs-linux-x86-binary",
@@ -2382,56 +2382,6 @@
                 "tokens"
             ],
             "time": "2019-08-13T15:31:13+00:00"
-        },
-        {
-            "name": "robwittman/shopify-php-sdk",
-            "version": "v2.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/robwittman/shopify-php-sdk.git",
-                "reference": "e384cb2971c8dddff4a047d60ead313a8fdfdb74"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/robwittman/shopify-php-sdk/zipball/e384cb2971c8dddff4a047d60ead313a8fdfdb74",
-                "reference": "e384cb2971c8dddff4a047d60ead313a8fdfdb74",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "^6.2",
-                "php": ">=5.3.3",
-                "psr/log": "^1.0"
-            },
-            "require-dev": {
-                "overtrue/phplint": "^0.2.4",
-                "phpunit/phpunit": "^5.1",
-                "squizlabs/php_codesniffer": "^3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Shopify\\": "src/",
-                    "Shopify\\Test\\": "test/"
-                },
-                "files": [
-                    "src/includes.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "PHP SDK for Shopify API",
-            "homepage": "http://github.com/robwittman/shopify-php-sdk",
-            "keywords": [
-                "api",
-                "ecommerce",
-                "php",
-                "shopify"
-            ],
-            "time": "2020-05-10T04:51:27+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

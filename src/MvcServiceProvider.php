@@ -27,6 +27,7 @@ use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
+use Tychovbh\Mvc\Services\ShopService\ShopServiceInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -134,6 +135,13 @@ class MvcServiceProvider extends ServiceProvider
             $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
 
             return new $service($client);
+        });
+
+        $this->app->bind(ShopServiceInterface::class, function ($app) {
+            $service = config('mvc-address-lookup.default');
+            $service = 'Tychovbh\\Mvc\\Services\\ShopService\\' . $service;
+
+            return new $service();
         });
     }
 

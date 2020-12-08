@@ -17,16 +17,8 @@ interface ShopServiceInterface
     public function orders(array $params = []): array;
 
     /**
-     * @param $priceRuleId
-     * @param array $params
-     * @return array
-     */
-    public function discountCodes($priceRuleId, array $params = []): array;
-
-    /**
      * @param array $params
      * @return array
      */
     public function customers(array $params = []): array;
-
 }
