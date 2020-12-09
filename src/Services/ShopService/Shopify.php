@@ -26,10 +26,10 @@ class Shopify implements ShopServiceInterface
 
     /**
      * Maps the product
-     * @param $product
+     * @param array $product
      * @return Product
      */
-    private function mapProduct($product): Product
+    private function mapProduct(array $product): Product
     {
         return new Product([
             'id' => Arr::get($product, 'id'),
@@ -40,10 +40,10 @@ class Shopify implements ShopServiceInterface
 
     /**
      * Maps the order
-     * @param $order
+     * @param array $order
      * @return Order
      */
-    private function mapOrder($order): Order
+    private function mapOrder(array $order): Order
     {
         return new Order([
             'id' => Arr::get($order, 'id'),
@@ -57,10 +57,10 @@ class Shopify implements ShopServiceInterface
 
     /**
      * Maps the customer
-     * @param $customer
+     * @param array $customer
      * @return Customer
      */
-    private function mapCustomer($customer): Customer
+    private function mapCustomer(array $customer): Customer
     {
         return new Customer([
             'id' => Arr::get($customer, 'id'),
