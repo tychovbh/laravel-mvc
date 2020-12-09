@@ -28,6 +28,7 @@
         "anam/phantomjs-linux-x86-binary": "^2.1",
         "anam/phantommagick": "^2.0",
         "chelout/offset-pagination": "dev-master",
+        "guzzlehttp/guzzle": "^7.2",
         "illuminate/console": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0",
         "illuminate/contracts": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0",
         "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|~6.0",

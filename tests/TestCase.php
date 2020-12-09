@@ -154,6 +154,18 @@ class TestCase extends BaseTestCase
             ]
         ]);
 
+        Config::set('mvc-shop', [
+            'default' => 'Shopify',
+            'providers' => [
+                'Shopify' => [
+                    'api_key' => '',
+                    'password' => '',
+                    'domain' => '',
+                    'version' => '',
+                ]
+            ]
+        ]);
+
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);
