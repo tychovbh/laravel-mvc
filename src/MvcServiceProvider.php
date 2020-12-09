@@ -138,10 +138,11 @@ class MvcServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(ShopServiceInterface::class, function ($app) {
+            $client = $app->make(Client::class);
             $service = config('mvc-address-lookup.default');
             $service = 'Tychovbh\\Mvc\\Services\\ShopService\\' . $service;
 
-            return new $service();
+            return new $service($client);
         });
     }
 

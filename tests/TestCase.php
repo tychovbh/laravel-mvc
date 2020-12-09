@@ -161,6 +161,7 @@ class TestCase extends BaseTestCase
                     'api_key' => '',
                     'password' => '',
                     'domain' => '',
+                    'version' => '',
                 ]
             ]
         ]);

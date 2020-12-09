@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
 
-
 use GuzzleHttp\Client;
-use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Services\ShopService\Shopify;
 use Tychovbh\Tests\Mvc\TestCase;
 
@@ -22,18 +19,24 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexProducts()
     {
-        $products = $this->shopifyService()->products();
-        $this->assertTrue(Arr::has($products, '0.id'));
+        $amount = 2;
+        $products = $this->shopifyService()->products(['limit' => $amount]);
+
+        $this->assertTrue(count($products) === $amount);
+
+        return $products;
     }
 
     /**
      * @test
+     * @depends itCanIndexProducts
+     * @param array $products
      */
-    public function itCanShowProduct()
+    public function itCanShowProduct(array $products)
     {
-        $id = 5979585118361;
-        $product = $this->shopifyService()->productById($id);
-        $this->assertTrue(Arr::get($product, 'id') === $id);
+        $id = $products[0]->id;
+        $product = $this->shopifyService()->product($id);
+        $this->assertTrue($product->id === $id);
     }
 
     /**
@@ -41,8 +44,11 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrders()
     {
-        $orders = $this->shopifyService()->orders(['status' => 'closed']);
-        $this->assertTrue(Arr::has($orders, '0.id'));
+        $amount = 2;
+        $orders = $this->shopifyService()->orders(['limit' => $amount]);
+        $this->assertTrue(count($orders) === $amount);
+
+        return $orders;
     }
 
     /**
@@ -50,21 +56,26 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrdersWithParams()
     {
-        $orders = $this->shopifyService()->orders(['status' => 'closed']);
+        $amount = 2;
+        $orders = $this->shopifyService()->orders(['limit' => $amount, 'status' => 'closed']);
+
+        $this->assertTrue(count($orders) === $amount);
 
         foreach ($orders as $order) {
-            $this->assertNotNull($order['closed_at']);
+            $this->assertNotNull($order->closed_at);
         }
     }
 
     /**
      * @test
+     * @depends itCanIndexOrders
+     * @param array $orders
      */
-    public function itCanShowOrder()
+    public function itCanShowOrder(array $orders)
     {
-        $id = 2978329854105;
-        $order = $this->shopifyService()->orderById($id);
-        $this->assertTrue(Arr::get($order, 'id') === $id);
+        $id = $orders[0]->id;
+        $order = $this->shopifyService()->order($id);
+        $this->assertTrue($order->id === $id);
     }
 
     /**
@@ -72,17 +83,22 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexCustomers()
     {
-        $customers = $this->shopifyService()->customers();
-        $this->assertTrue(Arr::has($customers, '0.id'));
+        $amount = 2;
+        $customers = $this->shopifyService()->customers(['limit' => $amount]);
+        $this->assertTrue(count($customers) === $amount);
+
+        return $customers;
     }
 
     /**
      * @test
+     * @depends itCanIndexCustomers
+     * @param array $customers
      */
-    public function itCanShowCustomer()
+    public function itCanShowCustomer(array $customers)
     {
-        $id = 4446505730201;
-        $customer = $this->shopifyService()->customerById($id);
-        $this->assertTrue(Arr::get($customer, 'id') === $id);
+        $id = $customers[0]->id;
+        $customer = $this->shopifyService()->customer($id);
+        $this->assertTrue($customer->id === $id);
     }
 }
