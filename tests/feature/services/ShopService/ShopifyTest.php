@@ -1,6 +1,8 @@
 <?php
 
+
 namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
+
 
 use GuzzleHttp\Client;
 use Tychovbh\Mvc\Services\ShopService\Shopify;
@@ -16,13 +18,13 @@ class ShopifyTest extends TestCase
 
     /**
      * @test
+     * @return array
      */
-    public function itCanIndexProducts()
+    public function itCanIndexProducts(): array
     {
-        $amount = 2;
-        $products = $this->shopifyService()->products(['limit' => $amount]);
+        $products = $this->shopifyService()->products(['limit' => 2]);
 
-        $this->assertTrue(count($products) === $amount);
+        $this->assertTrue(count($products) > 0);
 
         return $products;
     }
@@ -41,12 +43,12 @@ class ShopifyTest extends TestCase
 
     /**
      * @test
+     * @return array
      */
-    public function itCanIndexOrders()
+    public function itCanIndexOrders(): array
     {
-        $amount = 2;
-        $orders = $this->shopifyService()->orders(['limit' => $amount]);
-        $this->assertTrue(count($orders) === $amount);
+        $orders = $this->shopifyService()->orders(['limit' => 2]);
+        $this->assertTrue(count($orders) > 0);
 
         return $orders;
     }
@@ -56,10 +58,9 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrdersWithParams()
     {
-        $amount = 2;
-        $orders = $this->shopifyService()->orders(['limit' => $amount, 'status' => 'closed']);
+        $orders = $this->shopifyService()->orders(['limit' => 2, 'status' => 'closed']);
 
-        $this->assertTrue(count($orders) === $amount);
+        $this->assertTrue(count($orders) > 0);
 
         foreach ($orders as $order) {
             $this->assertNotNull($order->closed_at);
@@ -80,12 +81,12 @@ class ShopifyTest extends TestCase
 
     /**
      * @test
+     * @return array
      */
-    public function itCanIndexCustomers()
+    public function itCanIndexCustomers(): array
     {
-        $amount = 2;
-        $customers = $this->shopifyService()->customers(['limit' => $amount]);
-        $this->assertTrue(count($customers) === $amount);
+        $customers = $this->shopifyService()->customers(['limit' => 2]);
+        $this->assertTrue(count($customers) > 0);
 
         return $customers;
     }
