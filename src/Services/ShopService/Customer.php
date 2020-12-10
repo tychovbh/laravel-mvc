@@ -71,6 +71,10 @@ class Customer implements ServiceModelInterface
         $this->fill($data);
     }
 
+    /**
+     * Fills the model
+     * @param array $data
+     */
     public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id');
