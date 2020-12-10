@@ -4,8 +4,9 @@ namespace Tychovbh\Mvc\Services\DocumentSign;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Tychovbh\Mvc\Services\ServiceModelInterface;
 
-class DocumentSign
+class DocumentSign implements ServiceModelInterface
 {
     /**
      * @var string
@@ -37,6 +38,11 @@ class DocumentSign
      * @param array $data
      */
     public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
+    public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id', null);
         $this->sign_id = Arr::get($data, 'sign_id', null);

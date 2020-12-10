@@ -3,8 +3,9 @@
 namespace Tychovbh\Mvc\Services\ShopService;
 
 use Illuminate\Support\Arr;
+use Tychovbh\Mvc\Services\ServiceModelInterface;
 
-class Product
+class Product implements ServiceModelInterface
 {
     /**
      * @var int
@@ -26,6 +27,16 @@ class Product
      * @param array $data
      */
     public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
+    /**
+     * Fills the model
+     * @param array $data
+     * @return array
+     */
+    public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id');
         $this->title = Arr::get($data, 'title');
