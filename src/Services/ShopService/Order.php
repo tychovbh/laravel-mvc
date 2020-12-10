@@ -27,6 +27,11 @@ class Order
     public $closed_at;
 
     /**
+     * @var Customer
+     */
+    public $customer;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -36,5 +41,6 @@ class Order
         $this->email = Arr::get($data, 'email');
         $this->discount = Arr::get($data, 'discount');
         $this->closed_at = Arr::get($data, 'closed_at');
+        $this->customer = Arr::get($data, 'customer');
     }
 }
