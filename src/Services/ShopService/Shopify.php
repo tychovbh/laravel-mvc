@@ -47,11 +47,11 @@ class Shopify implements ShopServiceInterface
     {
         return new Order([
             'id' => Arr::get($order, 'id'),
-            'email' => Arr::get($order, 'email'),
             'discount' => array_map(function ($discount_code) {
                 return Arr::get($discount_code, 'code', '');
             }, Arr::get($order, 'discount_codes', [])),
-            'closed_at' => Arr::get($order, 'closed_at')
+            'closed_at' => Arr::get($order, 'closed_at'),
+            'customer' => $this->mapCustomer(Arr::get($order, 'customer'))
         ]);
     }
 
@@ -67,13 +67,13 @@ class Shopify implements ShopServiceInterface
             'email' => Arr::get($customer, 'email'),
             'first_name' => Arr::get($customer, 'first_name'),
             'last_name' => Arr::get($customer, 'last_name'),
-            'company' => Arr::get($customer, 'addresses.0.company'),
-            'address1' => Arr::get($customer, 'addresses.0.address1'),
-            'address2' => Arr::get($customer, 'addresses.0.address2'),
-            'city' => Arr::get($customer, 'addresses.0.city'),
-            'zip' => Arr::get($customer, 'addresses.0.zip'),
-            'phone' => Arr::get($customer, 'addresses.0.phone'),
-            'country' => Arr::get($customer, 'addresses.0.country_code')
+            'company' => Arr::get($customer, 'default_address.company'),
+            'address1' => Arr::get($customer, 'default_address.address1'),
+            'address2' => Arr::get($customer, 'addresses.address2'),
+            'city' => Arr::get($customer, 'default_address.city'),
+            'zip' => Arr::get($customer, 'default_address.zip'),
+            'phone' => Arr::get($customer, 'default_address.phone'),
+            'country' => Arr::get($customer, 'default_address.country_code')
         ]);
     }
 

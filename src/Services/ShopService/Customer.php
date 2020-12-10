@@ -3,8 +3,9 @@
 namespace Tychovbh\Mvc\Services\ShopService;
 
 use Illuminate\Support\Arr;
+use Tychovbh\Mvc\Services\ServiceModelInterface;
 
-class Customer
+class Customer implements ServiceModelInterface
 {
     /**
      * @var int
@@ -66,6 +67,15 @@ class Customer
      * @param array $data
      */
     public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
+    /**
+     * Fills the model
+     * @param array $data
+     */
+    public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id');
         $this->email = Arr::get($data, 'email');
