@@ -166,6 +166,15 @@ class TestCase extends BaseTestCase
             ]
         ]);
 
+        Config::set('mvc-voucher-validation', [
+            'default' => 'WinstUitJeWoning',
+            'providers' => [
+                'WinstUitJeWoning' => [
+                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher'
+                ]
+            ]
+        ]);
+
         $this->withFactories(__DIR__ . '/database/factories');
         $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);

@@ -28,6 +28,7 @@ use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Tychovbh\Mvc\Services\ShopService\ShopServiceInterface;
+use Tychovbh\Mvc\Services\VoucherValidation\VoucherValidationInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -141,6 +142,14 @@ class MvcServiceProvider extends ServiceProvider
             $client = $app->make(Client::class);
             $service = config('mvc-shop.default');
             $service = 'Tychovbh\\Mvc\\Services\\ShopService\\' . $service;
+
+            return new $service($client);
+        });
+
+        $this->app->bind(VoucherValidationInterface::class, function ($app) {
+            $client = $app->make(Client::class);
+            $service = config('mvc-voucher-validation.default');
+            $service = 'Tycho\\Mvc\\Services\\ShopService\\' . $service;
 
             return new $service($client);
         });
