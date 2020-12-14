@@ -326,4 +326,22 @@ abstract class AbstractRepository
             }
         }
     }
+
+    /**
+     * Filter users on from created_at
+     * @param string $from
+     */
+    public function indexFromParam(string $from)
+    {
+        $this->query->where('created_at', '>=', $from);
+    }
+
+    /**
+     * Filter users on till created_at
+     * @param string $till
+     */
+    public function indexTillParam(string $till)
+    {
+        $this->query->where('created_at', '<=', $till);
+    }
 }
