@@ -147,7 +147,22 @@ class TestCase extends BaseTestCase
                 'enabled' => true
             ],
             'document_sign' => [
-                'enabled' => true
+                'enabled' => true,
+                'return' => 'http://localhost/contracts/{id}',
+                'from_email' => 'noreply@rentbay.nl',
+                'from_name' => 'rentbay'
+            ]
+        ]);
+
+        Config::set('mvc-shop', [
+            'default' => 'Shopify',
+            'providers' => [
+                'Shopify' => [
+                    'api_key' => '',
+                    'password' => '',
+                    'domain' => '',
+                    'version' => '',
+                ]
             ]
         ]);
 

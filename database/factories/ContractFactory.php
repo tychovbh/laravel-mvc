@@ -23,7 +23,6 @@ use Tychovbh\Mvc\User;
 $factory->define(Contract::class, function (Faker $faker) {
     return [
         'status' => $faker->randomElement(Contract::STATUSES),
-        'signed_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'user_id' =>  factory(User::Class)->create()->id
     ];
 });

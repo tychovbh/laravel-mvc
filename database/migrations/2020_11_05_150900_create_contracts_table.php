@@ -19,7 +19,7 @@ class CreateContractsTable extends Migration
             $table->string('file')->nullable();
             $table->string('template')->nullable();
             $table->enum('status', Contract::STATUSES);
-            $table->timestamp('signed_at')->nullable();
+            $table->json('signers')->nullable();
             $table->json('options')->nullable();
             $table->string('external_id')->nullable();
 
