@@ -33,18 +33,10 @@ class WinstUitJeWoning implements VoucherValidationInterface
      */
     public function validate(string $voucher, array $data): array
     {
-        if (!$this->isEnabled()) {
-            return [
-                'Service is not enabled'
-            ];
-        }
-
-        array_merge([
+        return $this->request('get', array_merge([
             'verify' => 1,
             'label' => $voucher
-        ], $data);
-
-        return $this->request('get', $data);
+        ], $data));
     }
 
     /**
@@ -56,18 +48,10 @@ class WinstUitJeWoning implements VoucherValidationInterface
      */
     public function use(string $voucher, array $data = []): array
     {
-        if (!$this->isEnabled()) {
-            return [
-                'Service is not enabled'
-            ];
-        }
-
-        array_merge([
+        return $this->request('post', array_merge([
             'webshop' => 1,
             'label' => $voucher
-        ], $data);
-
-        return $this->request('post', $data);
+        ], $data));
     }
 
     /**
@@ -81,41 +65,23 @@ class WinstUitJeWoning implements VoucherValidationInterface
     {
         $config = config('mvc-voucher-validation.providers.WinstUitJeWoning');
         $options = [];
-        $multipart = [];
 
-        if (!empty($params)) {
-            if ($method === 'post') {
-                $index = 0;
-                foreach ($params as $key => $value) {
-                    $data = [
-                        'name' => $key,
-                        'contents' => $value
-                    ];
-                    $multipart[] = $data;
-                    $index++;
-                }
-
-                $options['multipart'] = $multipart;
-            } else {
-                $options['query'] = $params;
+        if ($method === 'post') {
+            $multipart = [];
+            foreach ($params as $key => $value) {
+                $data = [
+                    'name' => $key,
+                    'contents' => $value
+                ];
+                $multipart[] = $data;
             }
 
+            $options['multipart'] = $multipart;
+        } else {
+            $options['query'] = $params;
         }
 
         $response = $this->client->request($method, $config['url'], $options);
         return json_decode($response->getBody(), true) ?? [];
-    }
-
-    /**
-     * Checks if service is enabled
-     * @return bool
-     */
-    private function isEnabled(): bool
-    {
-        if (config('mvc-voucher-validation.enabled') === true) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

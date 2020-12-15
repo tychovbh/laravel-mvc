@@ -44,7 +44,6 @@ class WinstUitJeWoningTest extends TestCase
     public function itCanUse()
     {
         $file = __DIR__ . '/receiptFile.pdf';
-//        $zipcode = str_split($voucher['addressZipcode'], 4);
         $voucher = $this->winstUitJeWoning()->use('105-063-775-512', [
             'amount0' => 9740,
             'description0' => 'EPS plaat',

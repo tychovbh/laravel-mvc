@@ -27,10 +27,6 @@ class PhantomMagickConverter implements HtmlConverterInterface
      */
     public function page(string $html): HtmlConverterInterface
     {
-        if (!$this->isEnabled()) {
-            return $this;
-        }
-
         $this->pages = $this->pages->push($html);
 
         return $this;
@@ -44,10 +40,6 @@ class PhantomMagickConverter implements HtmlConverterInterface
      */
     public function save(string $path, string $type = 'pdf'): bool
     {
-        if (!$this->isEnabled()) {
-            return false;
-        }
-
         try {
             $converter = new Converter();
             foreach ($this->pages as $page) {
@@ -71,19 +63,6 @@ class PhantomMagickConverter implements HtmlConverterInterface
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
-            return false;
-        }
-    }
-
-    /**
-     * Checks if service is enabled
-     * @return bool
-     */
-    private function isEnabled(): bool
-    {
-        if (config('mvc-html-converter.enabled') === true) {
-            return true;
-        } else {
             return false;
         }
     }

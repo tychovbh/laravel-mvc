@@ -106,8 +106,7 @@ class SignRequestTest extends TestCase
      */
     public function itCanCancelSign(DocumentSign $document)
     {
-        $document = $this->signRequest()->signCancel($document->sign_id);
-        $this->assertTrue($document->cancelled === true);
+        $this->assertTrue($this->signRequest()->signCancel($document->sign_id) === true);
     }
 
     /**

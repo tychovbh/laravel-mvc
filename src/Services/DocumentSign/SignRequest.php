@@ -47,10 +47,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function signer(string $email, string $firstname = '', string $lastname = ''): DocumentSignInterface
     {
-        if ($this->isEnabled()) {
-            return $this;
-        }
-
         $this->signers = $this->signers->push([
             'email' => $email,
             'firstname' => $firstname,
@@ -68,10 +64,6 @@ class SignRequest implements DocumentSignInterface
      */
     private function createRequest(string $file, string $name, string $webhook = null): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
-
         try {
             $response = $this->request('post', '/documents', [
                 'file_from_content' => base64_encode($file),
@@ -100,10 +92,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function create(string $path, string $name, string $webhook = null): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
-
         return $this->createRequest(file_get_contents($path), $name);
     }
 
@@ -115,10 +103,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function createFromUpload(UploadedFile $file, string $webhook = null): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
-
         return $this->createRequest($file->get(), $file->getClientOriginalName(), $webhook);
     }
 
@@ -133,9 +117,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function sign(string $id, string $from_name, string $from_email, string $message = '', string $redirect_url = ''): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
         try {
             if (!$this->signers->count()) {
                 throw new Exception('At least one signer is required (See signer method)');
@@ -170,10 +151,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function show(string $id): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
-
         try {
             $response = $this->request('get', '/documents/' . $id);
 
@@ -197,10 +174,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function signShow(string $id): DocumentSign
     {
-        if ($this->isEnabled()) {
-            return new DocumentSign();
-        }
-
         $documentSign = new DocumentSign(['sign_id' => $id]);
         try {
             $response = $this->request('get', '/signrequests/' . $id);
@@ -240,10 +213,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function signCancel(string $id): Bool
     {
-        if ($this->isEnabled()) {
-            return false;
-        }
-
         try {
             $response = $this->request('post', '/signrequests/' . $id . '/cancel_signrequest');
 
@@ -267,10 +236,6 @@ class SignRequest implements DocumentSignInterface
      */
     public function destroy(string $id): bool
     {
-        if ($this->isEnabled()) {
-            return false;
-        }
-
         try {
             $this->request('delete', '/documents/' . $id);
 
@@ -294,10 +259,6 @@ class SignRequest implements DocumentSignInterface
      */
     private function request(string $method, string $endpoint, array $params = []): array
     {
-        if ($this->isEnabled()) {
-            return [];
-        }
-
         $options = [
             'headers' => [
                 'Authorization' => 'Token ' . Arr::get($this->config, 'token'),
@@ -310,18 +271,5 @@ class SignRequest implements DocumentSignInterface
 
         $response = $this->client->request($method, Arr::get($this->config, 'subdomain') . $endpoint . '/', $options);
         return json_decode($response->getBody(), true) ?? [];
-    }
-
-    /**
-     * Checks if service is enabled
-     * @return bool
-     */
-    private function isEnabled(): bool
-    {
-        if (config('mvc-voucher-validation.enabled') === true) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
