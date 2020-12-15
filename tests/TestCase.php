@@ -168,6 +168,7 @@ class TestCase extends BaseTestCase
 
         Config::set('mvc-voucher-validation', [
             'default' => 'WinstUitJeWoning',
+            'enabled' => true,
             'providers' => [
                 'WinstUitJeWoning' => [
                     'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher'

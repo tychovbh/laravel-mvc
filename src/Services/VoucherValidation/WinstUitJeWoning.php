@@ -33,8 +33,16 @@ class WinstUitJeWoning implements VoucherValidationInterface
      */
     public function validate(string $voucher, array $data): array
     {
-        $data['verify'] = 1;
-        $data['label'] = $voucher;
+        if (!$this->isEnabled()) {
+            return [
+                'Service is not enabled'
+            ];
+        }
+
+        array_merge([
+            'verify' => 1,
+            'label' => $voucher
+        ], $data);
 
         return $this->request('get', $data);
     }
@@ -48,8 +56,16 @@ class WinstUitJeWoning implements VoucherValidationInterface
      */
     public function use(string $voucher, array $data = []): array
     {
-        $data['webshop'] = 1;
-        $data['label'] = $voucher;
+        if (!$this->isEnabled()) {
+            return [
+                'Service is not enabled'
+            ];
+        }
+
+        array_merge([
+            'webshop' => 1,
+            'label' => $voucher
+        ], $data);
 
         return $this->request('post', $data);
     }
@@ -61,7 +77,7 @@ class WinstUitJeWoning implements VoucherValidationInterface
      * @return array
      * @throws GuzzleException
      */
-    private function request(string $method, array $params): array
+    private function request(string $method, array $params = []): array
     {
         $config = config('mvc-voucher-validation.providers.WinstUitJeWoning');
         $options = [];
@@ -73,9 +89,9 @@ class WinstUitJeWoning implements VoucherValidationInterface
                 foreach ($params as $key => $value) {
                     $data = [
                         'name' => $key,
-                        'contents' => $key === 'receiptFile' ? fopen($value, 'r') : $value
+                        'contents' => $value
                     ];
-                    Arr::set($multipart, $index, $data);
+                    $multipart[] = $data;
                     $index++;
                 }
 
@@ -89,7 +105,17 @@ class WinstUitJeWoning implements VoucherValidationInterface
         $response = $this->client->request($method, $config['url'], $options);
         return json_decode($response->getBody(), true) ?? [];
     }
+
+    /**
+     * Checks if service is enabled
+     * @return bool
+     */
+    private function isEnabled(): bool
+    {
+        if (config('mvc-voucher-validation.enabled') === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-
-dus:
-

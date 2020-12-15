@@ -84,6 +84,10 @@ class Shopify implements ShopServiceInterface
      */
     public function products(array $params = []): array
     {
+        if (!$this->isEnabled()) {
+            return ['Service is not enabled'];
+        }
+
         $response = $this->request('get', 'products', $params);
 
         return array_map(function ($product) {
@@ -98,6 +102,9 @@ class Shopify implements ShopServiceInterface
      */
     public function product($id): Product
     {
+        if (!$this->isEnabled()) {
+            return new Product();
+        }
         $response = $this->request('get', 'products/' . $id);
 
         return $this->mapProduct(Arr::get($response, 'product'));
@@ -110,6 +117,10 @@ class Shopify implements ShopServiceInterface
      */
     public function orders(array $params = []): array
     {
+        if (!$this->isEnabled()) {
+            return ['Service is not enabled'];
+        }
+
         $response = $this->request('get', 'orders', $params);
 
         return array_map(function ($order) {
@@ -124,6 +135,10 @@ class Shopify implements ShopServiceInterface
      */
     public function order($id): Order
     {
+        if (!$this->isEnabled()) {
+            return new Order();
+        }
+
         $response = $this->request('get', 'orders/' . $id);
 
         return $this->mapOrder(Arr::get($response, 'order'));
@@ -136,6 +151,10 @@ class Shopify implements ShopServiceInterface
      */
     public function customers(array $params = []): array
     {
+        if (!$this->isEnabled()) {
+            return ['Service is not enabled'];
+        }
+
         $response = $this->request('get', 'customers', $params);
 
         return array_map(function ($customer) {
@@ -150,6 +169,10 @@ class Shopify implements ShopServiceInterface
      */
     public function customer($id): Customer
     {
+        if (!$this->isEnabled()) {
+            return new Customer();
+        }
+
         $response = $this->request('get', 'customers/' . $id);
 
         return $this->mapCustomer(Arr::get($response, 'customer'));
@@ -173,5 +196,18 @@ class Shopify implements ShopServiceInterface
         }
         $response = $this->client->request($method, $url, $options);
         return json_decode($response->getBody(), true) ?? [];
+    }
+
+    /**
+     * Checks if service is enabled
+     * @return bool
+     */
+    private function isEnabled(): bool
+    {
+        if (config('mvc-shop.enabled') === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

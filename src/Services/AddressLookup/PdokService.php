@@ -20,6 +20,7 @@ class PdokService implements AddressLookupInterface
 
     /**
      * PdokService constructor.
+     * @param Client $client
      */
     public function __construct(Client $client)
     {
@@ -35,6 +36,10 @@ class PdokService implements AddressLookupInterface
      */
     public function search(string $zipcode, int $house_number): array
     {
+        if (!config('mvc-address-lookup.enabled')) {
+            return [];
+        }
+
         $zipcode = str_replace(' ', '', $zipcode);
 
         $client = new Client();
@@ -50,5 +55,18 @@ class PdokService implements AddressLookupInterface
             'zipcode' => Arr::get($fullAddress, 'response.docs.0.postcode'),
             'city' => Arr::get($fullAddress, 'response.docs.0.woonplaatsnaam')
         ];
+    }
+
+    /**
+     * Checks if service is enabled
+     * @return bool
+     */
+    private function isEnabled(): bool
+    {
+        if (config('mvc-voucher-validation.enabled')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
