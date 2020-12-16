@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Tychovbh\Mvc\Services\VoucherValidation;
+namespace Tychovbh\Mvc\Services\Voucher;
 
 
 use GuzzleHttp\Exception\GuzzleException;
 
-interface VoucherValidationInterface
+interface VoucherInterface
 {
     /**
      * Check if voucher is valid

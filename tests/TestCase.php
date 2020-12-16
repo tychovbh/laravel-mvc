@@ -160,20 +160,21 @@ class TestCase extends BaseTestCase
             'default' => 'Shopify',
             'providers' => [
                 'Shopify' => [
-                    'api_key' => '',
-                    'password' => '',
-                    'domain' => '',
-                    'version' => '',
+                    'api_key' => 'f80dc45cf16618d700bccfb5e114c649',
+                    'password' => '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',
+                    'domain' => 'woonwijzertrial.myshopify.com',
+                    'version' => '2020-10',
                 ]
             ]
         ]);
 
-        Config::set('mvc-voucher-validation', [
+        Config::set('mvc-voucher', [
             'default' => 'WinstUitJeWoning',
             'enabled' => true,
             'providers' => [
                 'WinstUitJeWoning' => [
-                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher'
+                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher',
+                    'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a'
                 ]
             ]
         ]);

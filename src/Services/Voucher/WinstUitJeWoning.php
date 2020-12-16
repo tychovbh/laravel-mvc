@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Tychovbh\Mvc\Services\VoucherValidation;
+namespace Tychovbh\Mvc\Services\Voucher;
 
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 
-class WinstUitJeWoning implements VoucherValidationInterface
+class WinstUitJeWoning implements VoucherInterface
 {
     /**
      * @var Client

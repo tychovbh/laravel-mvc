@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 
-class Shopify implements ShopServiceInterface
+class Shopify implements ShopInterface
 {
 
     /**
@@ -51,7 +51,12 @@ class Shopify implements ShopServiceInterface
                 return Arr::get($discount_code, 'code', '');
             }, Arr::get($order, 'discount_codes', [])),
             'closed_at' => Arr::get($order, 'closed_at'),
-            'customer' => $this->mapCustomer(Arr::get($order, 'customer'))
+            'created_at' => Arr::get($order, 'created_at'),
+            'updated_at' => Arr::get($order, 'updated_at'),
+            'customer' => $this->mapCustomer(array_merge(
+                Arr::get($order, 'customer'),
+                Arr::get($order, 'shipping_address')
+            ))
         ]);
     }
 
@@ -67,13 +72,13 @@ class Shopify implements ShopServiceInterface
             'email' => Arr::get($customer, 'email'),
             'first_name' => Arr::get($customer, 'first_name'),
             'last_name' => Arr::get($customer, 'last_name'),
-            'company' => Arr::get($customer, 'default_address.company'),
-            'address1' => Arr::get($customer, 'default_address.address1'),
-            'address2' => Arr::get($customer, 'addresses.address2'),
-            'city' => Arr::get($customer, 'default_address.city'),
-            'zip' => Arr::get($customer, 'default_address.zip'),
-            'phone' => Arr::get($customer, 'default_address.phone'),
-            'country' => Arr::get($customer, 'default_address.country_code')
+            'company' => Arr::get($customer, 'company'),
+            'address1' => Arr::get($customer, 'address1'),
+            'address2' => Arr::get($customer, 'address2'),
+            'city' => Arr::get($customer, 'city'),
+            'zip' => Arr::get($customer, 'zip'),
+            'phone' => Arr::get($customer, 'phone'),
+            'country' => Arr::get($customer, 'country_code')
         ]);
     }
 
@@ -151,8 +156,8 @@ class Shopify implements ShopServiceInterface
     public function customer($id): Customer
     {
         $response = $this->request('get', 'customers/' . $id);
-
-        return $this->mapCustomer(Arr::get($response, 'customer'));
+        $customer = Arr::get($response, 'customer');
+        return $this->mapCustomer(array_merge(Arr::get($customer, 'default_address', []), $customer));
     }
 
     /**

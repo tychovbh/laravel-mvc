@@ -1,6 +1,6 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Services\ServiceModelInterface;

@@ -5,7 +5,7 @@ namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
 
 
 use GuzzleHttp\Client;
-use Tychovbh\Mvc\Services\ShopService\Shopify;
+use Tychovbh\Mvc\Services\Shop\Shopify;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class ShopifyTest extends TestCase

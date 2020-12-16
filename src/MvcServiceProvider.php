@@ -27,8 +27,8 @@ use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
-use Tychovbh\Mvc\Services\ShopService\ShopServiceInterface;
-use Tychovbh\Mvc\Services\VoucherValidation\VoucherValidationInterface;
+use Tychovbh\Mvc\Services\Shop\ShopInterface;
+use Tychovbh\Mvc\Services\Voucher\VoucherInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -145,20 +145,20 @@ class MvcServiceProvider extends ServiceProvider
         }
 
         if (config('mvc-shop.enabled')) {
-            $this->app->bind(ShopServiceInterface::class, function ($app) {
+            $this->app->bind(ShopInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-shop.default');
-                $service = 'Tychovbh\\Mvc\\Services\\ShopService\\' . $service;
+                $service = 'Tychovbh\\Mvc\\Services\\Shop\\' . $service;
 
                 return new $service($client);
             });
         }
 
         if (config('mvc-voucher-validation.enabled')) {
-            $this->app->bind(VoucherValidationInterface::class, function ($app) {
+            $this->app->bind(VoucherInterface::class, function ($app) {
                 $client = $app->make(Client::class);
-                $service = config('mvc-voucher-validation.default');
-                $service = 'Tychovbh\\Mvc\\Services\\VoucherValidation\\' . $service;
+                $service = config('mvc-voucher.default');
+                $service = 'Tychovbh\\Mvc\\Services\\Voucher\\' . $service;
 
                 return new $service($client);
             });

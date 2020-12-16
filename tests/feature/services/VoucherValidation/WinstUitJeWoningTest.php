@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tychovbh\Mvc\Services\VoucherValidation\WinstUitJeWoning;
+use Tychovbh\Mvc\Services\Voucher\WinstUitJeWoning;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class WinstUitJeWoningTest extends TestCase
