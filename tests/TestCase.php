@@ -160,10 +160,10 @@ class TestCase extends BaseTestCase
             'default' => 'Shopify',
             'providers' => [
                 'Shopify' => [
-                    'api_key' => 'f80dc45cf16618d700bccfb5e114c649',
-                    'password' => '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',
-                    'domain' => 'woonwijzertrial.myshopify.com',
-                    'version' => '2020-10',
+                    'api_key' => '',
+                    'password' => '',
+                    'domain' => '',
+                    'version' => '',
                 ]
             ]
         ]);
@@ -176,8 +176,8 @@ class TestCase extends BaseTestCase
                     'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher',
                     'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a',
                     'store' => [
-                        'id' => 8,
-                        'name' => 'WoonWijzerWebshop'
+                        'id' => 0,
+                        'name' => ''
                     ]
                 ]
             ]
