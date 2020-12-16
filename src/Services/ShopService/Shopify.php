@@ -47,7 +47,7 @@ class Shopify implements ShopServiceInterface
     {
         return new Order([
             'id' => Arr::get($order, 'id'),
-            'discount' => array_map(function ($discount_code) {
+            'vouchers' => array_map(function ($discount_code) {
                 return Arr::get($discount_code, 'code', '');
             }, Arr::get($order, 'discount_codes', [])),
             'closed_at' => Arr::get($order, 'closed_at'),

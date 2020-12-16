@@ -20,7 +20,7 @@ class Order implements ServiceModelInterface
     /**
      * @var string
      */
-    public $discount;
+    public $vouchers;
 
     /**
      * @var string
@@ -49,7 +49,7 @@ class Order implements ServiceModelInterface
     {
         $this->id = Arr::get($data, 'id');
         $this->email = Arr::get($data, 'email');
-        $this->discount = Arr::get($data, 'discount');
+        $this->vouchers = Arr::get($data, 'vouchers');
         $this->closed_at = Arr::get($data, 'closed_at');
         $this->customer = Arr::get($data, 'customer', new Customer());
     }
