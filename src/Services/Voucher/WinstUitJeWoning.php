@@ -16,12 +16,18 @@ class WinstUitJeWoning implements VoucherInterface
     private $client;
 
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
      * WinstUitJeWoning constructor.
      * @param Client $client
      */
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->config = config('mvc-voucher-validation.providers.WinstUitJeWoning');
     }
 
     /**
@@ -50,7 +56,8 @@ class WinstUitJeWoning implements VoucherInterface
     {
         return $this->request('post', array_merge([
             'webshop' => 1,
-            'label' => $voucher
+            'label' => $voucher,
+            'token' => $this->config['token']
         ], $data));
     }
 
@@ -63,7 +70,6 @@ class WinstUitJeWoning implements VoucherInterface
      */
     private function request(string $method, array $params = []): array
     {
-        $config = config('mvc-voucher-validation.providers.WinstUitJeWoning');
         $options = [];
 
         if ($method === 'post') {
@@ -81,7 +87,7 @@ class WinstUitJeWoning implements VoucherInterface
             $options['query'] = $params;
         }
 
-        $response = $this->client->request($method, $config['url'], $options);
+        $response = $this->client->request($method, $this->config['url'], $options);
         return json_decode($response->getBody(), true) ?? [];
     }
 }
