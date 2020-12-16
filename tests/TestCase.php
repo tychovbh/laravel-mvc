@@ -116,6 +116,7 @@ class TestCase extends BaseTestCase
 
         Config::set('mvc-document-sign', [
                 'default' => 'SignRequest',
+                'enabled' => true,
                 'providers' => [
                     // SANDBOX account
                     'SignRequest' => [
@@ -131,6 +132,7 @@ class TestCase extends BaseTestCase
 
         Config::set('mvc-html-converter', [
             'default' => 'PhantomMagickConverter',
+            'enabled' => true,
         ]);
 
         Config::set('mvc-address-lookup', [
@@ -162,6 +164,16 @@ class TestCase extends BaseTestCase
                     'password' => '',
                     'domain' => '',
                     'version' => '',
+                ]
+            ]
+        ]);
+
+        Config::set('mvc-voucher-validation', [
+            'default' => 'WinstUitJeWoning',
+            'enabled' => true,
+            'providers' => [
+                'WinstUitJeWoning' => [
+                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher'
                 ]
             ]
         ]);

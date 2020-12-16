@@ -15,11 +15,6 @@ class Order implements ServiceModelInterface
     /**
      * @var string
      */
-    public $email;
-
-    /**
-     * @var string
-     */
     public $vouchers;
 
     /**
@@ -48,7 +43,6 @@ class Order implements ServiceModelInterface
     public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id');
-        $this->email = Arr::get($data, 'email');
         $this->vouchers = Arr::get($data, 'vouchers');
         $this->closed_at = Arr::get($data, 'closed_at');
         $this->customer = Arr::get($data, 'customer', new Customer());

@@ -73,7 +73,7 @@ class Contract extends Model
         ], $data));
 
         $html = $page->render();
-        $path = 'contracts/contract.pdf';
+        $path = 'contracts/contract.pdf'; // TODO manage this path
         $htmlConverter->page($html)->save($path);
         $this->file = $path;
     }
