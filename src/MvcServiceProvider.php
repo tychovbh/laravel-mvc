@@ -154,7 +154,7 @@ class MvcServiceProvider extends ServiceProvider
             });
         }
 
-        if (config('mvc-voucher-validation.enabled')) {
+        if (config('mvc-voucher.enabled')) {
             $this->app->bind(VoucherInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-voucher.default');
