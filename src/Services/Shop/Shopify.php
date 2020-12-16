@@ -53,6 +53,7 @@ class Shopify implements ShopInterface
             'closed_at' => Arr::get($order, 'closed_at'),
             'created_at' => Arr::get($order, 'created_at'),
             'updated_at' => Arr::get($order, 'updated_at'),
+            'ipaddress' => Arr::get($order, 'browser_ip'),
             'customer' => $this->mapCustomer(array_merge(
                 Arr::get($order, 'customer'),
                 Arr::get($order, 'shipping_address')

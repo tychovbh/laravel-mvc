@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
+namespace Tychovbh\Tests\Mvc\feature\services\Shop;
 
 
 use GuzzleHttp\Client;

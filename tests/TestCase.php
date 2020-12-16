@@ -174,7 +174,11 @@ class TestCase extends BaseTestCase
             'providers' => [
                 'WinstUitJeWoning' => [
                     'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher',
-                    'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a'
+                    'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a',
+                    'store' => [
+                        'id' => 8,
+                        'name' => 'WoonWijzerWebshop'
+                    ]
                 ]
             ]
         ]);

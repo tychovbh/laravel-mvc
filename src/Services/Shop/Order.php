@@ -38,6 +38,11 @@ class Order implements ServiceModelInterface
     public $vouchers;
 
     /**
+     * @var string
+     */
+    public $ipaddress;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -53,10 +58,11 @@ class Order implements ServiceModelInterface
     public function fill(array $data = [])
     {
         $this->id = Arr::get($data, 'id');
-        $this->vouchers = Arr::get($data, 'vouchers');
-        $this->closed_at = Arr::get($data, 'closed_at');
-        $this->created_at = Arr::get($data, 'created_at');
-        $this->updated_at = Arr::get($data, 'created_at');
+        $this->vouchers = Arr::get($data, 'vouchers', []);
+        $this->closed_at = Arr::get($data, 'closed_at', '');
+        $this->created_at = Arr::get($data, 'created_at', '');
+        $this->updated_at = Arr::get($data, 'created_at', '');
         $this->customer = Arr::get($data, 'customer', new Customer());
+        $this->ipaddress = Arr::get($data, 'ipaddress', '');
     }
 }

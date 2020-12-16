@@ -7,6 +7,10 @@ return [
         'WinstUitJeWoning' => [
             'url' => env('WINSUITJEWONING_URL', ''),
             'token' => env('WINSUITJEWONING_TOKEN', ''),
+            'store' => [
+                'name' => env('WINSUITJEWONING_STORE', ''),
+                'id' => env('WINSUITJEWONING_STORE', '')
+            ],
         ]
     ]
 ];

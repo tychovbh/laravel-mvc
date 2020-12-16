@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tychovbh\Tests\Mvc\feature\services\VoucherValidation;
+namespace Tychovbh\Tests\Mvc\feature\services\Voucher;
 
 
 use GuzzleHttp\Client;
@@ -55,16 +55,10 @@ class WinstUitJeWoningTest extends TestCase
             'phone' => '0652044111',
             'quantity0' => 1,
             'receiptNumber' => 2,
-            'storeId' => 8,
-            'storeName' => 'WoonWijzerWebshop',
-            'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a',
             'zipcodeLetter' => 'LA',
             'zipcodeNumber' => 1022,
             'purchaseDate' => 1600419256000,
             'receiptFile' => fopen($file, 'r'),
-            'routeE' => 1,
-            'optin' => 1,
-            'agree' => 1,
             'addressNumber' => 19
         ]);
 
