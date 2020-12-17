@@ -60,14 +60,6 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->register(FormRequestServiceProvider::class);
 
             $this->app->withFacades(true, [Mollie::class => 'Mollie']);
-            $this->app->configure('mvc-messages');
-            $this->app->configure('mvc-forms');
-            $this->app->configure('mvc-collections');
-            $this->app->configure('mvc-auth');
-            $this->app->configure('mvc-mail');
-            $this->app->configure('mvc-cache');
-            $this->app->configure('mvc-security');
-            $this->app->configure('mvc-payments');
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
@@ -88,16 +80,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcPaymentsCheck::class,
             MvcContractsUpdate::class
         ]);
-
-        $this->config('mvc-messages');
-        $this->config('mvc-forms');
-        $this->config('mvc-collections');
-        $this->config('mvc-auth');
-        $this->config('mvc-mail');
-        $this->config('mvc-cache');
-        $this->config('mvc-security');
-        $this->config('mvc-payments');
-
+        
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
