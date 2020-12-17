@@ -43,6 +43,41 @@ class Order implements ServiceModelInterface
     public $ipaddress;
 
     /**
+     * @var string
+     */
+    public $total;
+
+    /**
+     * @var string
+     */
+    public $total_discounts;
+
+    /**
+     * @var string
+     */
+    public $total_tax;
+
+    /**
+     * @var string
+     */
+    public $subtotal;
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var string
+     */
+    public $invoice;
+
+    /**
+     * @var array
+     */
+    public $products;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -50,6 +85,7 @@ class Order implements ServiceModelInterface
     {
         $this->fill($data);
     }
+
 
     /**
      * Fills the model
@@ -64,5 +100,12 @@ class Order implements ServiceModelInterface
         $this->updated_at = Arr::get($data, 'created_at', '');
         $this->customer = Arr::get($data, 'customer', new Customer());
         $this->ipaddress = Arr::get($data, 'ipaddress', '');
+        $this->total = Arr::get($data, 'total', '');
+        $this->total_discounts = Arr::get($data, 'total_discounts', '');
+        $this->total_tax = Arr::get($data, 'total_tax', '');
+        $this->subtotal = Arr::get($data, 'subtotal', '');
+        $this->name = Arr::get($data, 'name', '');
+        $this->invoice = Arr::get($data, 'invoice', '');
+        $this->products = Arr::get($data, 'products', '');
     }
 }

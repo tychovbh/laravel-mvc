@@ -48,7 +48,7 @@ class Shopify implements ShopInterface
         return new Order([
             'id' => Arr::get($order, 'id'),
             'vouchers' => array_map(function ($discount_code) {
-                return Arr::get($discount_code, 'code', '');
+                return new Voucher($discount_code);
             }, Arr::get($order, 'discount_codes', [])),
             'closed_at' => Arr::get($order, 'closed_at'),
             'created_at' => Arr::get($order, 'created_at'),
@@ -59,11 +59,19 @@ class Shopify implements ShopInterface
                 Arr::get($order, 'shipping_address')
             )),
             'total' => Arr::get($order, 'total_price'),
-            'total_discount' => Arr::get($order, 'total_discount'),
-            'total_vat' => Arr::get($order, 'total_vat'),
+            'total_discounts' => Arr::get($order, 'total_discounts'),
+            'total_tax' => Arr::get($order, 'total_tax'),
             'subtotal' => Arr::get($order, 'total_line_items_price'),
             'name' => Arr::get($order, 'name'),
-            'invoice' => Arr::get($order, 'order_number')
+            'invoice' => Arr::get($order, 'order_number'),
+            'products' => array_map(function ($product) {
+                return new Product([
+                    'id' => Arr::get($product, 'product_id'),
+                    'title' => Arr::get($product, 'title'),
+                    'price' => Arr::get($product, 'price'),
+                    'quantity' => Arr::get($product, 'quantity')
+                ]);
+            }, Arr::get($order, 'line_items'))
         ]);
     }
 
