@@ -55,8 +55,8 @@ class Shopify implements ShopInterface
             'updated_at' => Arr::get($order, 'updated_at'),
             'ipaddress' => Arr::get($order, 'browser_ip'),
             'customer' => $this->mapCustomer(array_merge(
-                Arr::get($order, 'customer'),
-                Arr::get($order, 'shipping_address')
+                array_filter(Arr::get($order, 'customer')),
+                array_filter(Arr::get($order, 'shipping_address'))
             )),
             'total' => Arr::get($order, 'total_price'),
             'total_vouchers' => Arr::get($order, 'total_discounts'),
