@@ -158,10 +158,10 @@ class TestCase extends BaseTestCase
             'default' => 'Shopify',
             'providers' => [
                 'Shopify' => [
-                    'api_key' => '',
-                    'password' => '',
-                    'domain' => '',
-                    'version' => '',
+                    'api_key' => 'f80dc45cf16618d700bccfb5e114c649',
+                    'password' => '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',
+                    'domain' => 'woonwijzertrial.myshopify.com',
+                    'version' => '2020-10',
                 ]
             ]
         ]);
