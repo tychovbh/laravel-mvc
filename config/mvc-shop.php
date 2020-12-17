@@ -2,7 +2,6 @@
 
 return [
     'default' => env('SHOP_SERVICE', 'Shopify'),
-    'enabled' => env('SHOP_SERVICE_ENABLED', 'false'),
     'providers' => [
         'Shopify' => [
             'api_key' => env('SHOPIFY_API_KEY', ''),

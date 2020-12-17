@@ -115,7 +115,7 @@ class MvcServiceProvider extends ServiceProvider
             OffsetPaginationServiceProvider::class
         );
 
-        if (config('mvc-document-sign.enabled')) {
+        if (config('mvc-document-sign.default')) {
             $this->app->bind(DocumentSignInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-document-sign.default');
@@ -125,7 +125,7 @@ class MvcServiceProvider extends ServiceProvider
             });
         }
 
-        if (config('mvc-html-converter.enabled')) {
+        if (config('mvc-html-converter.default')) {
             $this->app->bind(HtmlConverterInterface::class, function () {
                 $service = config('mvc-html-converter.default');
                 $service = 'Tychovbh\\Mvc\\Services\\HtmlConverter\\' . $service;
@@ -134,7 +134,7 @@ class MvcServiceProvider extends ServiceProvider
             });
         }
 
-        if (config('mvc-address-lookup.enabled')) {
+        if (config('mvc-address-lookup.default')) {
             $this->app->bind(AddressLookupInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-address-lookup.default');
@@ -144,7 +144,7 @@ class MvcServiceProvider extends ServiceProvider
             });
         }
 
-        if (config('mvc-shop.enabled')) {
+        if (config('mvc-shop.default')) {
             $this->app->bind(ShopInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-shop.default');
@@ -154,7 +154,7 @@ class MvcServiceProvider extends ServiceProvider
             });
         }
 
-        if (config('mvc-voucher.enabled')) {
+        if (config('mvc-voucher.default')) {
             $this->app->bind(VoucherInterface::class, function ($app) {
                 $client = $app->make(Client::class);
                 $service = config('mvc-voucher.default');
