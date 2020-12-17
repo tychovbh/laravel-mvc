@@ -59,7 +59,7 @@ class Shopify implements ShopInterface
                 Arr::get($order, 'shipping_address')
             )),
             'total' => Arr::get($order, 'total_price'),
-            'total_discounts' => Arr::get($order, 'total_discounts'),
+            'total_vouchers' => Arr::get($order, 'total_discounts'),
             'total_tax' => Arr::get($order, 'total_tax'),
             'subtotal' => Arr::get($order, 'total_line_items_price'),
             'name' => Arr::get($order, 'name'),
