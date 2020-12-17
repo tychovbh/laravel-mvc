@@ -210,6 +210,24 @@ class RepositoryTest extends TestCase
 
     /**
      * @test
+     * TODO implement test
+     */
+    public function itCanFilterUsersFrom()
+    {
+        $this->markTestIncomplete('TODO implement filtering users from created_at filter');
+    }
+
+    /**
+     * @test
+     * TODO implement test
+     */
+    public function itCanFilterUsersTill()
+    {
+        $this->markTestIncomplete('TODO implement filtering users till created_at filter');
+    }
+
+    /**
+     * @test
      * @depends itCanInstantiate
      * @param TestUserRepository $repository
      */

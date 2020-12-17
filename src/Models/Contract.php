@@ -28,13 +28,22 @@ class Contract extends Model
     private $config;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'signers' => 'array',
+    ];
+
+    /**
      * Address constructor.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('file', 'status', 'signed_at', 'options', 'template', 'external_id', 'user_id');
-        $this->columns('id', 'file', 'status', 'signed_at', 'options', 'external_id', 'user_id');
+        $this->fillables('file', 'status', 'signers', 'options', 'template', 'external_id', 'user_id');
+        $this->columns('id', 'file', 'status', 'signers', 'options', 'external_id', 'user_id');
         $this->config = config('mvc-contracts');
         parent::__construct($attributes);
     }
@@ -64,7 +73,7 @@ class Contract extends Model
         ], $data));
 
         $html = $page->render();
-        $path = 'contracts/contract.pdf';
+        $path = 'contracts/contract.pdf'; // TODO manage this path
         $htmlConverter->page($html)->save($path);
         $this->file = $path;
     }
@@ -72,19 +81,31 @@ class Contract extends Model
     /**
      * Generates file and sends a SignRequest
      * @param DocumentSignInterface $documentSign
+     * @return bool|void
      */
     public function sign(DocumentSignInterface $documentSign)
     {
-        if (!$this->file || !config('mvc-contracts.document_sign.enabled')) {
+        $config = config('mvc-contracts.document_sign');
+
+        if (!$this->file || !Arr::get($config, 'enabled', false)) {
             return;
         }
 
         try {
             $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
-            $this->external_id = $document['id'];
-            $documentSign->signer($this->user->email)->sign($document['id'], 'Rentbay', 'noreply@rentbay.nl');
-            $this->save();
-            return true;
+            $this->external_id = $document->id;
+
+            $redirectUrl = Arr::has($config, 'return') ? str_replace('{id}', $this->id, $config['return']) : null;
+
+            $documentSign->signer($this->user->email)
+                ->sign(
+                    $document->id,
+                    Arr::get($config, 'from_name'),
+                    Arr::get($config, 'from_email'),
+                    '',
+                    $redirectUrl
+                );
+            return $this->save();
         } catch (\Exception $exception) {
             error('Contract sign error', [
                 'message' => $exception->getMessage(),
