@@ -181,8 +181,13 @@ class MvcServiceProvider extends ServiceProvider
     private function observers()
     {
         $this->observe(Payment::class, PaymentObserver::class);
-        $this->observe(Address::class, AddressObserver::class);
-        $this->observe(Contract::class, ContractObserver::class);
+        if (config('mvc-address-lookup.default')) {
+            $this->observe(Address::class, AddressObserver::class);
+        }
+
+        if (config('mvc-document-sign.default') && config('mvc-html-converter.default')) {
+            $this->observe(Contract::class, ContractObserver::class);
+        }
     }
 
     /**
