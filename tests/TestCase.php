@@ -158,9 +158,9 @@ class TestCase extends BaseTestCase
             'default' => 'Shopify',
             'providers' => [
                 'Shopify' => [
-                    'api_key' => 'f80dc45cf16618d700bccfb5e114c649',
-                    'password' => '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',
-                    'domain' => 'woonwijzertrial.myshopify.com',
+                    'api_key' => 'e8ce5aea5b75cb7ffe085f69c88cc168',
+                    'password' => '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',
+                    'domain' => 'wijzerwonen.myshopify.com',
                     'version' => '2020-10',
                 ]
             ]
