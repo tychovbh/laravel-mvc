@@ -65,6 +65,11 @@ class Order implements ServiceModelInterface
     /**
      * @var string
      */
+    public $shipping;
+
+    /**
+     * @var string
+     */
     public $name;
 
     /**
@@ -104,6 +109,7 @@ class Order implements ServiceModelInterface
         $this->total_vouchers = Arr::get($data, 'total_vouchers', '');
         $this->total_tax = Arr::get($data, 'total_tax', '');
         $this->subtotal = Arr::get($data, 'subtotal', '');
+        $this->shipping = Arr::get($data, 'shipping');
         $this->name = Arr::get($data, 'name', '');
         $this->invoice = Arr::get($data, 'invoice', '');
         $this->products = Arr::get($data, 'products', '');
