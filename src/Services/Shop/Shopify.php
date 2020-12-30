@@ -63,10 +63,7 @@ class Shopify implements ShopInterface
             'total_tax' => Arr::get($order, 'total_tax'),
             'subtotal' => Arr::get($order, 'total_line_items_price'),
             'shipping' => array_map(function ($shipping) {
-                return [
-                    'title' => Arr::get($shipping, 'title'),
-                    'code' => Arr::get($shipping, 'code')
-                ];
+                return $this->mapShipping($shipping);
             }, Arr::get($order, 'shipping_lines')),
             'name' => Arr::get($order, 'name'),
             'invoice' => Arr::get($order, 'order_number'),
@@ -100,6 +97,19 @@ class Shopify implements ShopInterface
             'zip' => Arr::get($customer, 'zip'),
             'phone' => Arr::get($customer, 'phone'),
             'country' => Arr::get($customer, 'country_code')
+        ]);
+    }
+
+    /**
+     * Maps shipping
+     * @param $shipping
+     * @return Shipping
+     */
+    public function mapShipping($shipping)
+    {
+        return new Shipping([
+            'title' => Arr::get($shipping, 'title'),
+            'price' => Arr::get($shipping, 'price')
         ]);
     }
 
