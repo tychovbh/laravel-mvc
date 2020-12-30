@@ -63,7 +63,7 @@ class Order implements ServiceModelInterface
     public $subtotal;
 
     /**
-     * @var string
+     * @var array
      */
     public $shipping;
 
