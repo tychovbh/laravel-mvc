@@ -16,7 +16,6 @@ use Tychovbh\Mvc\Console\Commands\MvcContractsUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
 use Tychovbh\Mvc\Console\Commands\MvcUserToken;
 use Tychovbh\Mvc\Console\Commands\VendorPublish;
-use Tychovbh\Mvc\Helpers\OffsetPaginator;
 use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
@@ -33,8 +32,6 @@ use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Tychovbh\Mvc\Services\Shop\ShopInterface;
 use Tychovbh\Mvc\Services\Voucher\VoucherInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class MvcServiceProvider extends ServiceProvider
 {
@@ -80,7 +77,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcPaymentsCheck::class,
             MvcContractsUpdate::class
         ]);
-        
+
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
@@ -185,34 +182,5 @@ class MvcServiceProvider extends ServiceProvider
     {
         $class = project_or_package_class('Model', $class);
         $class::observe($observer);
-    }
-
-    /**
-     * Create Macros for the Builders.
-     */
-    public function macros()
-    {
-        $macro = function ($perPage = null, $columns = ['*'], array $options = []) {
-            if (!$perPage) {
-                $perPage = request('limit') ?? 15;
-            }
-            $perPage = $perPage > 500 ? 500 : $perPage;
-
-            $offset = (int)(request('offset') ?? 0);
-            $page = (int)(request('page') ?? 1);
-            $skip = (($page - 1) * $perPage) + $offset;
-
-            // Limit results
-            $this->skip($skip)
-                ->limit($perPage);
-
-            $total = $this->toBase()->getCountForPagination();
-
-            return new OffsetPaginator($this->get($columns), $perPage, $total, $options);
-        };
-
-        // Register macros
-        QueryBuilder::macro('offsetPaginate', $macro);
-        EloquentBuilder::macro('offsetPaginate', $macro);
     }
 }
