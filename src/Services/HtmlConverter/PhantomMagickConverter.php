@@ -57,6 +57,7 @@ class PhantomMagickConverter implements HtmlConverterInterface
                     break;
             }
             $converter->save(storage_path($path));
+            $this->pages = collect([]);
             return true;
         } catch (\Exception $exception) {
             error('PhantomMagickConverter save error', [

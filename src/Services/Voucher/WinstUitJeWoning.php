@@ -61,7 +61,6 @@ class WinstUitJeWoning implements VoucherInterface
             'storeName' => $this->config['store']['name'],
             'storeId' => $this->config['store']['id'],
             'routeE' => 1,
-            'optin' => 1,
             'agree' => 1,
         ], $data));
     }

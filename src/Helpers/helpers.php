@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use ReallySimpleJWT\Token;
 use Tychovbh\Mvc\Repositories\Repository;
 use Tychovbh\Mvc\Models\User;
@@ -103,7 +102,7 @@ if (!function_exists('controller')) {
      * @return string
      * @throws Exception
      */
-    function controller(string $controller): String
+    function controller(string $controller): string
     {
         try {
             $class = new \ReflectionClass($controller);
@@ -509,5 +508,35 @@ if (!function_exists('make_directories')) {
         } catch (\Exception $exception) {
             //
         }
+    }
+}
+
+if (!function_exists('split_address')) {
+    /**
+     * Split address to an array of street, number and addition.
+     * @param string $address
+     * @return array
+     */
+    function split_address(string $address): array
+    {
+        // String of special characters in address input that are allowed
+        $c = 'äáàâåöóòôüúùûëéèêïíìîýÿÄÁÀÂÖÓÒÔÜÚÙÛËÉÈÊÏÍÌÎÝßñÑŞÇçğšæÆ';
+
+        // Remove new lines, tabs and trailing spaces from input
+        $address = trim(preg_replace('/\s+/S', " ", $address));
+
+        preg_match(
+            "/^(\d*[\w{$c}\d \/\‘\'\-\.]+)[,\s]+(\d+)[\s]*([\w{$c}\d\-\/]*)$/",
+            $address,
+            $match
+        );
+
+        array_shift($match); // remove element 0 (the entire match)
+        //match is now always an array with length of 3
+        return [
+            'street' => Arr::get($match, 0, ''),
+            'number' => Arr::get($match, 1, ''),
+            'addition' => str_replace('-', '', Arr::get($match, 2, '')),
+        ];
     }
 }
