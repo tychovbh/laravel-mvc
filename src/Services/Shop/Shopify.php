@@ -54,10 +54,9 @@ class Shopify implements ShopInterface
             'created_at' => Arr::get($order, 'created_at'),
             'updated_at' => Arr::get($order, 'updated_at'),
             'ipaddress' => Arr::get($order, 'browser_ip'),
-            'customer' => $this->mapCustomer(array_merge(
-                array_filter(Arr::get($order, 'customer')),
-                array_filter(Arr::get($order, 'shipping_address'))
-            )),
+            'customer' => $this->mapCustomer(Arr::get($order, 'customer')),
+            'shipping' => $this->mapAddress(Arr::get($order, 'shipping_address')),
+            'billing' => $this->mapAddress(Arr::get($order, 'billing_address')),
             'total' => Arr::get($order, 'total_price'),
             'total_vouchers' => Arr::get($order, 'total_discounts'),
             'total_tax' => Arr::get($order, 'total_tax'),
@@ -78,6 +77,22 @@ class Shopify implements ShopInterface
         ]);
     }
 
+    private function mapAddress(array $address): Address
+    {
+        return new Address([
+            'email' => Arr::get($address, 'email'),
+            'first_name' => Arr::get($address, 'first_name'),
+            'last_name' => Arr::get($address, 'last_name'),
+            'company' => Arr::get($address, 'company'),
+            'address1' => Arr::get($address, 'address1'),
+            'address2' => Arr::get($address, 'address2'),
+            'city' => Arr::get($address, 'city'),
+            'zip' => Arr::get($address, 'zip'),
+            'phone' => Arr::get($address, 'phone'),
+            'country' => Arr::get($address, 'country_code')
+        ]);
+    }
+
     /**
      * Maps the customer
      * @param array $customer
@@ -91,12 +106,8 @@ class Shopify implements ShopInterface
             'first_name' => Arr::get($customer, 'first_name'),
             'last_name' => Arr::get($customer, 'last_name'),
             'company' => Arr::get($customer, 'company'),
-            'address1' => Arr::get($customer, 'address1'),
-            'address2' => Arr::get($customer, 'address2'),
-            'city' => Arr::get($customer, 'city'),
-            'zip' => Arr::get($customer, 'zip'),
             'phone' => Arr::get($customer, 'phone'),
-            'country' => Arr::get($customer, 'country_code')
+            'address' => $this->mapAddress(Arr::get($customer, 'default_address', []))
         ]);
     }
 
@@ -188,7 +199,7 @@ class Shopify implements ShopInterface
     {
         $response = $this->request('get', 'customers/' . $id);
         $customer = Arr::get($response, 'customer');
-        return $this->mapCustomer(array_merge(Arr::get($customer, 'default_address', []), $customer));
+        return $this->mapCustomer($customer);
     }
 
     /**

@@ -83,6 +83,16 @@ class Order implements ServiceModelInterface
     public $products;
 
     /**
+     * @var Address
+     */
+    public $shipping;
+
+    /**
+     * @var Address
+     */
+    public $billing;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -103,7 +113,7 @@ class Order implements ServiceModelInterface
         $this->closed_at = Arr::get($data, 'closed_at', '');
         $this->created_at = Arr::get($data, 'created_at', '');
         $this->updated_at = Arr::get($data, 'created_at', '');
-        $this->customer = Arr::get($data, 'customer', new Customer());
+        $this->customer = Arr::get($data, 'customer', new Customer);
         $this->ipaddress = Arr::get($data, 'ipaddress', '');
         $this->total = Arr::get($data, 'total', '');
         $this->total_vouchers = Arr::get($data, 'total_vouchers', '');
@@ -113,5 +123,7 @@ class Order implements ServiceModelInterface
         $this->name = Arr::get($data, 'name', '');
         $this->invoice = Arr::get($data, 'invoice', '');
         $this->products = Arr::get($data, 'products', '');
+        $this->shipping = Arr::get($data, 'shipping', new Address);
+        $this->billing = Arr::get($data, 'billing', new Address);
     }
 }

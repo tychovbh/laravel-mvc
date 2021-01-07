@@ -47,7 +47,7 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrders(): array
     {
-        $orders = $this->shopifyService()->orders(['limit' => 2]);
+        $orders = $this->shopifyService()->orders(['limit' => 35]);
         $this->assertTrue(count($orders) > 0);
 
         return $orders;
