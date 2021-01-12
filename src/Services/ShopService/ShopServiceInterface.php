@@ -44,4 +44,26 @@ interface ShopServiceInterface
      * @return Customer
      */
     public function customer($id): Customer;
+
+    /**
+     * Maps the product
+     * @param array $product
+     * @return Product
+     */
+    public function mapProduct(array $product): Product;
+
+    /**
+     * Maps the order
+     * @param array $order
+     * @return Order
+     */
+    public function mapOrder(array $order): Order;
+
+    /**
+     * Maps the customer
+     * @param array $customer
+     * @return Customer
+     */
+    public function mapCustomer(array $customer): Customer;
+
 }
