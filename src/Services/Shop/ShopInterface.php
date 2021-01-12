@@ -1,8 +1,8 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
-interface ShopServiceInterface
+interface ShopInterface
 {
     /**
      * Retrieves all products

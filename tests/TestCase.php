@@ -123,7 +123,7 @@ class TestCase extends BaseTestCase
                         'subdomain' => 'https://bespokeweb.signrequest.com/api/v1',
                     ],
                     'DocuSign' => [
-
+                        //
                     ]
                 ]
             ]
@@ -149,8 +149,8 @@ class TestCase extends BaseTestCase
             'document_sign' => [
                 'enabled' => true,
                 'return' => 'http://localhost/contracts/{id}',
-                'from_email' => 'noreply@rentbay.nl',
-                'from_name' => 'rentbay'
+                'from_email' => 'noreply@bespokeweb.nl',
+                'from_name' => 'bespokeweb'
             ]
         ]);
 
@@ -166,11 +166,16 @@ class TestCase extends BaseTestCase
             ]
         ]);
 
-        Config::set('mvc-voucher-validation', [
+        Config::set('mvc-voucher', [
             'default' => 'WinstUitJeWoning',
             'providers' => [
                 'WinstUitJeWoning' => [
-                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher'
+                    'url' => '',
+                    'token' => '',
+                    'store' => [
+                        'id' => 0,
+                        'name' => ''
+                    ]
                 ]
             ]
         ]);

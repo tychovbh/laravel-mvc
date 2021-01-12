@@ -73,7 +73,7 @@ class Contract extends Model
         ], $data));
 
         $html = $page->render();
-        $path = 'contracts/contract.pdf';
+        $path = 'contracts/contract.pdf'; // TODO manage this path
         $htmlConverter->page($html)->save($path);
         $this->file = $path;
     }
@@ -92,7 +92,11 @@ class Contract extends Model
         }
 
         try {
-            $document = $documentSign->create(storage_path($this->file), Str::replaceFirst('contracts/', '', $this->file));
+            $document = $documentSign->create(
+                storage_path($this->file),
+                Str::replaceFirst('contracts/', '', $this->file)
+            );
+            
             $this->external_id = $document->id;
 
             $redirectUrl = Arr::has($config, 'return') ? str_replace('{id}', $this->id, $config['return']) : null;

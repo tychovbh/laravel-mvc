@@ -27,8 +27,8 @@ use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
-use Tychovbh\Mvc\Services\ShopService\ShopServiceInterface;
-use Tychovbh\Mvc\Services\VoucherValidation\VoucherValidationInterface;
+use Tychovbh\Mvc\Services\Shop\ShopInterface;
+use Tychovbh\Mvc\Services\Voucher\VoucherInterface;
 use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
@@ -92,7 +92,7 @@ class MvcServiceProvider extends ServiceProvider
         $this->config('mvc-payments');
 
         $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
 
         $this->loadRoutesFrom(sprintf('%s/../routes/%s/web.php', __DIR__, is_application()));
@@ -115,44 +115,54 @@ class MvcServiceProvider extends ServiceProvider
             OffsetPaginationServiceProvider::class
         );
 
-        $this->app->bind(DocumentSignInterface::class, function ($app) {
-            $client = $app->make(Client::class);
-            $service = config('mvc-document-sign.default');
-            $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
+        if (config('mvc-document-sign.default')) {
+            $this->app->bind(DocumentSignInterface::class, function ($app) {
+                $client = $app->make(Client::class);
+                $service = config('mvc-document-sign.default');
+                $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
 
-            return new $service($client);
-        });
+                return new $service($client);
+            });
+        }
 
-        $this->app->bind(HtmlConverterInterface::class, function () {
-            $service = config('mvc-html-converter.default');
-            $service = 'Tychovbh\\Mvc\\Services\\HtmlConverter\\' . $service;
+        if (config('mvc-html-converter.default')) {
+            $this->app->bind(HtmlConverterInterface::class, function () {
+                $service = config('mvc-html-converter.default');
+                $service = 'Tychovbh\\Mvc\\Services\\HtmlConverter\\' . $service;
 
-            return new $service();
-        });
+                return new $service();
+            });
+        }
 
-        $this->app->bind(AddressLookupInterface::class, function ($app) {
-            $client = $app->make(Client::class);
-            $service = config('mvc-address-lookup.default');
-            $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
+        if (config('mvc-address-lookup.default')) {
+            $this->app->bind(AddressLookupInterface::class, function ($app) {
+                $client = $app->make(Client::class);
+                $service = config('mvc-address-lookup.default');
+                $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
 
-            return new $service($client);
-        });
+                return new $service($client);
+            });
+        }
 
-        $this->app->bind(ShopServiceInterface::class, function ($app) {
-            $client = $app->make(Client::class);
-            $service = config('mvc-shop.default');
-            $service = 'Tychovbh\\Mvc\\Services\\ShopService\\' . $service;
+        if (config('mvc-shop.default')) {
+            $this->app->bind(ShopInterface::class, function ($app) {
+                $client = $app->make(Client::class);
+                $service = config('mvc-shop.default');
+                $service = 'Tychovbh\\Mvc\\Services\\Shop\\' . $service;
 
-            return new $service($client);
-        });
+                return new $service($client);
+            });
+        }
 
-        $this->app->bind(VoucherValidationInterface::class, function ($app) {
-            $client = $app->make(Client::class);
-            $service = config('mvc-voucher-validation.default');
-            $service = 'Tycho\\Mvc\\Services\\ShopService\\' . $service;
+        if (config('mvc-voucher.default')) {
+            $this->app->bind(VoucherInterface::class, function ($app) {
+                $client = $app->make(Client::class);
+                $service = config('mvc-voucher.default');
+                $service = 'Tychovbh\\Mvc\\Services\\Voucher\\' . $service;
 
-            return new $service($client);
-        });
+                return new $service($client);
+            });
+        }
     }
 
     /**
@@ -161,7 +171,7 @@ class MvcServiceProvider extends ServiceProvider
      */
     private function config(string $name)
     {
-        $source = __DIR__ . '/../config/'. $name .'.php';
+        $source = __DIR__ . '/../config/' . $name . '.php';
         $this->publishes([$source => config_path($name . '.php')], 'laravel-mvc-config-' . $name);
     }
 
@@ -171,8 +181,13 @@ class MvcServiceProvider extends ServiceProvider
     private function observers()
     {
         $this->observe(Payment::class, PaymentObserver::class);
-        $this->observe(Address::class, AddressObserver::class);
-        $this->observe(Contract::class, ContractObserver::class);
+        if (config('mvc-address-lookup.default')) {
+            $this->observe(Address::class, AddressObserver::class);
+        }
+
+        if (config('mvc-document-sign.default') && config('mvc-html-converter.default')) {
+            $this->observe(Contract::class, ContractObserver::class);
+        }
     }
 
     /**

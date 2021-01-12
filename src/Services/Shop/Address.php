@@ -1,17 +1,12 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Services\ServiceModelInterface;
 
-class Customer implements ServiceModelInterface
+class Address implements ServiceModelInterface
 {
-    /**
-     * @var int
-     */
-    public $id;
-
     /**
      * @var string
      */
@@ -77,7 +72,6 @@ class Customer implements ServiceModelInterface
      */
     public function fill(array $data = [])
     {
-        $this->id = Arr::get($data, 'id');
         $this->email = Arr::get($data, 'email');
         $this->first_name = Arr::get($data, 'first_name');
         $this->last_name = Arr::get($data, 'last_name');

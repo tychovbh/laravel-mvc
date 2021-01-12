@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Tychovbh\Tests\Mvc\feature\services\ShopService;
+namespace Tychovbh\Tests\Mvc\feature\services\Shop;
 
 
 use GuzzleHttp\Client;
-use Tychovbh\Mvc\Services\ShopService\Shopify;
+use Tychovbh\Mvc\Services\Shop\Shopify;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class ShopifyTest extends TestCase
@@ -47,7 +47,7 @@ class ShopifyTest extends TestCase
      */
     public function itCanIndexOrders(): array
     {
-        $orders = $this->shopifyService()->orders(['limit' => 2]);
+        $orders = $this->shopifyService()->orders(['limit' => 35]);
         $this->assertTrue(count($orders) > 0);
 
         return $orders;

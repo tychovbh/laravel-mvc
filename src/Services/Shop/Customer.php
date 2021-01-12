@@ -1,11 +1,11 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Services\ServiceModelInterface;
 
-class Order implements ServiceModelInterface
+class Customer implements ServiceModelInterface
 {
     /**
      * @var int
@@ -20,20 +20,30 @@ class Order implements ServiceModelInterface
     /**
      * @var string
      */
-    public $discount;
+    public $first_name;
 
     /**
      * @var string
      */
-    public $closed_at;
+    public $last_name;
 
     /**
-     * @var Customer
+     * @var string
      */
-    public $customer;
+    public $company;
 
     /**
-     * Order constructor.
+     * @var string
+     */
+    public $phone;
+
+    /**
+     * @var Address
+     */
+    public $address;
+
+    /**
+     * Customer constructor.
      * @param array $data
      */
     public function __construct(array $data = [])
@@ -49,8 +59,10 @@ class Order implements ServiceModelInterface
     {
         $this->id = Arr::get($data, 'id');
         $this->email = Arr::get($data, 'email');
-        $this->discount = Arr::get($data, 'discount');
-        $this->closed_at = Arr::get($data, 'closed_at');
-        $this->customer = Arr::get($data, 'customer', new Customer());
+        $this->first_name = Arr::get($data, 'first_name');
+        $this->last_name = Arr::get($data, 'last_name');
+        $this->company = Arr::get($data, 'company');
+        $this->phone = Arr::get($data, 'phone');
+        $this->address = Arr::get($data, 'address', new Address);
     }
 }

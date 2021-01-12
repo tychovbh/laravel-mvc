@@ -1,6 +1,6 @@
 <?php
 
-namespace Tychovbh\Mvc\Services\ShopService;
+namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Services\ServiceModelInterface;
@@ -23,6 +23,11 @@ class Product implements ServiceModelInterface
     public $price;
 
     /**
+     * @var int
+     */
+    public $quantity;
+
+    /**
      * Product constructor.
      * @param array $data
      */
@@ -40,5 +45,6 @@ class Product implements ServiceModelInterface
         $this->id = Arr::get($data, 'id');
         $this->title = Arr::get($data, 'title');
         $this->price = Arr::get($data, 'price');
+        $this->quantity = Arr::get($data, 'quantity');
     }
 }
