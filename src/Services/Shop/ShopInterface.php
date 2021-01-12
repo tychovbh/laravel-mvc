@@ -66,4 +66,18 @@ interface ShopInterface
      */
     public function mapCustomer(array $customer): Customer;
 
+    /**
+     * Maps shipping
+     * @param $shipping
+     * @return Shipping
+     */
+    public function mapShipping($shipping): Shipping;
+
+
+    /**
+     * Maps the Address
+     * @param array $address
+     * @return Address
+     */
+    public function mapAddress(array $address): Address;
 }
