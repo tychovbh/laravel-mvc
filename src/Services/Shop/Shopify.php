@@ -29,7 +29,7 @@ class Shopify implements ShopInterface
      * @param array $product
      * @return Product
      */
-    private function mapProduct(array $product): Product
+    public function mapProduct(array $product): Product
     {
         return new Product([
             'id' => Arr::get($product, 'id'),
@@ -43,7 +43,7 @@ class Shopify implements ShopInterface
      * @param array $order
      * @return Order
      */
-    private function mapOrder(array $order): Order
+    public function mapOrder(array $order): Order
     {
         return new Order([
             'id' => Arr::get($order, 'id'),
@@ -77,7 +77,12 @@ class Shopify implements ShopInterface
         ]);
     }
 
-    private function mapAddress(array $address): Address
+    /**
+     * Maps the Address
+     * @param array $address
+     * @return Address
+     */
+    public function mapAddress(array $address): Address
     {
         return new Address([
             'email' => Arr::get($address, 'email'),
@@ -98,7 +103,7 @@ class Shopify implements ShopInterface
      * @param array $customer
      * @return Customer
      */
-    private function mapCustomer(array $customer): Customer
+    public function mapCustomer(array $customer): Customer
     {
         return new Customer([
             'id' => Arr::get($customer, 'id'),
@@ -116,7 +121,7 @@ class Shopify implements ShopInterface
      * @param $shipping
      * @return Shipping
      */
-    public function mapShipping($shipping)
+    public function mapShipping($shipping): Shipping
     {
         return new Shipping([
             'title' => Arr::get($shipping, 'title'),
