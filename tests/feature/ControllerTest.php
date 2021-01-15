@@ -148,4 +148,16 @@ class ControllerTest extends TestCase
                     ->getData(true)
             );
     }
+
+    /**
+     * @test
+     */
+    public function itCanDestroy()
+    {
+        $user = factory(TestUser::class)->create();
+
+        $this->delete(route('test_users.destroy', ['id' => $user->id]))
+            ->assertStatus(200);
+    }
+
 }

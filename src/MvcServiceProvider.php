@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc;
 
-use Chelout\OffsetPagination\OffsetPaginationServiceProvider;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
@@ -53,14 +52,6 @@ class MvcServiceProvider extends ServiceProvider
             $this->app->register(FormRequestServiceProvider::class);
 
             $this->app->withFacades(true, [Mollie::class => 'Mollie']);
-            $this->app->configure('mvc-messages');
-            $this->app->configure('mvc-forms');
-            $this->app->configure('mvc-collections');
-            $this->app->configure('mvc-auth');
-            $this->app->configure('mvc-mail');
-            $this->app->configure('mvc-cache');
-            $this->app->configure('mvc-security');
-            $this->app->configure('mvc-payments');
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
@@ -82,15 +73,6 @@ class MvcServiceProvider extends ServiceProvider
             MvcContractsUpdate::class
         ]);
 
-        $this->config('mvc-messages');
-        $this->config('mvc-forms');
-        $this->config('mvc-collections');
-        $this->config('mvc-auth');
-        $this->config('mvc-mail');
-        $this->config('mvc-cache');
-        $this->config('mvc-security');
-        $this->config('mvc-payments');
-
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
@@ -111,10 +93,6 @@ class MvcServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(
-            OffsetPaginationServiceProvider::class
-        );
-
         if (config('mvc-document-sign.default')) {
             $this->app->bind(DocumentSignInterface::class, function ($app) {
                 $client = $app->make(Client::class);

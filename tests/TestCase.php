@@ -234,6 +234,7 @@ class TestCase extends BaseTestCase
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
         $app['router']->post('test_users', TestUserController::class . '@store')->name('test_users.store');
         $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
+        $app['router']->delete('test_users/{id}', TestUserController::class . '@destroy')->name('test_users.destroy');
         InviteRoute::routes();
         UserRoute::routes();
         RoleRoute::routes();
