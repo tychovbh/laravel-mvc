@@ -55,8 +55,8 @@ class Shopify implements ShopInterface
             'updated_at' => Arr::get($order, 'updated_at'),
             'ipaddress' => Arr::get($order, 'browser_ip'),
             'customer' => $this->mapCustomer(Arr::get($order, 'customer')),
-            'shipping' => $this->mapAddress(Arr::get($order, 'shipping_address')),
-            'billing' => $this->mapAddress(Arr::get($order, 'billing_address')),
+            'shipping' => $this->mapAddress(Arr::get($order, 'shipping_address', [])),
+            'billing' => $this->mapAddress(Arr::get($order, 'billing_address', [])),
             'total' => Arr::get($order, 'total_price'),
             'total_vouchers' => Arr::get($order, 'total_discounts'),
             'total_tax' => Arr::get($order, 'total_tax'),
@@ -82,7 +82,7 @@ class Shopify implements ShopInterface
      * @param array $address
      * @return Address
      */
-    public function mapAddress(array $address): Address
+    public function mapAddress(array $address = []): Address
     {
         return new Address([
             'email' => Arr::get($address, 'email'),
