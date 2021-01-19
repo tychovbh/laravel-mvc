@@ -41,7 +41,12 @@ class MvcCollections extends Command
      */
     public function handle()
     {
-        $collections = config('mvc-collections');
+        $path = base_path() . "/database/collections/*.php";
+        $collections = [];
+        foreach(glob($path) as $class) {
+            include_once $class;
+        }
+
         foreach ($collections as $collection) {
             try {
                 $this->saveCollection($collection);
