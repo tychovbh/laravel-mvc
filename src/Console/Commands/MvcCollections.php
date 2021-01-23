@@ -42,7 +42,7 @@ class MvcCollections extends Command
     public function handle()
     {
         $path = base_path() . "/database/collections/*.php";
-        $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
+//        $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
 
         foreach(glob($path) as $file) {
             include_once $file;
