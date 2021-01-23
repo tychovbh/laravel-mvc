@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Chelout\OffsetPagination\OffsetPaginator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -20,13 +19,6 @@ interface Repository
      * @return LengthAwarePaginator
      */
     public function paginate(int $paginate): LengthAwarePaginator;
-
-    /**
-     * Retrieve an offset paginated collection.
-     * @param int $paginate
-     * @return OffsetPaginator
-     */
-    public function offsetPaginate(int $paginate): OffsetPaginator;
 
     /**
      * Start query with params.

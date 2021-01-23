@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Chelout\OffsetPagination\OffsetPaginator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -212,20 +211,6 @@ abstract class AbstractRepository
         }
 
         return $this->applyParams('index')->paginate($paginate, [$this->name . '.*']);
-    }
-
-    /**
-     * Retrieve an offset paginated collection
-     * @param int $paginate
-     * @return OffsetPaginator
-     */
-    public function offsetPaginate(int $paginate): OffsetPaginator
-    {
-        if (!$this->params) {
-            return $this->model::offsetPaginate($paginate);
-        }
-
-        return $this->applyParams('index')->offsetPaginate($paginate, [$this->name . '.*']);
     }
 
     /**
