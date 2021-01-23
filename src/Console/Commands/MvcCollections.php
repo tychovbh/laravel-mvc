@@ -42,32 +42,39 @@ class MvcCollections extends Command
     public function handle()
     {
         $path = base_path() . "/database/collections/*.php";
-//        $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
+        // $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
 
         foreach(glob($path) as $file) {
             include_once $file;
             try {
                 $classes = get_declared_classes();
                 $class = end($classes);
+
+                if ($this->option('class') && $this->option('class') !== $class) {
+                    continue;
+                }
+
                 $collection = new $class;
 
                 if ($this->isComplete($class, $collection)) {
                     $this->saveCollection($collection);
                 }
             } catch (\Exception $exception) {
-                $this->error($exception->getMessage());
+                $this->error($exception->getMessage() . ' in: ' . $class);
             }
         }
 
         $this->info('MVC Collections updated!');
     }
 
+    /**
+     * Check if collection class is complete
+     * @param string $class
+     * @param Collection $collection
+     * @return bool
+     */
     private function isComplete(string $class, Collection $collection): bool
     {
-        if ($this->option('class') && $this->option('class') !== $class) {
-            return false;
-        }
-
         if (!$collection->table()) {
             $this->error('Property $table is missing in: ' . $class);
             return false;
