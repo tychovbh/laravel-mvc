@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Tychovbh\Mvc\Observers\ModelObserver;
 
 class Model extends BaseModel
 {
@@ -45,12 +46,44 @@ class Model extends BaseModel
     protected $columns = [];
 
     /**
+     * @var bool
+     */
+    protected $cacheable = false;
+
+    /**
+     * Trigger Model Observers
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        $observer = new ModelObserver();
+        self::created(function (Model $model) use ($observer) {
+            $observer->created($model);
+        });
+        self::updated(function (Model $model) use ($observer) {
+            $observer->updated($model);
+        });
+        self::deleted(function (Model $model) use ($observer) {
+            $observer->deleted($model);
+        });
+    }
+
+    /**
      * Return files
      * @return array
      */
     public function getFiles()
     {
         return $this->files;
+    }
+
+    /**
+     * If model is cacheable and should clear cache on created/updated/deleted
+     * @return bool
+     */
+    public function cacheable()
+    {
+        return $this->cacheable;
     }
 
     /**
@@ -105,7 +138,7 @@ class Model extends BaseModel
                     $association['pivots'] = $this->pivots($association['pivots']);
                 }
 
-                $associations[$association['relation'] . '.' .  $association['post_field']] = [
+                $associations[$association['relation'] . '.' . $association['post_field']] = [
                     'type' => $type,
                     'association' => $association,
                     'relation' => $association['relation'],

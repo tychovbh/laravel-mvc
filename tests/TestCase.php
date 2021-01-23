@@ -123,7 +123,7 @@ class TestCase extends BaseTestCase
                         'subdomain' => 'https://bespokeweb.signrequest.com/api/v1',
                     ],
                     'DocuSign' => [
-
+                        //
                     ]
                 ]
             ]
@@ -147,7 +147,36 @@ class TestCase extends BaseTestCase
                 'enabled' => true
             ],
             'document_sign' => [
-                'enabled' => true
+                'enabled' => true,
+                'return' => 'http://localhost/contracts/{id}',
+                'from_email' => 'noreply@bespokeweb.nl',
+                'from_name' => 'bespokeweb'
+            ]
+        ]);
+
+        Config::set('mvc-shop', [
+            'default' => 'Shopify',
+            'providers' => [
+                'Shopify' => [
+                    'api_key' => '',
+                    'password' => '',
+                    'domain' => '',
+                    'version' => '',
+                ]
+            ]
+        ]);
+
+        Config::set('mvc-voucher', [
+            'default' => 'WinstUitJeWoning',
+            'providers' => [
+                'WinstUitJeWoning' => [
+                    'url' => '',
+                    'token' => '',
+                    'store' => [
+                        'id' => 0,
+                        'name' => ''
+                    ]
+                ]
             ]
         ]);
 
@@ -205,6 +234,7 @@ class TestCase extends BaseTestCase
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
         $app['router']->post('test_users', TestUserController::class . '@store')->name('test_users.store');
         $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
+        $app['router']->delete('test_users/{id}', TestUserController::class . '@destroy')->name('test_users.destroy');
         InviteRoute::routes();
         UserRoute::routes();
         RoleRoute::routes();
