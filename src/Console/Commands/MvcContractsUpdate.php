@@ -32,8 +32,12 @@ class MvcContractsUpdate extends Command
      */
     public function handle(DocumentSignInterface $documentSign)
     {
-        $contracts = Contract::whereNotNull('external_id')->whereIn('status', [Contract::STATUS_CONCEPT, Contract::STATUS_SENT])->get();
+        $contracts = Contract::whereNotNull('external_id')
+            ->whereIn('status', [Contract::STATUS_CONCEPT, Contract::STATUS_SENT])
+            ->get();
+
         $updated = 0;
+
         foreach ($contracts as $contract) {
             try {
                 $document = $documentSign->show($contract['external_id']);

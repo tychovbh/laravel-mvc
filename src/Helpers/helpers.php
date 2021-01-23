@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 use ReallySimpleJWT\Token;
 use Tychovbh\Mvc\Repositories\Repository;
 use Tychovbh\Mvc\Models\User;
