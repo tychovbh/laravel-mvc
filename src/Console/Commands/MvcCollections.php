@@ -1,11 +1,11 @@
 <?php
 
+
 namespace Tychovbh\Mvc\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Tychovbh\Mvc\Collections\Collection;
 use Tychovbh\Mvc\Repositories\Repository;
 
 class MvcCollections extends Command
@@ -15,7 +15,7 @@ class MvcCollections extends Command
      *
      * @var string
      */
-    protected $signature = 'mvc:collections';
+    protected $signature = 'mvc:collections {--class=}';
 
     /**
      * The console command description.
@@ -42,16 +42,25 @@ class MvcCollections extends Command
     public function handle()
     {
         $path = base_path() . "/database/collections/*.php";
-        $collections = [];
-        foreach(glob($path) as $class) {
-            include_once $class;
-        }
+        // $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
 
-        foreach ($collections as $collection) {
+        foreach(glob($path) as $file) {
+            include_once $file;
             try {
-                $this->saveCollection($collection);
+                $classes = get_declared_classes();
+                $class = end($classes);
+
+                if ($this->option('class') && $this->option('class') !== $class) {
+                    continue;
+                }
+
+                $collection = new $class;
+
+                if ($this->isComplete($class, $collection)) {
+                    $this->saveCollection($collection);
+                }
             } catch (\Exception $exception) {
-                $this->error($exception->getMessage());
+                $this->error($exception->getMessage() . ' in: ' . $class);
             }
         }
 
@@ -59,22 +68,42 @@ class MvcCollections extends Command
     }
 
     /**
-     * Save collection
-     * @param array $collection
-     * @throws \Exception
+     * Check if collection class is complete
+     * @param string $class
+     * @param Collection $collection
+     * @return bool
      */
-    public function saveCollection(array $collection)
+    private function isComplete(string $class, Collection $collection): bool
     {
-        $repository = $this->repository($collection);
-
-        if (Arr::has($collection, 'relations')) {
-            foreach ($collection['relations'] as $relation) {
-                DB::table($relation)->truncate();
-            }
+        if (!$collection->table()) {
+            $this->error('Property $table is missing in: ' . $class);
+            return false;
         }
 
-        foreach ($collection['items'] as $item) {
-            $repository->saveOrUpdate($collection['update_by'], $item[$collection['update_by']], $item);
+        if (!$collection->updateBy()) {
+            $this->error('Property $update_by is missing in: ' . $class);
+            return false;
+        }
+
+        if (!$collection->records()) {
+            $this->error('No records returned in: ' . $class);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Save collection
+     * @param Collection $collection
+     * @throws \Exception
+     */
+    private function saveCollection(Collection $collection)
+    {
+        $repository = $this->repository($collection->table());
+
+        foreach ($collection->records() as $item) {
+            $repository->saveOrUpdate($collection->updateBy(), $item[$collection->updateBy()], $item);
         }
     }
 
@@ -84,14 +113,11 @@ class MvcCollections extends Command
      * @return Repository
      * @throws \Exception
      */
-    private function repository(array $collection): Repository
+    private function repository(string $table): Repository
     {
-        if (Arr::has($collection, 'repository')) {
-            return new $collection['repository'];
-        }
         $resourceRepository = project_or_package_class(
             'Repository',
-            'App\Repositories\\' . Str::studly(Str::singular($collection['table'])) . 'Repository'
+            'App\Repositories\\' . Str::studly(Str::singular($table)) . 'Repository'
         );
 
         return new $resourceRepository;

@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
+use Tychovbh\Mvc\Console\Commands\MvcCollection;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
 use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
@@ -69,6 +70,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcController::class,
             MvcRequest::class,
             MvcUpdate::class,
+            MvcCollection::class,
             MvcCollections::class,
             MvcUserCreate::class,
             MvcUserToken::class,
