@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 
 class AuthorizeMiddleware
 {
@@ -37,8 +38,8 @@ class AuthorizeMiddleware
         $name  = implode(' ', $name);
         $name = str_replace(' ', '', lcfirst(ucwords($name)));
 
-
-        if (cant($name, $model)) {
+        $res = Gate::inspect($name, $model);
+        if (!$res->allowed()) {
             abort(401, message('auth.unauthorized'));
         }
 
