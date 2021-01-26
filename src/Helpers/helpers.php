@@ -490,5 +490,4 @@ if (!function_exists('now')) {
     {
         return Carbon::now();
     }
-
 }
