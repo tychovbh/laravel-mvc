@@ -93,6 +93,11 @@ class Order implements ServiceModelInterface
     public $billing;
 
     /**
+     * @var bool
+     */
+    public $optin;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -125,5 +130,6 @@ class Order implements ServiceModelInterface
         $this->products = Arr::get($data, 'products', '');
         $this->shipping = Arr::get($data, 'shipping', new Address);
         $this->billing = Arr::get($data, 'billing', new Address);
+        $this->optin = Arr::get($data, 'optin', false);
     }
 }
