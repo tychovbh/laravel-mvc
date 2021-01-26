@@ -39,12 +39,12 @@ class MvcCollection extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $filename = time() . '_' . Str::camel($name);
+        $filename = time() . '_' . Str::slug($name);
         $file = sprintf('%s/database/collections/%s.php', base_path(), $filename);
 
         file_replace('Collection.php', [
-            'Entity' => ucfirst($name),
-            '{table}' => strtolower($name)
+            'Entity' => Str::camel($name),
+            '{table}' => Str::lower($name)
         ], $file, __DIR__ . '/..');
 
         $this->line('Collection created!');

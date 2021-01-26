@@ -28,7 +28,6 @@ class CacheMiddleware
             $path .= '?' . http_build_query($params);
         }
 
-        // Cast array because return type from Laravel is completely off :(
         $cache_minutes = get_route_info($request, 'cache_minutes') ?? (60 * 24);
         $route_name = get_route_info($request, 'as');
         $tags = [$route_name];
@@ -36,10 +35,15 @@ class CacheMiddleware
         if ($id) {
             $tags[] = $route_name . '.' . $id;
         }
-        $response = Cache::tags($tags)->remember($path, $cache_minutes, function() use ($request, $next) {
-            return $next($request);
-        });
 
+        if (Cache::tags($tags)->has($path)) {
+            return Cache::tags($tags)->get($path);
+        }
+
+        $response = $next($request);
+        if (in_array($response->getStatusCode(), [200, 201])) {
+            Cache::tags($tags)->put($path, $response, now()->addMinutes($cache_minutes));
+        }
         return $response;
     }
 }
