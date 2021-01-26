@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
+use phpDocumentor\Reflection\Types\Boolean;
 use Tychovbh\Mvc\Services\ServiceModelInterface;
 
 class Order implements ServiceModelInterface
@@ -93,6 +94,11 @@ class Order implements ServiceModelInterface
     public $billing;
 
     /**
+     * @var Boolean
+     */
+    public $optin;
+
+    /**
      * Order constructor.
      * @param array $data
      */
@@ -125,5 +131,6 @@ class Order implements ServiceModelInterface
         $this->products = Arr::get($data, 'products', '');
         $this->shipping = Arr::get($data, 'shipping', new Address);
         $this->billing = Arr::get($data, 'billing', new Address);
+        $this->optin = Arr::get($data, 'optin', false);
     }
 }
