@@ -333,7 +333,7 @@ abstract class AbstractRepository
      */
     public function indexFromParam(string $from)
     {
-        $this->query->where('created_at', '>=', $from);
+        $this->query->where($this->name . '.created_at', '>=', $from);
     }
 
     /**
@@ -342,6 +342,6 @@ abstract class AbstractRepository
      */
     public function indexTillParam(string $till)
     {
-        $this->query->where('created_at', '<=', $till);
+        $this->query->where($this->name . '.created_at', '<=', $till);
     }
 }
