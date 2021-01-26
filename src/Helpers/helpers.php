@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -478,4 +479,16 @@ if (!function_exists('split_address')) {
             'addition' => str_replace('-', '', Arr::get($match, 2, '')),
         ];
     }
+}
+
+if (!function_exists('now')) {
+    /**
+     * Get now as Date Time
+     * @return Carbon
+     */
+    function now(): Carbon
+    {
+        return Carbon::now();
+    }
+
 }

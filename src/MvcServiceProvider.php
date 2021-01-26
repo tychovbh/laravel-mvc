@@ -45,9 +45,9 @@ class MvcServiceProvider extends ServiceProvider
         $this->app->register(MollieServiceProvider::class);
         if (is_application() === 'lumen') {
             $this->app->routeMiddleware([
-                'validate' => ValidateMiddleware::class,
                 'auth' => AuthenticateMiddleware::class,
                 'authorize' => AuthorizeMiddleware::class,
+                'validate' => ValidateMiddleware::class,
                 'cache' => CacheMiddleware::class
             ]);
             $this->app->register(FormRequestServiceProvider::class);
