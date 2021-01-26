@@ -93,7 +93,7 @@ class Order implements ServiceModelInterface
     public $billing;
 
     /**
-     * @var Bool
+     * @var bool
      */
     public $optin;
 
