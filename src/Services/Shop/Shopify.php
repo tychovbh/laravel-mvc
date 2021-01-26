@@ -66,7 +66,7 @@ class Shopify implements ShopInterface
             }, Arr::get($order, 'shipping_lines')),
             'name' => Arr::get($order, 'name'),
             'invoice' => Arr::get($order, 'order_number'),
-            'optin' => Arr::get($order, 'buyer_accepts_marketing'),
+            'optin' => Arr::get($order, 'buyer_accepts_marketing', false),
             'products' => array_map(function ($product) {
                 return new Product([
                     'id' => Arr::get($product, 'product_id'),

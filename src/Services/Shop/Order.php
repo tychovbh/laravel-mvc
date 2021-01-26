@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc\Services\Shop;
 
 use Illuminate\Support\Arr;
-use phpDocumentor\Reflection\Types\Boolean;
 use Tychovbh\Mvc\Services\ServiceModelInterface;
 
 class Order implements ServiceModelInterface
@@ -94,7 +93,7 @@ class Order implements ServiceModelInterface
     public $billing;
 
     /**
-     * @var Boolean
+     * @var Bool
      */
     public $optin;
 
