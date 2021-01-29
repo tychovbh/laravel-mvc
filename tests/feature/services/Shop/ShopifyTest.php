@@ -80,7 +80,6 @@ class ShopifyTest extends TestCase
     }
 
 
-
     /**
      * @test
      * @return array
@@ -103,5 +102,27 @@ class ShopifyTest extends TestCase
         $id = $customers[0]->id;
         $customer = $this->shopifyService()->customer($id);
         $this->assertTrue($customer->id === $id);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanStoreDiscount()
+    {
+        $data = $this->shopifyService()->storeDiscount([
+            'price_rule' => [
+                "title" => "SUMMERSALE10OFF",
+                "target_type" => "line_item",
+                "target_selection" => "all",
+                "allocation_method" => "across",
+                "value_type" => "fixed_amount",
+                "value" => "-10.0",
+                "customer_selection" => "all",
+                "starts_at" => "2017-01-19T17:59:10Z"
+            ],
+            'discount_codes' => [
+                ['code' => 'SUMMERSALE10OFF']
+            ]
+        ]);
     }
 }

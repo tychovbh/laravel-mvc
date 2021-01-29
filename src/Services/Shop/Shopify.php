@@ -4,6 +4,7 @@
 namespace Tychovbh\Mvc\Services\Shop;
 
 
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 
@@ -207,6 +208,31 @@ class Shopify implements ShopInterface
         $customer = Arr::get($response, 'customer');
         return $this->mapCustomer($customer);
     }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function storeDiscount(array $data): array
+    {
+        $required_fields = ['title', 'value_type', 'value', 'starts_at'];
+
+        foreach ($required_fields as $field) {
+            if (!Arr::has($data['price_rule'], $field)) {
+                throw new Exception('price_rule.' . $field . ' is a required field');
+            }
+        }
+
+        $priceRule = $this->request('post', 'price_rules', $data);
+
+        $discountCodes = $this->request('post', 'price_rules/' . Arr::get($priceRule, 'price_rule.id') . '/batch', $data);
+
+        return [
+            'price_rule' => $priceRule,
+            'discount_codes' => $discountCodes
+        ];
+    }
+
 
     /**
      * Does request to service

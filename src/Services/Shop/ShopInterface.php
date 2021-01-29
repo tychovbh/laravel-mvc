@@ -80,4 +80,10 @@ interface ShopInterface
      * @return Address
      */
     public function mapAddress(array $address): Address;
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function storeDiscount(array $data): array;
 }
