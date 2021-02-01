@@ -82,8 +82,16 @@ interface ShopInterface
     public function mapAddress(array $address): Address;
 
     /**
+     * Stores a DiscountCode
      * @param array $data
      * @return array
      */
     public function storeDiscount(array $data): array;
+
+    /**
+     * Retrieves a DiscountCode
+     * @param string $code
+     * @return array
+     */
+    public function showDiscount(string $code): array;
 }

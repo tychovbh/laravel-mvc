@@ -233,6 +233,16 @@ class Shopify implements ShopInterface
         ];
     }
 
+    /**
+     * Retrieves a DiscountCode
+     * @param string $code
+     * @return array|void
+     */
+    public function showDiscount(string $code): array
+    {
+        return $this->request('post', 'price_rules/' . $code . '/discount_codes/' . $code .  '.json');
+    }
+
 
     /**
      * Does request to service
