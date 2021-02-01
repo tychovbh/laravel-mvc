@@ -125,4 +125,19 @@ class ShopifyTest extends TestCase
             ]
         ]);
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function itCantStoreDiscountMissingTitle()
+    {
+        try {
+            $data = $this->shopifyService()->storeDiscount([
+                'price_rule' => []
+            ]);
+        } catch (\Exception $exception) {
+            $this->assertTrue($exception->getMessage() === 'price_rule.title is a required field');
+        }
+    }
 }

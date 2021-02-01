@@ -240,7 +240,9 @@ class Shopify implements ShopInterface
      */
     public function showDiscount(string $code): array
     {
-        return $this->request('post', 'price_rules/' . $code . '/discount_codes/' . $code .  '.json');
+        return $this->request('get', 'discount_codes/lookup.json', [
+            'code' => $code
+        ]);
     }
 
 
