@@ -116,14 +116,22 @@ class ShopifyTest extends TestCase
                 "target_selection" => "all",
                 "allocation_method" => "across",
                 "value_type" => "fixed_amount",
-                "value" => "-10.0",
+                "value" => "-70.0",
                 "customer_selection" => "all",
-                "starts_at" => "2017-01-19T17:59:10Z"
+                "starts_at" => now()->format('Y-m-d H:m:s')
             ],
             'discount_codes' => [
                 ['code' => 'SUMMERSALE10OFF']
             ]
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShowDiscount()
+    {
+        $data = $this->shopifyService()->showDiscount('106-914-708-804');
     }
 
     /**

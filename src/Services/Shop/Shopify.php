@@ -212,6 +212,7 @@ class Shopify implements ShopInterface
     /**
      * @param array $data
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function storeDiscount(array $data): array
     {
@@ -223,14 +224,43 @@ class Shopify implements ShopInterface
             }
         }
 
-        $priceRule = $this->request('post', 'price_rules', $data);
-
-        $discountCodes = $this->request('post', 'price_rules/' . Arr::get($priceRule, 'price_rule.id') . '/batch', $data);
+        $priceRule = $this->storePriceRule(Arr::get($data, 'price_rule', []));
 
         return [
             'price_rule' => $priceRule,
-            'discount_codes' => $discountCodes
+            'discount_codes' => $this->storeDiscountCodes(Arr::get($priceRule, 'id'), $data['discount_codes'])
         ];
+    }
+
+    /**
+     * Store price rule
+     * @param array $price_rule
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function storePriceRule(array $price_rule): array
+    {
+        $required_fields = ['title', 'value_type', 'value', 'starts_at'];
+
+        foreach ($required_fields as $field) {
+            if (!Arr::has($price_rule, $field)) {
+                throw new Exception('price_rule.' . $field . ' is a required field');
+            }
+        }
+
+        return $this->request('post', 'price_rules', $price_rule);
+    }
+
+    /**
+     * Store Discount Codes
+     * @param string $price_rule_id
+     * @param array $codes
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function storeDiscountCodes(string $price_rule_id, array $codes): array
+    {
+        return $this->request('post', 'price_rules/' . $price_rule_id . '/batch', $codes);
     }
 
     /**
@@ -240,9 +270,7 @@ class Shopify implements ShopInterface
      */
     public function showDiscount(string $code): array
     {
-        return $this->request('get', 'discount_codes/lookup.json', [
-            'code' => $code
-        ]);
+        return $this->request('get', 'discount_codes/lookup.json?code=' . $code);
     }
 
 
