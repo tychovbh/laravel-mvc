@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
+use Tychovbh\Mvc\Console\Commands\MvcCollection;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
 use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
@@ -39,19 +40,17 @@ class MvcServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @return void
-     * @throws \Exception
      */
     public function boot()
     {
         $this->observers();
-        $this->macros();
 
         $this->app->register(MollieServiceProvider::class);
         if (is_application() === 'lumen') {
             $this->app->routeMiddleware([
-                'validate' => ValidateMiddleware::class,
                 'auth' => AuthenticateMiddleware::class,
                 'authorize' => AuthorizeMiddleware::class,
+                'validate' => ValidateMiddleware::class,
                 'cache' => CacheMiddleware::class
             ]);
             $this->app->register(FormRequestServiceProvider::class);
@@ -71,6 +70,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcController::class,
             MvcRequest::class,
             MvcUpdate::class,
+            MvcCollection::class,
             MvcCollections::class,
             MvcUserCreate::class,
             MvcUserToken::class,

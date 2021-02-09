@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc\Repositories;
 
-use Chelout\OffsetPagination\OffsetPaginator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -215,20 +214,6 @@ abstract class AbstractRepository
     }
 
     /**
-     * Retrieve an offset paginated collection
-     * @param int $paginate
-     * @return OffsetPaginator
-     */
-    public function offsetPaginate(int $paginate): OffsetPaginator
-    {
-        if (!$this->params) {
-            return $this->model::offsetPaginate($paginate);
-        }
-
-        return $this->applyParams('index')->offsetPaginate($paginate, [$this->name . '.*']);
-    }
-
-    /**
      * Find a resource by ID
      * @param int $id
      * @return mixed
@@ -333,7 +318,7 @@ abstract class AbstractRepository
      */
     public function indexFromParam(string $from)
     {
-        $this->query->where('created_at', '>=', $from);
+        $this->query->where($this->name . '.created_at', '>=', $from);
     }
 
     /**
@@ -342,6 +327,6 @@ abstract class AbstractRepository
      */
     public function indexTillParam(string $till)
     {
-        $this->query->where('created_at', '<=', $till);
+        $this->query->where($this->name . '.created_at', '<=', $till);
     }
 }

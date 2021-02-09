@@ -149,8 +149,8 @@ class TestCase extends BaseTestCase
             'document_sign' => [
                 'enabled' => true,
                 'return' => 'http://localhost/contracts/{id}',
-                'from_email' => 'noreply@rentbay.nl',
-                'from_name' => 'rentbay'
+                'from_email' => 'noreply@bespokeweb.nl',
+                'from_name' => 'bespokeweb'
             ]
         ]);
 
@@ -158,10 +158,10 @@ class TestCase extends BaseTestCase
             'default' => 'Shopify',
             'providers' => [
                 'Shopify' => [
-                    'api_key' => 'e8ce5aea5b75cb7ffe085f69c88cc168',
-                    'password' => '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',
-                    'domain' => 'wijzerwonen.myshopify.com',
-                    'version' => '2020-10',
+                    'api_key' => '',
+                    'password' => '',
+                    'domain' => '',
+                    'version' => '',
                 ]
             ]
         ]);
@@ -170,8 +170,8 @@ class TestCase extends BaseTestCase
             'default' => 'WinstUitJeWoning',
             'providers' => [
                 'WinstUitJeWoning' => [
-                    'url' => 'https://dev.rre.winstuitjewoning.nl/controller/action/service/front_voucher',
-                    'token' => '89a36175-b23e-4f2b-b223-f3a7d5bcd26a',
+                    'url' => '',
+                    'token' => '',
                     'store' => [
                         'id' => 0,
                         'name' => ''
@@ -234,6 +234,7 @@ class TestCase extends BaseTestCase
         $app['router']->get('test_users/create', TestUserController::class . '@create')->name('test_users.create');
         $app['router']->post('test_users', TestUserController::class . '@store')->name('test_users.store');
         $app['router']->put('test_users/{id}', TestUserController::class . '@update')->name('test_users.update');
+        $app['router']->delete('test_users/{id}', TestUserController::class . '@destroy')->name('test_users.destroy');
         InviteRoute::routes();
         UserRoute::routes();
         RoleRoute::routes();

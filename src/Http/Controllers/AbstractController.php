@@ -114,14 +114,10 @@ abstract class AbstractController implements ControllerInterface
     /**
      * @param Request $request
      * @param Repository $repository
-     * @return \Chelout\OffsetPagination\OffsetPaginator|\Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     private function collection(Request $request, Repository $repository)
     {
-        if ($request->has('offset')) {
-            return $repository->offsetPaginate((int)$request->get('paginate'));
-        }
-
         if ($request->has('paginate')) {
             return $repository->paginate((int)$request->get('paginate'));
         }

@@ -47,7 +47,13 @@ class MvcPaymentsCheck extends Command
         foreach ($open as $payment) {
             /* @var Payment $payment */
 
-            $payment->check();
+            try {
+                $payment->check();
+            } catch (\Exception $exception) {
+                error('Cannot check mollie payment', [
+                    'error' => $exception->getMessage()
+                ]);
+            }
         }
     }
 }

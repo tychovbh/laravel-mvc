@@ -29,7 +29,7 @@ class Shopify implements ShopInterface
      * @param array $product
      * @return Product
      */
-    private function mapProduct(array $product): Product
+    public function mapProduct(array $product): Product
     {
         return new Product([
             'id' => Arr::get($product, 'id'),
@@ -43,7 +43,7 @@ class Shopify implements ShopInterface
      * @param array $order
      * @return Order
      */
-    private function mapOrder(array $order): Order
+    public function mapOrder(array $order): Order
     {
         return new Order([
             'id' => Arr::get($order, 'id'),
@@ -54,16 +54,19 @@ class Shopify implements ShopInterface
             'created_at' => Arr::get($order, 'created_at'),
             'updated_at' => Arr::get($order, 'updated_at'),
             'ipaddress' => Arr::get($order, 'browser_ip'),
-            'customer' => $this->mapCustomer(array_merge(
-                array_filter(Arr::get($order, 'customer')),
-                array_filter(Arr::get($order, 'shipping_address'))
-            )),
+            'customer' => $this->mapCustomer(Arr::get($order, 'customer')),
+            'shipping' => $this->mapAddress(Arr::get($order, 'shipping_address', [])),
+            'billing' => $this->mapAddress(Arr::get($order, 'billing_address', [])),
             'total' => Arr::get($order, 'total_price'),
             'total_vouchers' => Arr::get($order, 'total_discounts'),
             'total_tax' => Arr::get($order, 'total_tax'),
             'subtotal' => Arr::get($order, 'total_line_items_price'),
+            'shippings' => array_map(function ($shipping) {
+                return $this->mapShipping($shipping);
+            }, Arr::get($order, 'shipping_lines')),
             'name' => Arr::get($order, 'name'),
             'invoice' => Arr::get($order, 'order_number'),
+            'optin' => Arr::get($order, 'buyer_accepts_marketing', false),
             'products' => array_map(function ($product) {
                 return new Product([
                     'id' => Arr::get($product, 'product_id'),
@@ -76,11 +79,32 @@ class Shopify implements ShopInterface
     }
 
     /**
+     * Maps the Address
+     * @param array $address
+     * @return Address
+     */
+    public function mapAddress(array $address = []): Address
+    {
+        return new Address([
+            'email' => Arr::get($address, 'email'),
+            'first_name' => Arr::get($address, 'first_name'),
+            'last_name' => Arr::get($address, 'last_name'),
+            'company' => Arr::get($address, 'company'),
+            'address1' => Arr::get($address, 'address1'),
+            'address2' => Arr::get($address, 'address2'),
+            'city' => Arr::get($address, 'city'),
+            'zip' => Arr::get($address, 'zip'),
+            'phone' => Arr::get($address, 'phone'),
+            'country' => Arr::get($address, 'country_code')
+        ]);
+    }
+
+    /**
      * Maps the customer
      * @param array $customer
      * @return Customer
      */
-    private function mapCustomer(array $customer): Customer
+    public function mapCustomer(array $customer): Customer
     {
         return new Customer([
             'id' => Arr::get($customer, 'id'),
@@ -88,12 +112,21 @@ class Shopify implements ShopInterface
             'first_name' => Arr::get($customer, 'first_name'),
             'last_name' => Arr::get($customer, 'last_name'),
             'company' => Arr::get($customer, 'company'),
-            'address1' => Arr::get($customer, 'address1'),
-            'address2' => Arr::get($customer, 'address2'),
-            'city' => Arr::get($customer, 'city'),
-            'zip' => Arr::get($customer, 'zip'),
             'phone' => Arr::get($customer, 'phone'),
-            'country' => Arr::get($customer, 'country_code')
+            'address' => $this->mapAddress(Arr::get($customer, 'default_address', []))
+        ]);
+    }
+
+    /**
+     * Maps shipping
+     * @param $shipping
+     * @return Shipping
+     */
+    public function mapShipping($shipping): Shipping
+    {
+        return new Shipping([
+            'title' => Arr::get($shipping, 'title'),
+            'price' => Arr::get($shipping, 'price')
         ]);
     }
 
@@ -172,7 +205,7 @@ class Shopify implements ShopInterface
     {
         $response = $this->request('get', 'customers/' . $id);
         $customer = Arr::get($response, 'customer');
-        return $this->mapCustomer(array_merge(Arr::get($customer, 'default_address', []), $customer));
+        return $this->mapCustomer($customer);
     }
 
     /**
