@@ -80,7 +80,6 @@ class ShopifyTest extends TestCase
     }
 
 
-
     /**
      * @test
      * @return array
@@ -103,5 +102,50 @@ class ShopifyTest extends TestCase
         $id = $customers[0]->id;
         $customer = $this->shopifyService()->customer($id);
         $this->assertTrue($customer->id === $id);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanStoreDiscount()
+    {
+        $data = $this->shopifyService()->storeDiscount([
+            'price_rule' => [
+                "title" => "SUMMERSALE10OFF",
+                "target_type" => "line_item",
+                "target_selection" => "all",
+                "allocation_method" => "across",
+                "value_type" => "fixed_amount",
+                "value" => "-70.0",
+                "customer_selection" => "all",
+                "starts_at" => now()->format('Y-m-d H:m:s')
+            ],
+            'discount_codes' => [
+                ['code' => 'SUMMERSALE10OFF']
+            ]
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanShowDiscount()
+    {
+        $data = $this->shopifyService()->showDiscount('106-914-708-804');
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function itCantStoreDiscountMissingTitle()
+    {
+        try {
+            $data = $this->shopifyService()->storeDiscount([
+                'price_rule' => []
+            ]);
+        } catch (\Exception $exception) {
+            $this->assertTrue($exception->getMessage() === 'price_rule.title is a required field');
+        }
     }
 }
