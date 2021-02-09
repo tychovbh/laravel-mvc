@@ -248,7 +248,11 @@ class Shopify implements ShopInterface
             }
         }
 
-        return $this->request('post', 'price_rules', $price_rule);
+        $response = $this->request('post', 'price_rules', [
+            'price_rule' => $price_rule
+        ]);
+
+        return Arr::get($response, 'price_rule', []);
     }
 
     /**
@@ -260,7 +264,11 @@ class Shopify implements ShopInterface
      */
     public function storeDiscountCodes(string $price_rule_id, array $codes): array
     {
-        return $this->request('post', 'price_rules/' . $price_rule_id . '/batch', $codes);
+        $response = $this->request('post', 'price_rules/' . $price_rule_id . '/batch', [
+            'discount_codes' => $codes
+        ]);
+
+        return Arr::get($response, 'discount_code_creation', []);
     }
 
     /**
