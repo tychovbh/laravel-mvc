@@ -2,9 +2,9 @@
 
 namespace Tychovbh\Tests\Mvc\App;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class TestUserResource extends Resource
+class TestUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

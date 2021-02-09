@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Http\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class FieldResource extends Resource
+class FieldResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

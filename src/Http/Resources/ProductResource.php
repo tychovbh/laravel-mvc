@@ -2,9 +2,9 @@
 
 namespace Tychovbh\Mvc\Http\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends Resource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
