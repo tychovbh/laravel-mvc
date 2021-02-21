@@ -20,14 +20,15 @@ class AuthorizeMiddleware
     {
         $id = $request->route('id');
         $name = explode('.', get_route_info($request, 'as'));
-        $model = 'App\\' .ucfirst(Str::singular($name[0]));
+        $model = 'App\\' .ucfirst(Str::camel(Str::singular($name[0])));
         $model = project_or_package_class('Model', $model);
 
         if ($id) {
             try {
                 $model = $model::findOrFail($id);
             } catch (\Exception $exception) {
-                return abort(404, message('model.notfound', str_replace('App\\', '', $model), 'ID', $id));
+                abort(404, message('model.notfound', str_replace('App\\', '', $model), 'ID', $id));
+                return;
             }
         }
 
@@ -40,10 +41,6 @@ class AuthorizeMiddleware
             abort(401, message('auth.unauthorized'));
         }
 
-        $response = $next($request);
-
-        // Post-Middleware Action
-
-        return $response;
+        return $next($request);
     }
 }
