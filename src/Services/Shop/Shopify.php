@@ -4,6 +4,7 @@
 namespace Tychovbh\Mvc\Services\Shop;
 
 
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 
@@ -207,6 +208,79 @@ class Shopify implements ShopInterface
         $customer = Arr::get($response, 'customer');
         return $this->mapCustomer($customer);
     }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function storeDiscount(array $data): array
+    {
+        $required_fields = ['title', 'value_type', 'value', 'starts_at'];
+
+        foreach ($required_fields as $field) {
+            if (!Arr::has($data['price_rule'], $field)) {
+                throw new Exception('price_rule.' . $field . ' is a required field');
+            }
+        }
+
+        $priceRule = $this->storePriceRule(Arr::get($data, 'price_rule', []));
+
+        return [
+            'price_rule' => $priceRule,
+            'discount_codes' => $this->storeDiscountCodes(Arr::get($priceRule, 'id'), $data['discount_codes'])
+        ];
+    }
+
+    /**
+     * Store price rule
+     * @param array $price_rule
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function storePriceRule(array $price_rule): array
+    {
+        $required_fields = ['title', 'value_type', 'value', 'starts_at'];
+
+        foreach ($required_fields as $field) {
+            if (!Arr::has($price_rule, $field)) {
+                throw new Exception('price_rule.' . $field . ' is a required field');
+            }
+        }
+
+        $response = $this->request('post', 'price_rules', [
+            'price_rule' => $price_rule
+        ]);
+
+        return Arr::get($response, 'price_rule', []);
+    }
+
+    /**
+     * Store Discount Codes
+     * @param string $price_rule_id
+     * @param array $codes
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function storeDiscountCodes(string $price_rule_id, array $codes): array
+    {
+        $response = $this->request('post', 'price_rules/' . $price_rule_id . '/batch', [
+            'discount_codes' => $codes
+        ]);
+
+        return Arr::get($response, 'discount_code_creation', []);
+    }
+
+    /**
+     * Retrieves a DiscountCode
+     * @param string $code
+     * @return array|void
+     */
+    public function showDiscount(string $code): array
+    {
+        return $this->request('get', 'discount_codes/lookup.json?code=' . $code);
+    }
+
 
     /**
      * Does request to service
