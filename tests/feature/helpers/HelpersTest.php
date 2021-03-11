@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature\helpers;
+namespace Tychovbh\Tests\Mvc\feature\helpers;
 use Tychovbh\Tests\Mvc\TestCase;
 
 class HelpersTest extends TestCase

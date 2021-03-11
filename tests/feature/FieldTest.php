@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature;
+namespace Tychovbh\Tests\Mvc\feature;
 
 use Tychovbh\Mvc\Models\Field;
 use Tychovbh\Mvc\Models\Form;
@@ -11,30 +11,30 @@ use Tychovbh\Tests\Mvc\TestCase;
 
 class FieldTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function itCanUpdate()
-    {
-        $form = factory(Form::class)->create([
-            'name' => 'testname'
-        ]);
-
-        $element = factory(Element::class)->create([
-            'name' => 'testname'
-        ]);
-
-        $field = factory(Field::class)->create([
-            'form_id' => $form->id,
-            'element_id' => $element->id
-        ]);
-
-        $field->element = $element;
-        $this->update('fields.update', (new FieldResource($field)), [
-            'form_id' => $form->id,
-            'input' => $element->name
-        ]);
-
-        $this->assertEquals($field->form->name, $form->name);
-    }
+//    /**
+//     * @test
+//     */
+//    public function itCanUpdate()
+//    {
+//        $form = factory(Form::class)->create([
+//            'name' => 'testname'
+//        ]);
+//
+//        $element = factory(Element::class)->create([
+//            'name' => 'testname'
+//        ]);
+//
+//        $field = factory(Field::class)->create([
+//            'form_id' => $form->id,
+//            'element_id' => $element->id
+//        ]);
+//
+//        $field->element = $element;
+//        $this->update('fields.update', (new FieldResource($field)), [
+//            'form_id' => $form->id,
+//            'input' => $element->name
+//        ]);
+//
+//        $this->assertEquals($field->form->name, $form->name);
+//    }
 }

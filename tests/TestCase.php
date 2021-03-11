@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc;
+namespace Tests;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\Events\PaymentUpdated;
 use Tychovbh\Mvc\Models\Model;
@@ -14,6 +16,7 @@ use Faker\Factory;
 use Tychovbh\Mvc\Routes\AddressRoute;
 use Tychovbh\Mvc\Routes\ContractRoute;
 use Tychovbh\Mvc\Routes\CountryRoute;
+use Tychovbh\Mvc\Routes\DatabaseRoute;
 use Tychovbh\Mvc\Routes\PasswordResetRoute;
 use Tychovbh\Mvc\Routes\PaymentRoute;
 use Tychovbh\Mvc\Routes\ProductRoute;
@@ -180,8 +183,8 @@ class TestCase extends BaseTestCase
             ]
         ]);
 
-        $this->withFactories(__DIR__ . '/database/factories');
-        $this->withFactories(__DIR__ . '/../database/factories');
+//        $this->withFactories(__DIR__ . '/database/factories');
+//        $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
@@ -194,6 +197,14 @@ class TestCase extends BaseTestCase
         $config = require __DIR__ . '/../config/' . $name . '.php';
         Config::set($name, $config);
     }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Tychovbh\Mvc' => 'Tychovbh\Mvc\Facade'
+        ];
+    }
+
 
     /**
      * Define environment setup.
@@ -240,6 +251,7 @@ class TestCase extends BaseTestCase
         RoleRoute::routes();
         PasswordResetRoute::routes();
         PaymentRoute::routes();
+        DatabaseRoute::routes();
         ProductRoute::routes();
         AddressRoute::routes();
         CountryRoute::routes();
@@ -250,7 +262,7 @@ class TestCase extends BaseTestCase
      * @param \Illuminate\Foundation\Application $app
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [MvcServiceProvider::class];
     }
@@ -261,55 +273,53 @@ class TestCase extends BaseTestCase
      * @param JsonResource $expected
      * @param array $params
      * @param array $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return TestResponse
      */
-    public function index($uri, JsonResource $expected, array $params = [], array $headers = [])
+    public function index($uri, JsonResource $expected, array $params = [], array $headers = []): TestResponse
     {
-        $response = parent::get(route($uri, $params), $headers)
+        return parent::get(route($uri, $params), $headers)
             ->assertJson(
                 $expected->response($this->app['request'])->getData(true)
             )
             ->assertStatus(200);
-
-        return $response;
     }
-
-    /**
-     * Show resource
-     * @param $uri
-     * @param JsonResource $expected
-     * @param int $status
-     * @param mixed $assert
-     * @return \Illuminate\Foundation\Testing\TestResponse
-     */
-    public function show($uri, JsonResource $expected, int $status = 200, array $assert = [])
-    {
-        return parent::get(route($uri, ['id' => $expected->id]))
-            ->assertJson(
-                $assert ?? $expected->response($this->app['request'])->getData(true)
-            )
-            ->assertStatus($status);
-    }
-
-    /**
-     * Show resource
-     * @param $uri
-     * @param JsonResource $resource
-     * @param int $status
-     * @param mixed $assert
-     * @return \Illuminate\Foundation\Testing\TestResponse
-     */
-    public function create($uri, JsonResource $resource, int $status = 200, array $assert = [])
-    {
-        $response = parent::get(route($uri))
-            ->assertStatus($status)
-            ->assertJson(
-                $assert ?? $resource->response($this->app['request'])->getData(true)
-            );
-
-        return $response;
-    }
-
+//
+//    /**
+//     * Show resource
+//     * @param $uri
+//     * @param JsonResource $expected
+//     * @param int $status
+//     * @param mixed $assert
+//     * @return \Illuminate\Foundation\Testing\TestResponse
+//     */
+//    public function show($uri, JsonResource $expected, int $status = 200, array $assert = [])
+//    {
+//        return parent::get(route($uri, ['id' => $expected->id]))
+//            ->assertJson(
+//                $assert ?? $expected->response($this->app['request'])->getData(true)
+//            )
+//            ->assertStatus($status);
+//    }
+//
+//    /**
+//     * Show resource
+//     * @param $uri
+//     * @param JsonResource $resource
+//     * @param int $status
+//     * @param mixed $assert
+//     * @return \Illuminate\Foundation\Testing\TestResponse
+//     */
+//    public function create($uri, JsonResource $resource, int $status = 200, array $assert = [])
+//    {
+//        $response = parent::get(route($uri))
+//            ->assertStatus($status)
+//            ->assertJson(
+//                $assert ?? $resource->response($this->app['request'])->getData(true)
+//            );
+//
+//        return $response;
+//    }
+//
     /**
      * Store resource
      * @param $uri
@@ -318,7 +328,7 @@ class TestCase extends BaseTestCase
      * @param int $status
      * @param array $assert
      * @param int|null $user_id
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return TestResponse
      */
     public function store(
         $uri,
@@ -327,7 +337,7 @@ class TestCase extends BaseTestCase
         int $status = 201,
         array $assert = [],
         int $user_id = null
-    )
+    ): TestResponse
     {
         return parent::post(route($uri), $params, $user_id ? [
             'HTTP_Authorization' => 'Bearer ' . token($user_id)
@@ -337,46 +347,46 @@ class TestCase extends BaseTestCase
             )
             ->assertStatus($status);
     }
-
-    /**
-     * Update resource
-     * @param $uri
-     * @param JsonResource $expected
-     * @param array $params
-     * @return \Illuminate\Foundation\Testing\TestResponse
-     */
-    public function update($uri, JsonResource $expected, array $params)
-    {
-        $response = parent::put(route($uri, ['id' => $expected->id]), $params)
-            ->assertJson(
-                $expected->response($this->app['request'])->getData(true)
-            )
-            ->assertStatus(200);
-
-        return $response;
-    }
-
-    /**
-     * Destroy resource
-     * @param $uri
-     * @param Model $model
-     * @return \Illuminate\Foundation\Testing\TestResponse
-     */
-    public function destroy($uri, Model $model)
-    {
-        $response = parent::delete(route($uri, ['id' => $model->id]))
-            ->assertJson(['deleted' => 1])
-            ->assertStatus(200);
-
-        $uri = explode('.', $uri);
-
-        $this->assertDatabaseMissing($uri[0], [
-            'id' => $model->id
-        ]);
-
-        return $response;
-    }
-
+//
+//    /**
+//     * Update resource
+//     * @param $uri
+//     * @param JsonResource $expected
+//     * @param array $params
+//     * @return \Illuminate\Foundation\Testing\TestResponse
+//     */
+//    public function update($uri, JsonResource $expected, array $params)
+//    {
+//        $response = parent::put(route($uri, ['id' => $expected->id]), $params)
+//            ->assertJson(
+//                $expected->response($this->app['request'])->getData(true)
+//            )
+//            ->assertStatus(200);
+//
+//        return $response;
+//    }
+//
+//    /**
+//     * Destroy resource
+//     * @param $uri
+//     * @param Model $model
+//     * @return \Illuminate\Foundation\Testing\TestResponse
+//     */
+//    public function destroy($uri, Model $model)
+//    {
+//        $response = parent::delete(route($uri, ['id' => $model->id]))
+//            ->assertJson(['deleted' => 1])
+//            ->assertStatus(200);
+//
+//        $uri = explode('.', $uri);
+//
+//        $this->assertDatabaseMissing($uri[0], [
+//            'id' => $model->id
+//        ]);
+//
+//        return $response;
+//    }
+//
     /**
      * Assert that for each item in a collection, a given where condition exists in the database.
      * @param string $table

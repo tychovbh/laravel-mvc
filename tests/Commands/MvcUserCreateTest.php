@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature\Commands;
+namespace Tests\Commands;
 
 use Tychovbh\Mvc\Models\Role;
 use Tychovbh\Mvc\Models\TokenType;
 use Tychovbh\Mvc\Models\User;
 use Tychovbh\Tests\Mvc\TestCase;
 
-class MvcUserCreateTestTest extends TestCase
+class MvcUserCreateTest extends TestCase
 {
     /**
      * @test

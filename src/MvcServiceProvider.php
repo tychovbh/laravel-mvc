@@ -12,6 +12,7 @@ use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
+use Tychovbh\Mvc\Console\Commands\MvcRoute;
 use Tychovbh\Mvc\Console\Commands\MvcUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcContractsUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
@@ -23,9 +24,11 @@ use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Models\Address;
 use Tychovbh\Mvc\Models\Contract;
+use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Payment;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\ContractObserver;
+use Tychovbh\Mvc\Observers\DatabaseObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
@@ -69,13 +72,14 @@ class MvcServiceProvider extends ServiceProvider
             MvcRepository::class,
             MvcController::class,
             MvcRequest::class,
+            MvcRoute::class,
             MvcUpdate::class,
             MvcCollection::class,
             MvcCollections::class,
             MvcUserCreate::class,
             MvcUserToken::class,
             MvcPaymentsCheck::class,
-            MvcContractsUpdate::class
+            MvcContractsUpdate::class,
         ]);
 
         $this->publishes([
@@ -163,6 +167,7 @@ class MvcServiceProvider extends ServiceProvider
      */
     private function observers()
     {
+        $this->observe(Database::class, DatabaseObserver::class);
         $this->observe(Payment::class, PaymentObserver::class);
         if (config('mvc-address-lookup.default')) {
             $this->observe(Address::class, AddressObserver::class);

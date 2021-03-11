@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature\Commands;
+namespace Tychovbh\Tests\Mvc\feature\Commands;
 
 use Tychovbh\Tests\Mvc\TestCase;
 

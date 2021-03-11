@@ -3,6 +3,8 @@
 namespace Tychovbh\Mvc\Models;
 
 use Carbon\Carbon;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
@@ -11,6 +13,8 @@ use Tychovbh\Mvc\Repositories\TokenRepository;
 
 class User extends Model
 {
+    use HasFactory;
+
     /**
      * User constructor.
      * @param array $attributes
@@ -108,5 +112,13 @@ class User extends Model
         if ($this->email === $data['email']) {
             $this->email_verified_at = Carbon::now();
         }
+    }
+
+    /**
+     * @return UserFactory
+     */
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }

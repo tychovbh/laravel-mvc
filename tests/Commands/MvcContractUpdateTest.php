@@ -1,9 +1,9 @@
 <?php
 
-namespace Tychovbh\Tests\Mvc\feature\commands;
+namespace Tests\Commands;
 
 use Tychovbh\Mvc\Models\Contract;
-use Tychovbh\Tests\Mvc\TestCase;
+use Tests\TestCase;
 
 class MvcContractUpdateTest extends TestCase
 {

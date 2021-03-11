@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature;
+namespace Tests\Controllers;
 
 use Tychovbh\Mvc\Models\Form;
 use Tychovbh\Mvc\Http\Controllers\FormController;
 use Tychovbh\Mvc\Http\Resources\FormResource;
-use Tychovbh\Tests\Mvc\TestCase;
+use Tests\TestCase;
 
 class FormTest extends TestCase
 {
@@ -15,9 +15,8 @@ class FormTest extends TestCase
      */
     public function itCanIndex()
     {
-        $forms = Form::factory()->count(2)->create();
-        $this->get(route('forms.index'))->assertJson($forms->toArray());
-//        $this->index('forms.index', FormResource::collection($forms));
+        $forms = Form::all();
+        $this->index('forms.index', FormResource::collection($forms));
     }
 //
 //    /**

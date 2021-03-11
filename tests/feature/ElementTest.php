@@ -9,12 +9,12 @@ use Tychovbh\Tests\Mvc\TestCase;
 
 class ElementTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function itCanIndex()
-    {
-        $forms = Element::all();
-        $this->index('elements.index', ElementResource::collection($forms));
-    }
+//    /**
+//     * @test
+//     */
+//    public function itCanIndex()
+//    {
+//        $forms = Element::all();
+//        $this->index('elements.index', ElementResource::collection($forms));
+//    }
 }

@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Models;
 
+use Database\Factories\FormFactory;
 use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Form extends Model
 {
+    use HasFactory;
+
     /**
      * Form constructor.
      * @param array $attributes
@@ -46,5 +50,14 @@ class Form extends Model
         } catch (Exception $exception) {
             return '';
         }
+    }
+
+    /**
+     * Change factory
+     * @return FormFactory
+     */
+    protected static function newFactory()
+    {
+        return FormFactory::new();
     }
 }

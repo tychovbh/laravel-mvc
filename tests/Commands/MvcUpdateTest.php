@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Tychovbh\Tests\Mvc\Feature\Commands;
+namespace Tests\Commands;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Tychovbh\Tests\Mvc\TestCase;
+use Tests\TestCase;
 
 class MvcUpdateTest extends TestCase
 {
