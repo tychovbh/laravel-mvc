@@ -23,6 +23,7 @@ use Tychovbh\Mvc\Routes\ProductRoute;
 use Tychovbh\Mvc\Routes\RoleRoute;
 use Tychovbh\Mvc\Routes\InviteRoute;
 use Tychovbh\Mvc\Routes\UserRoute;
+use Tychovbh\Mvc\Routes\WildcardRoute;
 use Tychovbh\Tests\Mvc\App\TestUserController;
 use Tychovbh\Tests\Mvc\App\TestUserRepository;
 
@@ -256,6 +257,7 @@ class TestCase extends BaseTestCase
         AddressRoute::routes();
         CountryRoute::routes();
         ContractRoute::routes();
+        WildcardRoute::routes();
     }
 
     /**

@@ -15,6 +15,7 @@ class WhitelistMiddleware
      */
     public function handle($request, Closure $next)
     {
+        // TODO check origin with config
         if ($request->header('origin')) {
             return $next($request);
         }

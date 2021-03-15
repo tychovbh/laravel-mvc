@@ -108,7 +108,7 @@ abstract class AbstractRepository
      */
     private function applyParams(string $type): Builder
     {
-        $this->query = $this->model::query();
+        $this->query = $this->model->query()->from($this->name);
         foreach ($this->params as $param => $value) {
             $method = str_replace('_', ' ', $param);
             $method = ucwords($method);

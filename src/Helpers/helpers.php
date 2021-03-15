@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -550,5 +553,25 @@ if (!function_exists('now')) {
     function now(): Carbon
     {
         return Carbon::now();
+    }
+}
+if (!function_exists('connection')) {
+
+    /**
+     * @param Database $database
+     * @param string $name
+     * @return ConnectionInterface
+     */
+    function connection(Database $database, string $name): ConnectionInterface
+    {
+        config(['database.connections.' . $name => [
+            'driver' => $database->driver,
+            'database' => $database->name,
+            'host' => $database->host,
+            'username' => $database->username,
+            'password' => $database->password,
+        ]]);
+
+        return DB::connection($name);
     }
 }

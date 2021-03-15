@@ -94,4 +94,23 @@ class Table extends Model
             'placeholder' => ''
         ];
     }
+
+    /**
+     * The Input properties
+     * @param string $name
+     * @param bool $is_nullable
+     * @return array
+     */
+    public static function inputSelect(string $name, $is_nullable): array
+    {
+        return [
+            'name' => $name,
+            'type' => '',
+            'required' => !$is_nullable,
+            'options' => [],
+//            'source' => '',
+//            'label_key' => 'label',
+//            'value_key' => 'id'
+        ];
+    }
 }

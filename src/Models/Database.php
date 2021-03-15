@@ -5,6 +5,7 @@ namespace Tychovbh\Mvc\Models;
 
 use Database\Factories\DatabaseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Database extends Model
 {
@@ -20,6 +21,14 @@ class Database extends Model
     {
         $this->fillables('label', 'name', 'host', 'username', 'password', 'port', 'driver', 'user_id');
         parent::__construct($attributes);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function tables(): HasMany
+    {
+        return $this->hasMany(Table::class);
     }
 
     /**
