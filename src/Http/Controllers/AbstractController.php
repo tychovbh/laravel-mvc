@@ -9,10 +9,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 use Tychovbh\Mvc\Http\Resources\FormResource;
 use Tychovbh\Mvc\Models\Wildcard;
 use Tychovbh\Mvc\Repositories\FormRepository;
 use Tychovbh\Mvc\Repositories\Repository;
+use Tychovbh\Mvc\Repositories\TableRepository;
 
 /**
  * Class Controller
@@ -107,9 +109,35 @@ abstract class AbstractController implements ControllerInterface
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        return $this->resource::collection(
+        $response = $this->resource::collection(
             $this->collection($request, $this->repository::withParams($request->toArray()))
         );
+
+        $this->additional($request, $response);
+
+        return $response;
+    }
+
+    /**
+     * Add Additional response data
+     * @param Request $request
+     * @param $response
+     */
+    private function additional(Request $request, $response)
+    {
+        $additionals = $request->get('additionals', '');
+        $additionals = is_array($additionals) ? $additionals : [$additionals];
+        $data = [];
+
+        foreach($additionals as $additional) {
+            if (method_exists($this->repository->model, $additional)) {
+                $data[$additional] = $this->repository->model::{$additional}($request);
+            }
+        }
+
+        if ($data) {
+            $response->additional($data);
+        }
     }
 
     /**
@@ -129,33 +157,70 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Show User Resource.
      * @param Request $request
-     * @param int $id
+     * @param string|int $id
      * @return JsonResource
      */
-    public function show(Request $request, int $id): JsonResource
+    public function show(Request $request, $id): JsonResource
     {
         $params = $request->toArray();
         try {
             if ($params) {
-                return new $this->resource($this->repository::withParams(array_merge($params, ['id' => $id]))->first());
+                $response = new $this->resource($this->repository::withParams(array_merge($params, ['id' => $id]))->first());
+            } else {
+                $response = new $this->resource($this->repository->find($id));
             }
-            return new $this->resource($this->repository->find($id));
+
+            $this->additional($request, $response);
+
+            return $response;
         } catch (ModelNotFoundException $exception) {
             abort(404, message('model.notfound', ucfirst($this->controller), 'ID', $id));
         }
     }
 
     /**
-     * Return the form.
+     * Create form.
      * @param Request $request
-     * @return mixed
-     * @throws Exception
+     * @return JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
-        $forms = new FormRepository();
-        $form = $forms->findBy('name', $request->has('name') ? $request->get('name') : $this->repository->name);
-        return new FormResource($form);
+        $table = $this->repository->model->getTable();
+
+        try {
+
+            $table = TableRepository::withParams(array_merge(['name' => $table], $request->toArray()))->first();
+            return response()->json([
+                'data' => $table->create_form
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            abort(404, message('table.notfound', ucfirst($this->controller), 'ID', $table));
+        }
+    }
+
+    /**
+     * Edit form.
+     * @param Request $request
+     * @param string|int $id
+     * @return JsonResponse
+     */
+    public function edit(Request $request, $id): JsonResponse
+    {
+        $table = $this->repository->model->getTable();
+        $show = $this->show($request, $id);
+
+        try {
+            $table = TableRepository::withParams(array_merge(['name' => $table], $request->toArray()))->first();
+            $form = $table->edit_form;
+            $form['route'] = Str::replaceFirst('id', $id, $form['route']);
+            $form['defaults'] = $show;
+
+            return response()->json([
+                'data' => $form
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            abort(404, message('table.notfound', ucfirst($this->controller), 'ID', $table));
+        }
     }
 
     /**
@@ -172,10 +237,10 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Update existing Resource.
      * @param Request $request
-     * @param int $id
+     * @param string|int $id
      * @return JsonResource
      */
-    public function update(Request $request, int $id): JsonResource
+    public function update(Request $request, $id): JsonResource
     {
         try {
             $model = $this->repository->update($request->toArray(), $id);
@@ -199,10 +264,10 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * Destroy Resource.
-     * @param int $id
+     * @param string|int $id
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id): JsonResponse
     {
         return response()->json([
             'deleted' => $this->repository->destroy([$id])

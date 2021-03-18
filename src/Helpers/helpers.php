@@ -3,6 +3,7 @@
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Tychovbh\Mvc\Helpers\WildcardManager;
 use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Model;
 use Illuminate\Http\Request;
@@ -573,5 +574,18 @@ if (!function_exists('connection')) {
         ]]);
 
         return DB::connection($name);
+    }
+}
+
+if (!function_exists('wildcard_manager')) {
+    /**
+     * Get Wildcard Manager Instance
+     * @param string $connection
+     * @param string $table
+     * @return WildcardManager
+     */
+    function wildcard_manager(string $connection, string $table): WildcardManager
+    {
+        return WildcardManager::init($connection, $table);
     }
 }

@@ -14,7 +14,7 @@ class DatabaseTest extends TestCase
      */
     public function itCanIndex()
     {
-        $databases = Database::factory()->count(2)->create();
+        $databases = Database::factory()->count(1)->create();
         $this->index('databases.index', DatabaseResource::collection($databases));
     }
 

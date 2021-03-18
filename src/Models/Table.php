@@ -3,10 +3,27 @@ declare(strict_types=1);
 
 namespace Tychovbh\Mvc\Models;
 
-use Database\Factories\DatabaseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string label
+ * @property string name
+ * @property string create_title
+ * @property string edit_title
+ * @property array fields
+ * @property array relations
+ * @property int database_id
+ * @property Database database
+ * @property Collection form_fields
+ * @property array create_form
+ * @property array edit_form
+ * @property Collection index_fields
+ * @property Collection show_fields
+ */
 class Table extends Model
 {
     use HasFactory;
@@ -14,8 +31,8 @@ class Table extends Model
     const INPUT_TYPES = [
         'bigint' => 'number',
         'int' => 'number',
-        'varchar' => 'input',
-        'timestamp' => 'date'
+        'varchar' => 'text',
+        'date' => 'date',
     ];
 
     /**
@@ -24,21 +41,23 @@ class Table extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('label', 'name', 'fields', 'relations', 'database_id');
+        $this->fillables('label', 'name', 'create_title', 'edit_title', 'fields', 'relations', 'database_id');
+        $this->columns('name', 'database_id');
         $this->casts(['fields' => 'array', 'relations' => 'array']);
         parent::__construct($attributes);
     }
 
     /**
-     * @return DatabaseFactory
+     * The Database
+     * @return BelongsTo
      */
-    public static function newFactory(): DatabaseFactory
+    public function database(): BelongsTo
     {
-        return DatabaseFactory::new();
+        return $this->belongsTo(Database::class);
     }
 
     /**
-     * The element
+     * The column element
      * @param string $type
      * @return string
      */
@@ -59,12 +78,19 @@ class Table extends Model
         return 'input';
     }
 
-    /*
-     * Is editable
+    /**
+     * The column is editable
+     * @param bool $auto_increment
+     * @param string $column_type
+     * @return bool
      */
-    public static function editable(bool $auto_increment = false): bool
+    public static function editable(bool $auto_increment, string $column_type): bool
     {
         if ($auto_increment) {
+            return false;
+        }
+
+        if ($column_type === 'timestamp') {
             return false;
         }
 
@@ -73,7 +99,7 @@ class Table extends Model
 
 
     /**
-     * The Input properties
+     * The column input properties
      * @param string $name
      * @param string $type
      * @param bool $is_nullable
@@ -96,12 +122,12 @@ class Table extends Model
     }
 
     /**
-     * The Input properties
+     * The column input select
      * @param string $name
      * @param bool $is_nullable
      * @return array
      */
-    public static function inputSelect(string $name, $is_nullable): array
+    public static function inputSelect(string $name, bool $is_nullable): array
     {
         return [
             'name' => $name,
@@ -112,5 +138,96 @@ class Table extends Model
 //            'label_key' => 'label',
 //            'value_key' => 'id'
         ];
+    }
+
+    /**
+     * The Form Fields
+     * @return Collection
+     */
+    public function getFormFieldsAttribute(): Collection
+    {
+        return collect($this->fields ?? [])
+            ->filter(function ($field) {
+                return $field['fillable'];
+            })
+            ->map(function($field) {
+                return [
+                    'element' => ['name' => $field['element']],
+                    'properties' => $field['properties']
+                ];
+            });
+    }
+
+    /**
+     * The Create Form.
+     * @return array
+     */
+    public function getCreateFormAttribute(): array
+    {
+        return [
+            'name' => Str::slug($this->create_title),
+            'title' => $this->create_title,
+            'route' => route('wildcards.store', [
+                'connection' => $this->database->name,
+                'table' => $this->name,
+                'user_id' => $this->database->user_id,
+            ]),
+            'fields' => $this->form_fields->toArray()
+        ];
+    }
+
+    /**
+     * The Edit Form.
+     * @return array
+     */
+    public function getEditFormAttribute(): array
+    {
+        return [
+            'name' => Str::slug($this->edit_title),
+            'title' => $this->edit_title,
+            'route' => route('wildcards.edit', [
+                'connection' => $this->database->name,
+                'table' => $this->name,
+                'id' => 'id',
+                'user_id' => $this->database->user_id,
+            ]),
+            'fields' => $this->form_fields->toArray()
+        ];
+    }
+
+    /**
+     * The Index Fields
+     * @return Collection
+     */
+    public function getIndexFieldsAttribute(): Collection
+    {
+        return collect($this->fields ?? [])
+            ->filter(function ($field) {
+                return $field['index'];
+            })
+            ->map(function($field) {
+                return [
+                    'label' => $field['label'],
+                    'name' => $field['name'],
+                ];
+            });
+    }
+
+    /**
+     * The Show Fields
+     * @return Collection
+     */
+    public function getShowFieldsAttribute(): Collection
+    {
+        return collect($this->fields ?? [])
+            ->filter(function ($field) {
+                return $field['show'];
+            })
+            ->map(function($field) {
+                return [
+                    'label' => $field['label'],
+                    'name' => $field['name'],
+                ];
+            });
     }
 }

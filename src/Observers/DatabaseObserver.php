@@ -41,9 +41,13 @@ class DatabaseObserver
                 FROM INFORMATION_SCHEMA.COLUMNS
                 WHERE TABLE_NAME = "%s" and TABLE_SCHEMA = "%s"', $table, $database->name));
 
+        $label = Str::ucfirst($table);
+
         $table = [
             'name' => $table,
-            'label' => Str::ucfirst($table),
+            'label' => $label,
+            'create_title' => 'Create ' . $label,
+            'edit_title' => 'Edit ' . $label,
             'fields' => [],
             'relations' => [],
             'database_id' => $database->id,
@@ -52,10 +56,11 @@ class DatabaseObserver
         foreach ($columns as $column) {
             $column_name = $column->COLUMN_NAME;
             $column_type = $column->DATA_TYPE;
-            $editable = Table::editable($column->EXTRA === 'auto_increment');
+            $editable = Table::editable($column->EXTRA === 'auto_increment', $column_type);
 
             $field  = [
                 'name' => $column_name,
+                'label' => Str::studly(Str::ucfirst($column_name)),
                 'index' => true,
                 'show' => true,
                 'searchable' => true,

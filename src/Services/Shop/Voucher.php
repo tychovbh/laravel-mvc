@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 
 class Voucher
 {
-
     /**
      * @var string
      */

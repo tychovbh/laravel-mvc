@@ -150,7 +150,6 @@ abstract class AbstractRepository
      * Add filter params before retrieving data.
      * @param array $params
      * @return Repository
-     * @throws \Exception
      */
     public static function withParams(array $params = []): Repository
     {

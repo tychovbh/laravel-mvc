@@ -7,6 +7,7 @@ namespace Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Tychovbh\Mvc\Events\PaymentUpdated;
@@ -184,6 +185,15 @@ class TestCase extends BaseTestCase
             ]
         ]);
 
+        config(['database.connections.' . 'testing' => [
+            'driver' => 'mysql',
+            'database' => 'testing',
+            'host' => '192.168.10.10',
+            'username' => 'homestead',
+            'password' => 'secret',
+        ]]);
+
+
 //        $this->withFactories(__DIR__ . '/database/factories');
 //        $this->withFactories(__DIR__ . '/../database/factories');
         $this->artisan('migrate', ['--database' => 'testing']);
@@ -191,6 +201,17 @@ class TestCase extends BaseTestCase
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->artisan('mvc:update');
         $this->artisan('mvc:collections');
+    }
+
+    protected function tearDown(): void
+    {
+        $connection = DB::connection('testing');
+        $tables = $connection->select('SHOW DATABASES LIKE "testing_%"');
+        foreach ($tables as $table) {
+            $table = $table->{'Database (testing_%)'};
+            $connection->statement('DROP DATABASE ' . $table);
+        }
+        parent::tearDown();
     }
 
     private function setConfig(string $name)
