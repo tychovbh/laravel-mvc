@@ -132,7 +132,7 @@ class WildcardTest extends TestCase
             'connection' => $database->name,
             'name' => $table->name,
         ]))
-            ->assertStatus(404)
+            ->assertStatus(200)
             ->assertJson([
                 'data' => $table->create_form
             ]);
