@@ -28,6 +28,7 @@ class WildcardController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $request->offsetSet('database', $request->route('connection'));
+        $request->offsetSet('table', $request->route('table'));
         return parent::create($request);
     }
 
@@ -40,6 +41,7 @@ class WildcardController extends AbstractController
     public function edit(Request $request, $id): JsonResponse
     {
         $request->offsetSet('database', $request->route('connection'));
+        $request->offsetSet('table', $request->route('table'));
         return parent::edit($request, $request->route('id'));
     }
 

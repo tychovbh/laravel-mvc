@@ -169,7 +169,7 @@ class Table extends Model
             'title' => $this->create_title,
             'route' => route('wildcards.store', [
                 'connection' => $this->database->name,
-                'name' => $this->name,
+                'table' => $this->name,
             ]),
             'fields' => $this->form_fields->toArray()
         ];
@@ -184,9 +184,9 @@ class Table extends Model
         return [
             'name' => Str::slug($this->edit_title),
             'title' => $this->edit_title,
-            'route' => route('wildcards.edit', [
+            'route' => route('wildcards.update', [
                 'connection' => $this->database->name,
-                'name' => $this->name,
+                'table' => $this->name,
                 'id' => 'id',
             ]),
             'fields' => $this->form_fields->toArray()

@@ -48,7 +48,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->get(route('wildcards.index', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
             'additionals' => ['index', 'meta']
         ]))
             ->assertStatus(200)
@@ -77,7 +77,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->post(route('wildcards.store', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
         ]), $wildcard->toArray())
             ->assertStatus(201)
             ->assertJson([
@@ -102,7 +102,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->get(route('wildcards.show', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
             'id' => $wildcard->id,
             'additionals' => ['show', 'meta']
         ]))
@@ -130,7 +130,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->get(route('wildcards.create', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
         ]))
             ->assertStatus(200)
             ->assertJson([
@@ -157,7 +157,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->get(route('wildcards.edit', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
             'id' => $wildcard->id,
         ]))
             ->assertStatus(200)
@@ -182,7 +182,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->put(route('wildcards.update', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
             'id' => $wildcard->id,
         ]), $update->toArray())
             ->assertStatus(200)
@@ -209,7 +209,7 @@ class WildcardTest extends TestCase
             ->actingAs($user)
             ->delete(route('wildcards.destroy', [
             'connection' => $database->name,
-            'name' => $table->name,
+            'table' => $table->name,
             'id' => $wildcard->id,
         ]))
             ->assertStatus(200)

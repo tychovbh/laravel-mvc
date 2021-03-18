@@ -182,7 +182,7 @@ abstract class AbstractController implements ControllerInterface
      */
     public function create(Request $request): JsonResponse
     {
-        $table = $this->repository->model->getTable();
+        $table = $request->get('table', $this->repository->model->getTable());
 
         try {
 
@@ -203,8 +203,8 @@ abstract class AbstractController implements ControllerInterface
      */
     public function edit(Request $request, $id): JsonResponse
     {
-        $table = $this->repository->model->getTable();
         $show = $this->show($request, $id);
+        $table = $request->get('table', $this->repository->model->getTable());
 
         try {
             $table = TableRepository::withParams(array_merge(['name' => $table], $request->toArray()))->first();
