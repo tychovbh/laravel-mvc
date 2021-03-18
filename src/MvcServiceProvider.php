@@ -13,7 +13,6 @@ use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
 use Tychovbh\Mvc\Console\Commands\MvcRequest;
 use Tychovbh\Mvc\Console\Commands\MvcRoute;
-use Tychovbh\Mvc\Console\Commands\MvcUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcContractsUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
 use Tychovbh\Mvc\Console\Commands\MvcUserToken;
@@ -73,7 +72,6 @@ class MvcServiceProvider extends ServiceProvider
             MvcController::class,
             MvcRequest::class,
             MvcRoute::class,
-            MvcUpdate::class,
             MvcCollection::class,
             MvcCollections::class,
             MvcUserCreate::class,
@@ -86,7 +84,6 @@ class MvcServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
 
-        $this->loadRoutesFrom(sprintf('%s/../routes/%s/web.php', __DIR__, is_application()));
 
         if (is_application() === 'lumen') {
             $this->commands([

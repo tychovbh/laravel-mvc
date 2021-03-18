@@ -38,27 +38,6 @@ class TestCase extends BaseTestCase
         parent::setUp();
         Config::set('mvc-forms.forms', [
             [
-                'name' => 'test_users',
-                'fields' => [
-                    [
-                        'element' => 'input',
-                        'properties' => ['name' => 'email', 'type' => 'email', 'required' => true, 'placeholder' => 'test@example.com'],
-                    ],
-                    [
-                        'element' => 'input',
-                        'properties' => ['name' => 'password', 'type' => 'password', 'required' => true],
-                    ],
-                    [
-                        'element' => 'input',
-                        'properties' => ['name' => 'name', 'type' => 'text', 'required' => true],
-                    ],
-                    [
-                        'element' => 'input',
-                        'properties' => ['name' => 'avatar', 'type' => 'file'],
-                    ],
-                ]
-            ],
-            [
                 'name' => 'users',
                 'fields' => [
                     [
@@ -199,7 +178,6 @@ class TestCase extends BaseTestCase
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-        $this->artisan('mvc:update');
         $this->artisan('mvc:collections');
     }
 
@@ -240,7 +218,6 @@ class TestCase extends BaseTestCase
         putenv('MOLLIE_KEY=test_stnkpmwu8T5VhmyMxnnyMQRVtyrNCm');
         $this->setConfig('mvc-messages');
         $this->setConfig('mvc-collections');
-        $this->setConfig('mvc-forms');
         $this->setConfig('mvc-auth');
         $this->setConfig('mvc-mail');
         $app['config']->set('env', 'testing');

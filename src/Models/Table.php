@@ -169,8 +169,7 @@ class Table extends Model
             'title' => $this->create_title,
             'route' => route('wildcards.store', [
                 'connection' => $this->database->name,
-                'table' => $this->name,
-                'user_id' => $this->database->user_id,
+                'name' => $this->name,
             ]),
             'fields' => $this->form_fields->toArray()
         ];
@@ -187,9 +186,8 @@ class Table extends Model
             'title' => $this->edit_title,
             'route' => route('wildcards.edit', [
                 'connection' => $this->database->name,
-                'table' => $this->name,
+                'name' => $this->name,
                 'id' => 'id',
-                'user_id' => $this->database->user_id,
             ]),
             'fields' => $this->form_fields->toArray()
         ];
