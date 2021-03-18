@@ -108,7 +108,7 @@ class Wildcard extends Model
     private static function manager(Request $request): ?WildcardManager
     {
         $connection = $request->route('connection');
-        $table = $request->route('table');
+        $table = $request->route('name');
 
         if (!$table || !$connection) {
             return null;
