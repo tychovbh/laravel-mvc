@@ -214,10 +214,10 @@ abstract class AbstractRepository
 
     /**
      * Find a resource by ID
-     * @param int $id
+     * @param int|string $id
      * @return mixed
      */
-    public function find(int $id)
+    public function find($id)
     {
         return $this->model::findOrFail($id);
     }
