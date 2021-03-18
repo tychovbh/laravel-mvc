@@ -21,6 +21,18 @@ class DatabaseObserver
     }
 
     /**
+     * Creating event.
+     * @param Database $database
+     */
+    public function creating(Database $database)
+    {
+        if (!$database->user_id) {
+            $database->user_id = user()->id;
+        }
+    }
+
+    /**
+     * Created event.
      * @param Database $database
      */
     public function created(Database $database)
@@ -36,7 +48,6 @@ class DatabaseObserver
     private function addTable(Database $database, string $table, $connection)
     {
 //        $foreigns = $connection->select(sprintf('SELECT * FROM information_schema.KEY_COLUMN_USAGE where TABLE_NAME = "%s"', $table));
-        $schema = $connection->getSchemaBuilder();
         $columns = $connection->select(sprintf('SELECT *
                 FROM INFORMATION_SCHEMA.COLUMNS
                 WHERE TABLE_NAME = "%s" and TABLE_SCHEMA = "%s"', $table, $database->name));
