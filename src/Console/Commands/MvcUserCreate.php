@@ -52,8 +52,12 @@ class MvcUserCreate extends Command
                 'email' => $this->option('email') ?? $this->ask('We also need an email?'),
                 'is_admin' => $this->option('admin') ?? $this->choice('Is the user an admin?', ['No', 'Yes']) === 'Yes',
                 'password' => $this->option('password') ?? $this->secret('Finally give up a secure password?'),
-                'role_id' => $this->role()
             ], $data);
+
+            $role = $this->role();
+            if ($role > 0) {
+                $data['role_id'] = $role;
+            }
 
             $user = $this->users->save($data);
 
@@ -74,9 +78,13 @@ class MvcUserCreate extends Command
     private function role(): int
     {
         $roles = $this->roles->all();
-        $role = $this->option('role') ?? $this->choice('What Role has the User?', $roles->map(function ($role) {
-                return $role['label'];
-            })->toArray());
-        return $roles->where('label', $role)->first()->id;
+        if ($roles->count) {
+            $role = $this->option('role') ?? $this->choice('What Role has the User?', $roles->map(function ($role) {
+                    return $role['label'];
+                })->toArray());
+            return $roles->where('label', $role)->first()->id;
+        }
+
+        return 0;
     }
 }
