@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Tychovbh\Tests\Mvc\Feature;
 
+use App\Repositories\RevisionRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Tychovbh\Mvc\Models\Form;
@@ -140,6 +141,29 @@ class UserTest extends TestCase
         $update->updated_at = Carbon::now();
 
         $this->update('users.update', UserResource::make($update), $params);
+    }
+
+    /**
+     * @test
+     */
+    public function itCanUpdateWithRevisions()
+    {
+        $user = factory(User::class)->create();
+        $update = factory(User::class)->make([
+            'email' => $user->email
+        ]);
+        $params = $update->toArray();
+        $update->id = $user->id;
+        $update->updated_at = Carbon::now();
+
+        $this->update('users.update', UserResource::make($update), $params);
+        $revision = RevisionRepository::withParams(['relation_id' => $user->id]);
+
+//        $this->assertDatabaseHas('revisions', [
+//            'table' => $user->getTable(),
+//            'relation_id' => $user->id,
+//            'data' => json_encode($user)
+//        ]);
     }
 
     /**

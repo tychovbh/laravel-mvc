@@ -51,6 +51,11 @@ class Model extends BaseModel
     protected $cacheable = false;
 
     /**
+     * @var bool
+     */
+    protected $revisionable = false;
+
+    /**
      * Trigger Model Observers
      */
     protected static function boot()
@@ -59,6 +64,9 @@ class Model extends BaseModel
         $observer = new ModelObserver();
         self::created(function (Model $model) use ($observer) {
             $observer->created($model);
+        });
+        self::updating(function (Model $model) use ($observer) {
+            $observer->updating($model);
         });
         self::updated(function (Model $model) use ($observer) {
             $observer->updated($model);
@@ -84,6 +92,15 @@ class Model extends BaseModel
     public function cacheable()
     {
         return $this->cacheable;
+    }
+
+    /**
+     * If model is revisionable and should clear cache on created/updated/deleted
+     * @return bool
+     */
+    public function revisionable()
+    {
+        return $this->revisionable;
     }
 
     /**

@@ -8,6 +8,8 @@ class TestUser extends Model
 {
     protected $cacheable = true;
 
+    protected $revisions = true;
+
     /**
      * TestUser constructor.
      * @param array $attributes
