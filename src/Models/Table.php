@@ -121,6 +121,11 @@ class Table extends Model
         ];
     }
 
+    public static function selectProperties()
+    {
+        return [];
+    }
+
     /**
      * The column input select
      * @param string $name
