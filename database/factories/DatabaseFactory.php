@@ -89,7 +89,7 @@ class DatabaseFactory extends Factory
             KEY `user_sports_user_id_foreign` (`user_id`),
             CONSTRAINT `user_sports_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
             KEY `user_sports_sport_id_foreign` (`sport_id`),
-            CONSTRAINT `user_sports_sport_id_foreign` FOREIGN KEY (`sport_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+            CONSTRAINT `user_sports_sport_id_foreign` FOREIGN KEY (`sport_id`) REFERENCES `sports` (`id`) ON DELETE CASCADE
         )');
     }
 }
