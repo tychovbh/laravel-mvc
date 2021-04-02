@@ -29,7 +29,7 @@ class ModelObserver
         $this->revision = [
             'table' => $model->getTable(),
             'relation_id' => $model->id,
-            'data' => json_encode($model)
+            'data' => json_encode($model->getOriginal())
         ];
     }
 
