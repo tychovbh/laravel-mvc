@@ -78,7 +78,7 @@ class MvcUserCreate extends Command
     private function role(): int
     {
         $roles = $this->roles->all();
-        if ($roles->count) {
+        if ($roles->count()) {
             $role = $this->option('role') ?? $this->choice('What Role has the User?', $roles->map(function ($role) {
                     return $role['label'];
                 })->toArray());
