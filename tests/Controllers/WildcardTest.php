@@ -104,12 +104,13 @@ class WildcardTest extends TestCase
             'connection' => $database->name,
             'table' => $table->name,
             'id' => $wildcard->id,
-            'additionals' => ['show', 'meta']
+            'additionals' => ['show', 'meta', 'relations']
         ]))
             ->assertStatus(200)
             ->assertJson([
                 'data' => $wildcard->toArray(),
                 'show' => $table->show_fields->toArray(),
+                'relations' => $table->getAttribute('relations'),
                 'meta' => [
                     'name' => $table->name,
                     'label' => $table->label,

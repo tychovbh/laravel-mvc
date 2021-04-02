@@ -41,9 +41,9 @@ class Table extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->fillables('label', 'name', 'create_title', 'edit_title', 'fields', 'relations', 'database_id');
+        $this->fillables('label', 'name', 'visible', 'create_title', 'edit_title', 'fields', 'relations', 'database_id');
         $this->columns('name', 'database_id');
-        $this->casts(['fields' => 'array', 'relations' => 'array']);
+        $this->casts(['fields' => 'array', 'relations' => 'array', 'visible' => 'boolean']);
         parent::__construct($attributes);
     }
 

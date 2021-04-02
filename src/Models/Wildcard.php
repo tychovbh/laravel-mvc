@@ -87,6 +87,17 @@ class Wildcard extends Model
     }
 
     /**
+     * The Relations
+     * @param Request $request
+     * @return array
+     */
+    public static function relations(Request $request): array
+    {
+        $manager = self::manager($request);
+        return $manager ? $manager->table->getAttribute('relations') : [];
+    }
+
+    /**
      * The Index fields
      * @param Request $request
      * @return array

@@ -17,6 +17,7 @@ class CreateTablesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('label');
+            $table->boolean('visible')->default(1);
             $table->string('create_title');
             $table->string('edit_title');
             $table->json('fields')->nullable();
