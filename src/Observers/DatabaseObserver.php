@@ -81,10 +81,10 @@ class DatabaseObserver
 
             $field = [
                 'name' => $column_name,
-                'label' => Str::studly(Str::ucfirst($column_name)),
-                'index' => true,
-                'show' => true,
-                'searchable' => true,
+                'label' => Str::snake(Str::ucfirst($column_name), ' '),
+                'index' => 'true',
+                'show' => 'true',
+                'searchable' => 'true',
                 'fillable' => $editable
             ];
 

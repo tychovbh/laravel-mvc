@@ -206,7 +206,7 @@ class Table extends Model
     {
         return collect($this->fields ?? [])
             ->filter(function ($field) {
-                return $field['index'];
+                return $field['index'] === 'true';
             })
             ->map(function($field) {
                 return [
@@ -224,7 +224,7 @@ class Table extends Model
     {
         return collect($this->fields ?? [])
             ->filter(function ($field) {
-                return $field['show'];
+                return $field['show'] === 'true';
             })
             ->map(function($field) {
                 return [

@@ -41,7 +41,7 @@ class Wildcard extends Model
                 $fillables[] = $field['name'];
             }
 
-            if (Arr::get($field, 'searchable', false)) {
+            if (Arr::get($field, 'searchable', 'false') === 'true') {
                 $columns[] = $field['name'];
             }
         }
