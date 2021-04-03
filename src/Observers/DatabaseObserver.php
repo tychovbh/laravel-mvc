@@ -81,7 +81,7 @@ class DatabaseObserver
 
             $field = [
                 'name' => $column_name,
-                'label' => Str::snake(Str::ucfirst($column_name), ' '),
+                'label' => str_replace(['-', '_'], [' ', ' '], Str::ucfirst($column_name)),
                 'index' => 'true',
                 'show' => 'true',
                 'searchable' => 'true',
