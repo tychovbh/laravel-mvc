@@ -31,7 +31,9 @@ class WildcardManager
     {
         $user = user();
 
-        $this->database = Database::where('name', $database)->where('user_id', $user->id)->first();
+        $user_id = $database === 'managedat' ? 1 : $user->id;
+
+        $this->database = Database::where('name', $database)->where('user_id', $user_id)->first();
 
         if ($this->database->id) {
             $this->table = Table::where('database_id', $this->database->id)->where('name', $table)->first();
