@@ -102,7 +102,7 @@ class Wildcard extends Model
      * @param Request $request
      * @return array
      */
-    public static function meta(Request $request): array
+    public static function info(Request $request): array
     {
         $manager = self::manager($request);
         return $manager ? [

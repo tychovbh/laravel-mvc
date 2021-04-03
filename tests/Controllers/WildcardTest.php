@@ -49,13 +49,13 @@ class WildcardTest extends TestCase
             ->get(route('wildcards.index', [
             'connection' => $database->name,
             'table' => $table->name,
-            'additionals' => ['index', 'meta']
+            'additionals' => ['index', 'info']
         ]))
             ->assertStatus(200)
             ->assertJson([
                 'data' => $wildcards->toArray(),
                 'index' => $table->index_fields->toArray(),
-                'meta' => [
+                'info' => [
                     'name' => $table->name,
                     'label' => $table->label,
                 ]
@@ -104,14 +104,14 @@ class WildcardTest extends TestCase
             'connection' => $database->name,
             'table' => $table->name,
             'id' => $wildcard->id,
-            'additionals' => ['show', 'meta', 'relations']
+            'additionals' => ['show', 'info', 'relations']
         ]))
             ->assertStatus(200)
             ->assertJson([
                 'data' => $wildcard->toArray(),
                 'show' => $table->show_fields->toArray(),
                 'relations' => $table->getAttribute('relations'),
-                'meta' => [
+                'info' => [
                     'name' => $table->name,
                     'label' => $table->label,
                 ]
