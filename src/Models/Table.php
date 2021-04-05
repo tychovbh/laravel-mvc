@@ -155,12 +155,12 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['fillable'];
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'element' => ['name' => $field['element']],
                     'properties' => $field['properties']
                 ];
-            });
+            })->values();
     }
 
     /**
@@ -208,12 +208,12 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['index'] === 'true';
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'label' => $field['label'],
                     'name' => $field['name'],
                 ];
-            });
+            })->values();
     }
 
     /**
@@ -226,11 +226,11 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['show'] === 'true';
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'label' => $field['label'],
                     'name' => $field['name'],
                 ];
-            });
+            })->values();
     }
 }
