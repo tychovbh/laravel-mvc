@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * Class Table
+ * @package Tychovbh\Mvc\Models
  * @property string label
  * @property string name
  * @property string create_title

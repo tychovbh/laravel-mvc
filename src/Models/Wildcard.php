@@ -7,18 +7,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Tychovbh\Mvc\Helpers\WildcardManager;
 
+/**
+ * Class Wildcard
+ * @package Tychovbh\Mvc\Models
+ * @property Database $database
+ * @property Table $database_table
+ */
 class Wildcard extends Model
 {
+    /**
+     * @var WildcardManager
+     */
+    protected $manager;
+
     /**
      * Wildcard constructor.
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        $manager = self::manager(request());
+        $this->manager = self::manager(request());
 
-        if ($manager) {
-            $this->setUp($manager->database, $manager->table);
+        if ($this->manager) {
+            $this->setUp($this->manager->database, $this->manager->table);
         }
 
         parent::__construct($attributes);
@@ -116,8 +127,9 @@ class Wildcard extends Model
      * @param Request $request
      * @return WildcardManager|null
      */
-    private static function manager(Request $request): ?WildcardManager
+    public static function manager(Request $request): ?WildcardManager
     {
+
         $connection = $request->route('connection');
         $table = $request->route('table');
 
@@ -126,5 +138,23 @@ class Wildcard extends Model
         }
 
         return wildcard_manager($connection, $table);
+    }
+
+    /**
+     * The Wildcard Database.
+     * @return Database
+     */
+    public function getDatabaseAttribute(): Database
+    {
+        return $this->manager ? $this->manager->database : new Database;
+    }
+
+    /**
+     * The Wildcard Database Table.
+     * @return Table
+     */
+    public function getDatabaseTableAttribute(): Table
+    {
+        return $this->manager ? $this->manager->table : new Table;
     }
 }
