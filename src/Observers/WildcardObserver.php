@@ -3,6 +3,7 @@
 namespace Tychovbh\Mvc\Observers;
 
 use Tychovbh\Mvc\Jobs\DatabaseCrawl;
+use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Wildcard;
 
 class WildcardObserver
@@ -15,7 +16,9 @@ class WildcardObserver
     {
 
         if ($wildcard->database_table->name === 'databases' && $wildcard->database->name === 'managedat') {
-            dispatch(new DatabaseCrawl($wildcard->database));
+            $database = new Database($wildcard->toArray());
+            $database->id = $wildcard->id;
+            dispatch(new DatabaseCrawl($database));
         }
     }
 }

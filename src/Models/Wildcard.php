@@ -10,8 +10,9 @@ use Tychovbh\Mvc\Helpers\WildcardManager;
 /**
  * Class Wildcard
  * @package Tychovbh\Mvc\Models
- * @property Database $database
- * @property Table $database_table
+ * @property int id
+ * @property Database database
+ * @property Table database_table
  */
 class Wildcard extends Model
 {
