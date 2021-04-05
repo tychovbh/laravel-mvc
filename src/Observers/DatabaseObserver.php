@@ -91,13 +91,34 @@ class DatabaseObserver
             if ($editable) {
                 $element = Table::element($column_type);
                 $field['element'] = $element;
-                $field['properties'] = Table::{$element . 'Properties'}($column_name, $column_type, $column->IS_NULLABLE === 'YES');
+                $options = $this->options($column_type, $column->COLUMN_TYPE);
+                $field['properties'] = Table::{$element . 'Properties'}(
+                    $column_name,
+                    $column_type,
+                    $column->IS_NULLABLE === 'YES',
+                    $options
+                );
             }
 
             $fields[] = $field;
         }
 
         return $fields;
+    }
+
+    /**
+     * Field options
+     * @param string $column_type
+     * @param string $options
+     * @return array
+     */
+    private function options(string $column_type, string $options): array
+    {
+        if ($column_type !== 'enum') {
+            return [];
+        }
+
+        return explode(',', str_replace(['enum(', ')', '\''], '', $options));
     }
 
     private function addRelations(Database $database, string $table, MySqlConnection $connection)

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Faker\Generator;
 use Illuminate\Container\Container;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Table;
@@ -67,17 +68,26 @@ class WildcardFactory
 
             $value = '';
 
-            switch ($field['properties']['type']) {
-                case 'text':
-                    $value = $faker->name;
-                    break;
-                case 'number':
-                    $value = $faker->randomNumber();
-                    break;
-                case 'date':
-                    $value = $faker->date();
-                    break;
+            if ($field['element'] === 'input') {
+                switch ($field['properties']['type']) {
+                    case 'text':
+                        $value = $faker->name;
+                        break;
+                    case 'number':
+                        $value = $faker->randomNumber();
+                        break;
+                    case 'date':
+                        $value = $faker->date();
+                        break;
+                }
             }
+
+            if ($field['element'] === 'select') {
+                $options = $field['properties']['options'];
+                $value = count($options) > 0 ? $options[rand(0, count($options))] : $value;
+            }
+
+
             $data[$field['name']] = $value;
         }
 

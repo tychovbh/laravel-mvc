@@ -121,28 +121,45 @@ class Table extends Model
         ];
     }
 
-    public static function selectProperties()
-    {
-        return [];
-    }
-
     /**
-     * The column input select
+     * The column input select properties
      * @param string $name
+     * @param string $type
      * @param bool $is_nullable
+     * @param array $options
+     * @param string|null $source
+     * @param string|null $label_key
+     * @param string|null $value_key
      * @return array
      */
-    public static function inputSelect(string $name, bool $is_nullable): array
-    {
-        return [
+    public static function selectProperties(
+        string $name,
+        string $type,
+        bool $is_nullable,
+        array $options = [],
+        string $source = null,
+        string $label_key = null,
+        string $value_key = null
+    ) {
+        $data =[
             'name' => $name,
-            'type' => '',
             'required' => !$is_nullable,
-            'options' => [],
-//            'source' => '',
-//            'label_key' => 'label',
-//            'value_key' => 'id'
+            'options' => $options,
         ];
+
+        if ($source) {
+            $data['source'] = $source;
+        }
+
+        if ($label_key) {
+            $data['label_key'] = $label_key;
+        }
+
+        if ($value_key) {
+            $data['value_key'] = $value_key;
+        }
+
+        return $data;
     }
 
     /**
