@@ -105,7 +105,7 @@ class Table extends Model
      * @param bool $is_nullable
      * @return array
      */
-    public static function inputProperties(string $name, string $type, bool $is_nullable): array
+    public static function inputProperties(string $name, string $label, string $type, bool $is_nullable): array
     {
         if (!Arr::has(self::INPUT_TYPES, $type)) {
             error('Element type not found', [
@@ -115,6 +115,7 @@ class Table extends Model
 
         return [
             'name' => $name,
+            'label' => $label,
             'type' => Arr::get(self::INPUT_TYPES, $type, 'input'),
             'required' => !$is_nullable,
             'placeholder' => ''
@@ -124,6 +125,7 @@ class Table extends Model
     /**
      * The column input select properties
      * @param string $name
+     * @param string $label
      * @param string $type
      * @param bool $is_nullable
      * @param array $options
@@ -134,6 +136,7 @@ class Table extends Model
      */
     public static function selectProperties(
         string $name,
+        string $label,
         string $type,
         bool $is_nullable,
         array $options = [],
@@ -142,6 +145,7 @@ class Table extends Model
         string $value_key = null
     ) {
         $data =[
+            'label' => $label,
             'name' => $name,
             'required' => !$is_nullable,
             'options' => $options,

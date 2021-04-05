@@ -78,10 +78,11 @@ class DatabaseObserver
             $column_name = $column->COLUMN_NAME;
             $column_type = $column->DATA_TYPE;
             $editable = Table::editable($column->EXTRA === 'auto_increment', $column_type);
+            $label = Str::title(str_replace('-', ' ', $column_name));
 
             $field = [
                 'name' => $column_name,
-                'label' => Str::title(str_replace('-', ' ', $column_name)),
+                'label' => $label,
                 'index' => 'true',
                 'show' => 'true',
                 'searchable' => 'true',
@@ -94,6 +95,7 @@ class DatabaseObserver
                 $options = $this->options($column_type, $column->COLUMN_TYPE);
                 $field['properties'] = Table::{$element . 'Properties'}(
                     $column_name,
+                    $label,
                     $column_type,
                     $column->IS_NULLABLE === 'YES',
                     $options
