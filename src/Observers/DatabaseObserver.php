@@ -81,7 +81,7 @@ class DatabaseObserver
 
             $field = [
                 'name' => $column_name,
-                'label' => str_replace(['-', '_'], [' ', ' '], Str::ucfirst($column_name)),
+                'label' => Str::title(str_replace('-', ' ', $column_name)),
                 'index' => 'true',
                 'show' => 'true',
                 'searchable' => 'true',
@@ -118,7 +118,14 @@ class DatabaseObserver
             return [];
         }
 
-        return explode(',', str_replace(['enum(', ')', '\''], '', $options));
+        $options = explode(',', str_replace(['enum(', ')', '\''], '', $options));
+
+        return array_map(function ($option) {
+            return [
+                'value' => $option,
+                'label' => Str::title(str_replace('-', ' ', $option)),
+            ];
+        }, $options);
     }
 
     private function addRelations(Database $database, string $table, MySqlConnection $connection)

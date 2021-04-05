@@ -84,7 +84,7 @@ class WildcardFactory
 
             if ($field['element'] === 'select') {
                 $options = $field['properties']['options'];
-                $value = count($options) > 0 ? $options[rand(0, count($options))] : $value;
+                $value = count($options) > 0 ? $options[rand(0, count($options) - 1)]['value'] : $value;
             }
 
 
