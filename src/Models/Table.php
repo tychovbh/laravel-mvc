@@ -160,7 +160,7 @@ class Table extends Model
                     'element' => ['name' => $field['element']],
                     'properties' => $field['properties']
                 ];
-            });
+            })->values();
     }
 
     /**
@@ -194,7 +194,14 @@ class Table extends Model
                 'table' => $this->name,
                 'id' => 'id',
             ]),
-            'fields' => $this->form_fields->toArray()
+            'fields' => array_merge($this->form_fields->toArray(), [
+                'element' => ['name' => 'input'],
+                'properties' => [
+                    'name' => '_method',
+                    'type' => 'hidden',
+                    'value' => 'put'
+                ]
+            ])
         ];
     }
 
@@ -213,7 +220,7 @@ class Table extends Model
                     'label' => $field['label'],
                     'name' => $field['name'],
                 ];
-            });
+            })->values();
     }
 
     /**
@@ -231,6 +238,6 @@ class Table extends Model
                     'label' => $field['label'],
                     'name' => $field['name'],
                 ];
-            });
+            })->values();
     }
 }
