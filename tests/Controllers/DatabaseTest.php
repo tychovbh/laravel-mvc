@@ -24,6 +24,7 @@ class DatabaseTest extends TestCase
     public function itCanStore()
     {
         $database = Database::factory()->make();
+        $database->id = 1;
         $this->store('databases.store', new DatabaseResource($database), $database->toArray());
     }
 }

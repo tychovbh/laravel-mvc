@@ -25,10 +25,12 @@ use Tychovbh\Mvc\Models\Address;
 use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Mvc\Models\Database;
 use Tychovbh\Mvc\Models\Payment;
+use Tychovbh\Mvc\Models\Wildcard;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\ContractObserver;
 use Tychovbh\Mvc\Observers\DatabaseObserver;
 use Tychovbh\Mvc\Observers\PaymentObserver;
+use Tychovbh\Mvc\Observers\WildcardObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
@@ -165,6 +167,7 @@ class MvcServiceProvider extends ServiceProvider
     private function observers()
     {
         $this->observe(Database::class, DatabaseObserver::class);
+        $this->observe(Wildcard::class, WildcardObserver::class);
         $this->observe(Payment::class, PaymentObserver::class);
         if (config('mvc-address-lookup.default')) {
             $this->observe(Address::class, AddressObserver::class);

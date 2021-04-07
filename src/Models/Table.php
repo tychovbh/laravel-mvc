@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * Class Table
+ * @package Tychovbh\Mvc\Models
  * @property string label
  * @property string name
  * @property string create_title
@@ -105,7 +107,7 @@ class Table extends Model
      * @param bool $is_nullable
      * @return array
      */
-    public static function inputProperties(string $name, string $type, bool $is_nullable): array
+    public static function inputProperties(string $name, string $label, string $type, bool $is_nullable): array
     {
         if (!Arr::has(self::INPUT_TYPES, $type)) {
             error('Element type not found', [
@@ -115,34 +117,55 @@ class Table extends Model
 
         return [
             'name' => $name,
+            'label' => $label,
             'type' => Arr::get(self::INPUT_TYPES, $type, 'input'),
             'required' => !$is_nullable,
             'placeholder' => ''
         ];
     }
 
-    public static function selectProperties()
-    {
-        return [];
-    }
-
     /**
-     * The column input select
+     * The column input select properties
      * @param string $name
+     * @param string $label
+     * @param string $type
      * @param bool $is_nullable
+     * @param array $options
+     * @param string|null $source
+     * @param string|null $label_key
+     * @param string|null $value_key
      * @return array
      */
-    public static function inputSelect(string $name, bool $is_nullable): array
-    {
-        return [
+    public static function selectProperties(
+        string $name,
+        string $label,
+        string $type,
+        bool $is_nullable,
+        array $options = [],
+        string $source = null,
+        string $label_key = null,
+        string $value_key = null
+    ) {
+        $data =[
+            'label' => $label,
             'name' => $name,
-            'type' => '',
             'required' => !$is_nullable,
-            'options' => [],
-//            'source' => '',
-//            'label_key' => 'label',
-//            'value_key' => 'id'
+            'options' => $options,
         ];
+
+        if ($source) {
+            $data['source'] = $source;
+        }
+
+        if ($label_key) {
+            $data['label_key'] = $label_key;
+        }
+
+        if ($value_key) {
+            $data['value_key'] = $value_key;
+        }
+
+        return $data;
     }
 
     /**
@@ -155,7 +178,7 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['fillable'];
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'element' => ['name' => $field['element']],
                     'properties' => $field['properties']
@@ -215,7 +238,7 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['index'] === 'true';
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'label' => $field['label'],
                     'name' => $field['name'],
@@ -233,7 +256,7 @@ class Table extends Model
             ->filter(function ($field) {
                 return $field['show'] === 'true';
             })
-            ->map(function($field) {
+            ->map(function ($field) {
                 return [
                     'label' => $field['label'],
                     'name' => $field['name'],

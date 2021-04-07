@@ -57,6 +57,7 @@ class DatabaseFactory extends Factory
             id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
             name varchar(255) NOT NULL,
             label varchar(255),
+            continent enum("europe", "africa", "america", "asia", "australia") COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT "europe",
             created_at timestamp NULL DEFAULT NULL,
             updated_at timestamp NULL DEFAULT NULL
         )');
