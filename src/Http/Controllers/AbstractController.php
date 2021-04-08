@@ -210,7 +210,7 @@ abstract class AbstractController implements ControllerInterface
             $table = TableRepository::withParams(array_merge(['name' => $table], $request->toArray()))->first();
             $form = $table->edit_form;
             $form['route'] = Str::replaceFirst('id', $id, $form['route']);
-            $form['defaults'] = $show;
+            $form['defaults'] = array_merge($show->toArray($request), ['_method' => 'put']);
 
             return response()->json([
                 'data' => $form
