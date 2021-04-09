@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace Tychovbh\Mvc\Repositories;
 
 use Tychovbh\Mvc\Repositories\Repository;
 use Tychovbh\Mvc\Repositories\AbstractRepository;
