@@ -179,6 +179,7 @@ class DatabaseCrawl implements ShouldQueue
                 'label' => Str::ucfirst($reference),
                 'column' => $foreign->COLUMN_NAME,
                 'reference' => $foreign->REFERENCED_COLUMN_NAME,
+                'type' => 'belongsTo',
             ];
 
             $this->tables[$reference]['relations'][] = [
@@ -186,6 +187,7 @@ class DatabaseCrawl implements ShouldQueue
                 'label' => Str::ucfirst($table),
                 'column' => $foreign->REFERENCED_COLUMN_NAME,
                 'reference' => $foreign->COLUMN_NAME,
+                'type' => 'hasMany',
             ];
         }
     }
