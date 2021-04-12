@@ -107,6 +107,7 @@ class DatabaseCrawl implements ShouldQueue
             $field = [
                 'name' => $column_name,
                 'label' => $label,
+                'type' => $column_type,
                 'index' => 'true',
                 'show' => 'true',
                 'searchable' => 'true',
