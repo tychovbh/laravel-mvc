@@ -145,8 +145,9 @@ class Table extends Model
         string $source = null,
         string $label_key = null,
         string $value_key = null
-    ) {
-        $data =[
+    )
+    {
+        $data = [
             'label' => $label,
             'name' => $name,
             'required' => !$is_nullable,
@@ -218,11 +219,13 @@ class Table extends Model
                 'id' => 'id',
             ]),
             'fields' => array_merge($this->form_fields->toArray(), [
-                'element' => ['name' => 'input'],
-                'properties' => [
-                    'name' => '_method',
-                    'type' => 'hidden',
-                    'value' => 'put'
+                [
+                    'element' => ['name' => 'input'],
+                    'properties' => [
+                        'name' => '_method',
+                        'type' => 'hidden',
+                        'value' => 'put'
+                    ]
                 ]
             ])
         ];
@@ -260,6 +263,7 @@ class Table extends Model
                 return [
                     'label' => $field['label'],
                     'name' => $field['name'],
+                    'type' => $field['type'],
                 ];
             })->values();
     }
