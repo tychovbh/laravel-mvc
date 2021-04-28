@@ -11,4 +11,7 @@ return [
     'id' => env('AUTH_ID'),
     'expiration' => (int) (env('AUTH_EXPIRATION') ?? 3600),
     'login_field' => env('AUTH_LOGIN_FIELD', 'email'),
+    'third_party_authentication' => [
+        'url' => env('AUTH_THIRD_PARTY_AUTHENTICATION_URL')
+    ]
 ];
