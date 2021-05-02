@@ -28,7 +28,7 @@ class CacheMiddleware
             $path .= '?' . http_build_query($params);
         }
 
-        $cache_minutes = get_route_info($request, 'cache_minutes') ?? (60 * 24);
+        $cache_minutes = get_route_info($request, 'cache_minutes') ?? config('mvc-cache.minutes');
         $route_name = get_route_info($request, 'as');
         $tags = [$route_name];
         $id = get_route_info($request, 'id');

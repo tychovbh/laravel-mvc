@@ -30,6 +30,10 @@ return [
             'expired' => 'Token is expired.',
             'invalid' => 'Token is invalid.'
         ],
+        'third-party-authorization' => [
+            'missing' => 'Authorization header is missing',
+            'invalid' => 'Authorization header invalid'
+        ],
         'notfound' => 'User not found.',
         'unauthorized' => 'Unauthorized!',
     ],
