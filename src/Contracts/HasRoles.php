@@ -55,5 +55,4 @@ trait HasRoles
     {
         return $this->hasMany(UserRole::class);
     }
-
 }
