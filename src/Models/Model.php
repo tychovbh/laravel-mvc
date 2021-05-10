@@ -336,7 +336,7 @@ class Model extends BaseModel
 
     /**
      * Add Hiddens
-     * @param array ...$hiddens
+     * @param mixed ...$hiddens
      */
     public function hiddens(...$hiddens)
     {
