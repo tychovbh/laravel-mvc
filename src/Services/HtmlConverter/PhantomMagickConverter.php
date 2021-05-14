@@ -40,6 +40,31 @@ class PhantomMagickConverter implements HtmlConverterInterface
      */
     public function save(string $path, string $type = 'pdf'): bool
     {
+        return $this->convert('save', storage_path($path), $type);
+    }
+
+    /**
+     * Downloads all the pages in browser
+     * @param string $path
+     * @param string $type
+     * @param bool $force
+     * @return bool
+     */
+    public function download(string $path, string $type = 'pdf', bool $force = false): bool
+    {
+        return $this->convert('download', $path, $type, $force);
+    }
+
+    /**
+     * Convert HTML
+     * @param string $method
+     * @param string $path
+     * @param string $type
+     * @param bool $force
+     * @return bool
+     */
+    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): bool
+    {
         try {
             $converter = new Converter();
             foreach ($this->pages as $page) {
@@ -56,7 +81,12 @@ class PhantomMagickConverter implements HtmlConverterInterface
                     $converter->toJpg();
                     break;
             }
-            $converter->save(storage_path($path));
+
+            if ($force) {
+                $converter->{$method}($path, $force);
+            } else {
+                $converter->{$method}($force);
+            }
             $this->pages = collect([]);
             return true;
         } catch (\Exception $exception) {
@@ -67,4 +97,5 @@ class PhantomMagickConverter implements HtmlConverterInterface
             return false;
         }
     }
+
 }
