@@ -21,6 +21,7 @@ use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
 use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
+use Tychovbh\Mvc\Http\Middleware\ValidateRequest;
 use Tychovbh\Mvc\Models\Address;
 use Tychovbh\Mvc\Models\Contract;
 use Tychovbh\Mvc\Models\Payment;
@@ -59,6 +60,7 @@ class MvcServiceProvider extends ServiceProvider
         } else {
             $router = $this->app['router'];
             $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
+            $router->pushMiddlewareToGroup('validate.request', ValidateRequest::class);
         }
 
         if (!$this->app->runningInConsole()) {
