@@ -10,12 +10,15 @@ class CacheMiddleware
     /**
      * Handle an incoming request.
      * TODO do not cache exceptions
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
+        if ($request->method() !== 'GET') {
+            return $next($request);
+        }
 
         if (!config('mvc-cache.enabled') || boolean($request->get('cache_disabled'))) {
             return $next($request);
