@@ -84,7 +84,6 @@ class MvcServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations' => database_path('migrations'),
         ], 'laravel-mvc-migrations');
 
-        $this->loadRoutesFrom(sprintf('%s/../routes/%s/web.php', __DIR__, is_application()));
 
         if (is_application() === 'lumen') {
             $this->commands([
