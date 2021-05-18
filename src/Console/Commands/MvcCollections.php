@@ -49,6 +49,7 @@ class MvcCollections extends Command
             try {
                 $classes = get_declared_classes();
                 $class = end($classes);
+                $class = prev($classes);
 
                 if ($this->option('class') && $this->option('class') !== $class) {
                     continue;
