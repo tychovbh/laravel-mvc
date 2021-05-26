@@ -127,7 +127,7 @@ abstract class AbstractRepository
             $key = $this->name . '.' . $param;
 
             if ($value === null || $value === 'null') {
-                $this->query->whereNull($value);
+                $this->query->whereNull($key);
                 continue;
             }
 
