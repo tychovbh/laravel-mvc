@@ -45,11 +45,13 @@ class MvcCollections extends Command
         // $path = '/home/vagrant/bespokeweb/packages/laravel-mvc/database/collections/*.php';
 
         foreach(glob($path) as $file) {
-            include_once $file;
             try {
-                $classes = get_declared_classes();
-                $class = end($classes);
-                $class = prev($classes);
+                include_once $file;
+
+                $parts = explode('_', $file);
+                $class = array_pop($parts);
+                $class = str_replace('.php', '', $class);
+                $class = ucfirst($class) . 'Collection';
 
                 if ($this->option('class') && $this->option('class') !== $class) {
                     continue;
