@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc\Models;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Mollie\Laravel\Facades\Mollie;
@@ -47,15 +46,6 @@ class Payment extends Model
         $this->fillables('amount', 'description', 'status', 'options', 'products', 'external_id');
         $this->casts(['products' => 'array']);
         parent::__construct($attributes);
-    }
-
-    /**
-     * The User
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     /**
