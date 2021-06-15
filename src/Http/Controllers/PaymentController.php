@@ -28,7 +28,7 @@ class PaymentController extends AbstractController
         }
 
         return redirect()->to(
-            str_replace('{id}', $payment->id ?? 0, config('mvc-payments.return'))
+            str_replace('{id}', (string)($payment->id ?? 0), config('mvc-payments.return'))
         );
     }
 }
