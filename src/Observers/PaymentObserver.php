@@ -11,7 +11,9 @@ class PaymentObserver
      */
     public function creating(Payment $payment)
     {
-        $payment->user_id = user()->id;
+        if (!$payment->user_id) {
+            $payment->user_id = user()->id;
+        }
     }
 
     /**

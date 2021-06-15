@@ -13,6 +13,12 @@ use Tychovbh\Mvc\Mail\PaymentUpdated;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 use Tychovbh\Mvc\Repositories\ProductRepository;
 
+/**
+ * Class Payment
+ * @package Tychovbh\Mvc\Models
+ * @property int id
+ * @property int user_id
+ */
 class Payment extends Model
 {
     const STATUS_OPEN = PaymentStatus::STATUS_OPEN;
