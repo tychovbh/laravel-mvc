@@ -5,6 +5,7 @@ namespace Tychovbh\Mvc\Repositories;
 use Chelout\OffsetPagination\OffsetPaginator;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 interface Repository
 {
@@ -27,6 +28,13 @@ interface Repository
      * @return OffsetPaginator
      */
     public function offsetPaginate(int $paginate): OffsetPaginator;
+
+    /**
+     * Apply params and return query
+     * @param string $type
+     * @return Builder
+     */
+    public function applyParams(string $type): Builder;
 
     /**
      * Start query with params.

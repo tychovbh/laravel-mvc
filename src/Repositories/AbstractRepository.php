@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection as SupportCollection;
 
 abstract class AbstractRepository
 {
@@ -48,9 +47,9 @@ abstract class AbstractRepository
     public $name;
 
     /**
-     * @var SupportCollection
+     * @var Builder
      */
-    protected $groups;
+    protected $union;
 
     /**
      * AbstractRepository constructor.
@@ -60,7 +59,6 @@ abstract class AbstractRepository
     {
         $this->model = $this->model ?? model(get_called_class());
         $this->name = $this->model->getTable();
-        $this->groups = collect([$this->name]);
     }
 
     /**
@@ -111,10 +109,10 @@ abstract class AbstractRepository
     }
 
     /**
-     * @param string $type
+     * Apply params and return query
      * @return Builder
      */
-    private function applyParams(string $type): Builder
+    public function applyParams(string $type): Builder
     {
         $this->query = $this->model::query();
         foreach ($this->params as $param => $value) {
@@ -143,15 +141,16 @@ abstract class AbstractRepository
         }
 
         $this->params = [];
-        $this->query->groupBy($this->groups->map(function (string $group) {
-            return $group . '.id';
-        })->toArray());
+        $this->query->groupBy($this->name . '.id');
         if ($this->limit) {
             $this->query->limit($this->limit);
         }
 
         if ($this->select) {
             $this->query->select($this->select);
+        }
+        if ($this->union) {
+            $this->query->union($this->union);
         }
         return $this->query;
     }
@@ -170,23 +169,12 @@ abstract class AbstractRepository
     }
 
     /**
-     * Add group
-     * @param string $name
-     */
-    public function group(string $name)
-    {
-        $this->groups->push($name);
-    }
-
-    /**
      * Get param filtered Collection.
      * @return Collection
      */
     public function get(): Collection
     {
-        return $this->applyParams('index')->get($this->groups->map(function (string $group) {
-            return $group . '.*';
-        })->toArray());
+        return $this->applyParams('index')->get([$this->name . '.*']);
     }
 
     /**
@@ -363,5 +351,14 @@ abstract class AbstractRepository
     public function indexTillParam(string $till)
     {
         $this->query->where($this->name . '.created_at', '<=', $till);
+    }
+
+    /**
+     * Add unions query
+     * @param Builder $union
+     */
+    public function union(Builder $union)
+    {
+        $this->union = $union;
     }
 }
