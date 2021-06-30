@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection as SupportCollection;
 
 abstract class AbstractRepository
 {
@@ -47,6 +48,11 @@ abstract class AbstractRepository
     public $name;
 
     /**
+     * @var SupportCollection
+     */
+    protected $groups;
+
+    /**
      * AbstractRepository constructor.
      * @throws \Exception
      */
@@ -54,6 +60,7 @@ abstract class AbstractRepository
     {
         $this->model = $this->model ?? model(get_called_class());
         $this->name = $this->model->getTable();
+        $this->groups = collect([$this->name]);
     }
 
     /**
@@ -136,7 +143,9 @@ abstract class AbstractRepository
         }
 
         $this->params = [];
-        $this->query->groupBy($this->name . '.id');
+        $this->query->groupBy($this->groups->map(function (string $group) {
+            return $group . '.id';
+        })->toArray());
         if ($this->limit) {
             $this->query->limit($this->limit);
         }
@@ -161,12 +170,23 @@ abstract class AbstractRepository
     }
 
     /**
+     * Add group
+     * @param string $name
+     */
+    public function group(string $name)
+    {
+        $this->groups->push($name);
+    }
+
+    /**
      * Get param filtered Collection.
      * @return Collection
      */
     public function get(): Collection
     {
-        return $this->applyParams('index')->get([$this->name . '.*']);
+        return $this->applyParams('index')->get($this->groups->map(function (string $group) {
+            return $group . '.*';
+        })->toArray());
     }
 
     /**
