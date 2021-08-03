@@ -36,9 +36,9 @@ class PhantomMagickConverter implements HtmlConverterInterface
      * Converts all the pages to specified type
      * @param string $path
      * @param string $type
-     * @return bool
+     * @return mixed
      */
-    public function save(string $path, string $type = 'pdf'): bool
+    public function save(string $path, string $type = 'pdf'): mixed
     {
         return $this->convert('save', storage_path($path), $type);
     }
@@ -48,9 +48,9 @@ class PhantomMagickConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return bool
+     * @return mixed
      */
-    public function download(string $path, string $type = 'pdf', bool $force = false): bool
+    public function download(string $path, string $type = 'pdf', bool $force = false): mixed
     {
         return $this->convert('download', $path, $type, $force);
     }
@@ -61,9 +61,9 @@ class PhantomMagickConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return bool
+     * @return mixed
      */
-    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): bool
+    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): mixed
     {
         try {
             $converter = new Converter();

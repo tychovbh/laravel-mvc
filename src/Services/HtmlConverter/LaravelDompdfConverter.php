@@ -36,9 +36,9 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * Converts all the pages to specified type
      * @param string $path
      * @param string $type
-     * @return bool
+     * @return mixed
      */
-    public function save(string $path, string $type = 'pdf'): bool
+    public function save(string $path, string $type = 'pdf'): mixed
     {
         return $this->convert('save', storage_path($path), $type);
     }
@@ -48,9 +48,9 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return bool
+     * @return mixed
      */
-    public function download(string $path, string $type = 'pdf', bool $force = false): bool
+    public function download(string $path, string $type = 'pdf', bool $force = false): mixed
     {
         return $this->convert($force ? 'stream' : 'download', $path, $type, $force);
     }
@@ -61,9 +61,9 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return bool
+     * @return mixed
      */
-    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): bool
+    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): mixed
     {
         try {
             $html = '';
@@ -77,14 +77,12 @@ class LaravelDompdfConverter implements HtmlConverterInterface
 
             $converter = App::make('dompdf.wrapper');
             $converter->loadHTML($html);
+            $this->pages = collect([]);
             if ($force) {
-                $converter->{$method}();
-            } else {
-                $converter->{$method}($path);
+                return $converter->{$method}();
             }
 
-            $this->pages = collect([]);
-            return true;
+            return $converter->{$method}($path);
         } catch (\Exception $exception) {
             error('LaravelDompdfConverter save error', [
                 'message' => $exception->getMessage(),
@@ -93,5 +91,4 @@ class LaravelDompdfConverter implements HtmlConverterInterface
             return false;
         }
     }
-
 }
