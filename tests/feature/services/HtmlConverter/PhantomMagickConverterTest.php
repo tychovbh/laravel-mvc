@@ -1,12 +1,11 @@
 <?php
 
-namespace Tychovbh\Tests\Mvc\feature\services;
+namespace Tychovbh\Tests\Mvc\feature\services\HtmlConverter;
 
-use Illuminate\Support\Facades\Storage;
 use Tychovbh\Mvc\Services\HtmlConverter\PhantomMagickConverter;
 use Tychovbh\Tests\Mvc\TestCase;
 
-class HtmlConverterTest extends TestCase
+class PhantomMagickConverterTest extends TestCase
 {
     /**
      * @test

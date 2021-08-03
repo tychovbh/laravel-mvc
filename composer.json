@@ -31,12 +31,13 @@
         "urameshibr/lumen-form-request": "^1.5"
     },
     "require-dev": {
-        "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^6.13",
-        "phpunit/phpunit": "^8.1",
-        "mollie/laravel-mollie": "^2.0",
         "anam/phantomjs-linux-x86-binary": "^2.1",
-        "anam/phantommagick": "^2.0"
+        "anam/phantommagick": "^2.0",
+        "barryvdh/laravel-dompdf": "^0.9.0",
+        "mockery/mockery": "^1.4",
+        "mollie/laravel-mollie": "^2.0",
+        "orchestra/testbench": "^6.13",
+        "phpunit/phpunit": "^8.1"
     },
     "autoload": {
         "psr-4": {

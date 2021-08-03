@@ -116,6 +116,11 @@ class MvcServiceProvider extends ServiceProvider
 
                 return new $service();
             });
+
+        }
+
+        if (config('mvc-html-converter.default') === 'LaravelDompdf') {
+            $this->app->register(\Barryvdh\DomPDF\ServiceProvider::class);
         }
 
         if (config('mvc-address-lookup.default')) {
