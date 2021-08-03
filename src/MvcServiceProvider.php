@@ -120,6 +120,7 @@ class MvcServiceProvider extends ServiceProvider
         }
 
         if (config('mvc-html-converter.default') === 'LaravelDompdf') {
+            $this->mergeConfigFrom(__DIR__ . '/../config/dompdf.php', 'dompdf');
             $this->app->register(\Barryvdh\DomPDF\ServiceProvider::class);
         }
 
