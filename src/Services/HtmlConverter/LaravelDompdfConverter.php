@@ -2,7 +2,6 @@
 
 namespace Tychovbh\Mvc\Services\HtmlConverter;
 
-use  Barryvdh\DomPDF\Facade;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
@@ -87,7 +86,7 @@ class LaravelDompdfConverter implements HtmlConverterInterface
             $this->pages = collect([]);
             return true;
         } catch (\Exception $exception) {
-            error('PhantomMagickConverter save error', [
+            error('LaravelDompdfConverter save error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
