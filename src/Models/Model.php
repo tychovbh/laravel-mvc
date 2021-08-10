@@ -28,11 +28,6 @@ class Model extends BaseModel
     /**
      * @var array
      */
-    protected $files = [];
-
-    /**
-     * @var array
-     */
     protected $associations = [];
 
     /**
@@ -69,15 +64,6 @@ class Model extends BaseModel
     }
 
     /**
-     * Return files
-     * @return array
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
      * If model is cacheable and should clear cache on created/updated/deleted
      * @return bool
      */
@@ -111,8 +97,6 @@ class Model extends BaseModel
      */
     public function save(array $options = [])
     {
-        $this->saveFiles();
-
         $this->saveAssociations($options);
 
         if ($this->unique) {
@@ -269,22 +253,6 @@ class Model extends BaseModel
     }
 
     /**
-     * Save files
-     */
-    protected function saveFiles()
-    {
-        foreach ($this->getFiles() as $name => $path) {
-            if (Arr::has($this->attributes, $name) && is_a($this->attributes[$name], UploadedFile::class)) {
-                $path_new = $this->{$name}->store($path);
-                $this->attributes[$name] = str_replace('public/', '', $path_new);
-                if (Arr::has($this->original, $name)) {
-                    Storage::delete($this->original[$name]);
-                }
-            }
-        }
-    }
-
-    /**
      * Update model if not Unique (this is commonly used for saving hasMany relations.
      */
     protected function updateIfNotUnique()
@@ -319,19 +287,6 @@ class Model extends BaseModel
     public function columns(...$columns)
     {
         $this->columns = array_merge($this->columns, $columns);
-    }
-
-    /**
-     * Add files
-     * @param mixed ...$files
-     */
-    public function files(...$files)
-    {
-        foreach ($files as $file) {
-            foreach ($file as $name => $path) {
-                $this->files[$name] = $path;
-            }
-        }
     }
 
     /**
