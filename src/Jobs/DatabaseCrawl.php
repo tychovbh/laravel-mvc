@@ -46,20 +46,26 @@ class DatabaseCrawl implements ShouldQueue
      */
     public function handle(TableRepository $tableRepository)
     {
-        $database = $this->database;
-        $connection = connection($database, 'onthefly');
-        $tables = $connection->select('SHOW TABLES');
+        try {
+            $database = $this->database;
+            $connection = connection($database, 'onthefly');
+            $tables = $connection->select('SHOW TABLES');
 
-        foreach ($tables as $table) {
-            $this->addTable($database, $table->{'Tables_in_' . $database->name}, $connection);
-        }
+            foreach ($tables as $table) {
+                $this->addTable($database, $table->{'Tables_in_' . $database->name}, $connection);
+            }
 
-        foreach ($tables as $table) {
-            $this->addRelations($database, $table->{'Tables_in_' . $database->name}, $connection);
-        }
+            foreach ($tables as $table) {
+                $this->addRelations($database, $table->{'Tables_in_' . $database->name}, $connection);
+            }
 
-        foreach ($this->tables as $table) {
-            $tableRepository->save($table);
+            foreach ($this->tables as $table) {
+                $tableRepository->save($table);
+            }
+        } catch (\Exception $exception) {
+            error('Database crawl failed', [
+                'message' => $exception->getMessage()
+            ]);
         }
     }
 

@@ -8,6 +8,7 @@ use Mollie\Laravel\Facades\Mollie;
 use Mollie\Laravel\MollieServiceProvider;
 use Tychovbh\Mvc\Console\Commands\MvcCollection;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
+use Tychovbh\Mvc\Console\Commands\MvcDatabaseCrawl;
 use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
 use Tychovbh\Mvc\Console\Commands\MvcRepository;
 use Tychovbh\Mvc\Console\Commands\MvcController;
@@ -82,6 +83,7 @@ class MvcServiceProvider extends ServiceProvider
             MvcUserToken::class,
             MvcPaymentsCheck::class,
             MvcContractsUpdate::class,
+            MvcDatabaseCrawl::class
         ]);
 
         $this->publishes([
