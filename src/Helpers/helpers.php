@@ -571,6 +571,7 @@ if (!function_exists('connection')) {
             'host' => $database->host,
             'username' => $database->username,
             'password' => $database->password,
+            'port' => $database->port,
         ]]);
 
         return DB::connection($name);
