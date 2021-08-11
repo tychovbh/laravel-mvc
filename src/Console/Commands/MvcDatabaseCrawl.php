@@ -43,5 +43,7 @@ class MvcDatabaseCrawl extends Command
         $database = Database::where('name', $name)->firstOrFail();
 
         dispatch(new DatabaseCrawl($database));
+
+        return 0;
     }
 }
