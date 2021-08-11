@@ -18,7 +18,7 @@ class WildcardRepository extends AbstractRepository implements Repository
      */
     public function indexDatabaseParam(string $database)
     {
-        if (request('connection') === 'managedat') {
+        if (request('connection') === config('database.connections.mysql.database')) {
             $this->join('databases', 'databases.id', 'database_id');
             $this->query->where('databases.name', $database);
         }

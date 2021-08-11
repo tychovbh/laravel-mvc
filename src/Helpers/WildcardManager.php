@@ -31,7 +31,7 @@ class WildcardManager
     {
         $user = user();
 
-        $user_id = $database === 'managedat' ? 1 : $user->id;
+        $user_id = $database === config('database.connections.mysql.database') ? 1 : $user->id;
 
         $this->database = Database::where('name', $database)->where('user_id', $user_id)->first();
 

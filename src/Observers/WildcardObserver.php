@@ -15,7 +15,10 @@ class WildcardObserver
     public function created(Wildcard $wildcard)
     {
 
-        if ($wildcard->database_table->name === 'databases' && $wildcard->database->name === 'managedat') {
+        if (
+            $wildcard->database_table->name === 'databases' &&
+            $wildcard->database->name === config('database.connections.mysql.database')
+        ) {
             $database = new Database($wildcard->toArray());
             $database->id = $wildcard->id;
             dispatch(new DatabaseCrawl($database));
