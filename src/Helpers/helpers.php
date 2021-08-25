@@ -552,3 +552,20 @@ if (!function_exists('now')) {
         return Carbon::now();
     }
 }
+
+if (!function_exists('pdf_path')) {
+    /**
+     * The path to root folder
+     * @param $file
+     * @param bool $fromAssets
+     * @return string
+     */
+    function pdf_path($file, bool $fromAssets = false): string
+    {
+        if (request('preview') || $fromAssets) {
+            return url(str_replace('public/', '', $file));
+        }
+        return public_path($file);
+    }
+
+}
