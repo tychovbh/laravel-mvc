@@ -43,11 +43,9 @@ trait HasOptions
      */
     public function setOption(string $key, mixed $value = null)
     {
-        if (!$this->options) {
-            $this->options = [];
-        }
-
-        Arr::set($this->options, $key, $value);
+        $options = $this->options ?? [];
+        $options[$key] = $value;
+        $this->options = $options;
     }
 
     /**
@@ -56,9 +54,9 @@ trait HasOptions
      */
     public function unsetOption(string $key)
     {
-        if ($this->options) {
-            Arr::forget($this->options, $key);
-        }
+        $options = $this->options ?? [];
+        Arr::forget($options, $key);
+        $this->options = $options;
     }
 
     /**
@@ -67,6 +65,10 @@ trait HasOptions
      */
     public function setOptionsAttribute(array $options = null)
     {
-        $this->attributes['options'] = !$options ? null : json_encode(array_merge($this->options ?? [], $options));
+        if (is_array($options)) {
+            $this->attributes['options'] = json_encode(array_merge($this->options ?? [], $options));
+        } else {
+            $this->attributes['options'] = null;
+        }
     }
 }
