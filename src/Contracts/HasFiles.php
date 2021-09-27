@@ -28,7 +28,7 @@ trait HasFiles
      *
      * @return void
      */
-    public function initializeSoftDeletes()
+    public function initializeHasFiles()
     {
         foreach ($this->files as $name => $path) {
             $this->fillables[] = $name;
