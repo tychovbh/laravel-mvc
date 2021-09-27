@@ -51,6 +51,17 @@ trait HasOptions
     }
 
     /**
+     * Unset Option
+     * @param string $key
+     */
+    public function unsetOption(string $key)
+    {
+        if ($this->options) {
+            Arr::forget($this->options, $key);
+        }
+    }
+
+    /**
      * Set Options
      * @param array|null $options
      */
