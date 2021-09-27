@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
  * @package Tychovbh\Mvc\Contracts
  * @property array options
  * @property array casts
- * @property array fillables
+ * @property array fillable
  * @property array attributes
  */
 trait HasOptions
@@ -22,7 +22,7 @@ trait HasOptions
     public function initializeHasOptions()
     {
         $this->casts['options'] = 'array';
-        $this->fillables[] = 'options';
+        $this->fillable[] = 'options';
     }
 
     /**
