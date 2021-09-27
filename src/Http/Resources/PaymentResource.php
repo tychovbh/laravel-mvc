@@ -23,12 +23,7 @@ class PaymentResource extends JsonResource
             'description' => $this->description,
             'amount' => $this->amount,
             'external_id' => $this->external_id,
-            'user' => $this->when($this->user, function () {
-                return [
-                    'id' => $this->user->id,
-                    'email' => $this->user->email,
-                ];
-            }),
+            'user' => $this->user,
             'options' => $this->options ?? [],
             'products' => ProductResource::collection($this->products)
         ];

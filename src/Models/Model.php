@@ -21,14 +21,8 @@ class Model extends BaseModel
         foreach ($this->associations as $association) {
             $this->fillables($association['post_field']);
         }
-        $this->casts(['options' => 'array']);
         parent::__construct($attributes);
     }
-
-    /**
-     * @var array
-     */
-    protected $files = [];
 
     /**
      * @var array
@@ -69,15 +63,6 @@ class Model extends BaseModel
     }
 
     /**
-     * Return files
-     * @return array
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
      * If model is cacheable and should clear cache on created/updated/deleted
      * @return bool
      */
@@ -111,8 +96,6 @@ class Model extends BaseModel
      */
     public function save(array $options = [])
     {
-        $this->saveFiles();
-
         $this->saveAssociations($options);
 
         if ($this->unique) {
@@ -269,22 +252,6 @@ class Model extends BaseModel
     }
 
     /**
-     * Save files
-     */
-    protected function saveFiles()
-    {
-        foreach ($this->getFiles() as $name => $path) {
-            if (Arr::has($this->attributes, $name) && is_a($this->attributes[$name], UploadedFile::class)) {
-                $path_new = $this->{$name}->store($path);
-                $this->attributes[$name] = str_replace('public/', '', $path_new);
-                if (Arr::has($this->original, $name)) {
-                    Storage::delete($this->original[$name]);
-                }
-            }
-        }
-    }
-
-    /**
      * Update model if not Unique (this is commonly used for saving hasMany relations.
      */
     protected function updateIfNotUnique()
@@ -322,21 +289,8 @@ class Model extends BaseModel
     }
 
     /**
-     * Add files
-     * @param mixed ...$files
-     */
-    public function files(...$files)
-    {
-        foreach ($files as $file) {
-            foreach ($file as $name => $path) {
-                $this->files[$name] = $path;
-            }
-        }
-    }
-
-    /**
      * Add Hiddens
-     * @param array ...$hiddens
+     * @param mixed ...$hiddens
      */
     public function hiddens(...$hiddens)
     {
@@ -368,18 +322,6 @@ class Model extends BaseModel
     public function uniques(...$uniques)
     {
         $this->unique = array_merge($this->unique, $uniques);
-    }
-
-
-    /**
-     * Get value from Options
-     * @param string $key
-     * @param null $default
-     * @return mixed
-     */
-    public function option(string $key, $default = null)
-    {
-        return Arr::get($this->options ?? [], $key, $default);
     }
 
     /**

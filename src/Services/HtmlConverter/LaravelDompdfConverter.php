@@ -3,9 +3,9 @@
 namespace Tychovbh\Mvc\Services\HtmlConverter;
 
 use Illuminate\Support\Collection;
-use Anam\PhantomMagick\Converter;
+use Illuminate\Support\Facades\App;
 
-class PhantomMagickConverter implements HtmlConverterInterface
+class LaravelDompdfConverter implements HtmlConverterInterface
 {
     /**
      * @var Collection
@@ -52,7 +52,7 @@ class PhantomMagickConverter implements HtmlConverterInterface
      */
     public function download(string $path, string $type = 'pdf', bool $force = false): mixed
     {
-        return $this->convert('download', $path, $type, $force);
+        return $this->convert($force ? 'stream' : 'download', $path, $type, $force);
     }
 
     /**
@@ -66,36 +66,29 @@ class PhantomMagickConverter implements HtmlConverterInterface
     private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): mixed
     {
         try {
-            $converter = new Converter();
-            foreach ($this->pages as $page) {
-                $converter->addPage($page);
-            }
-            switch ($type) {
-                case 'pdf':
-                    $converter->toPdf();
-                    break;
-                case 'png':
-                    $converter->toPng();
-                    break;
-                case 'jpg':
-                    $converter->toJpg();
-                    break;
+            $html = '';
+            foreach ($this->pages as $key => $page) {
+                if ($key > 0) {
+                    $html .= '<div style="page-break-after: always"></div>';
+                }
+
+                $html .= $page;
             }
 
-            if ($force) {
-                $converter->{$method}($path, $force);
-            } else {
-                $converter->{$method}($force);
-            }
+            $converter = App::make('dompdf.wrapper');
+            $converter->loadHTML($html);
             $this->pages = collect([]);
-            return true;
+            if ($force) {
+                return $converter->{$method}();
+            }
+
+            return $converter->{$method}($path);
         } catch (\Exception $exception) {
-            error('PhantomMagickConverter save error', [
+            error('LaravelDompdfConverter save error', [
                 'message' => $exception->getMessage(),
                 'line' => $exception->getLine(),
             ]);
             return false;
         }
     }
-
 }

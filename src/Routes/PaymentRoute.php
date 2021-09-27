@@ -12,6 +12,7 @@ class PaymentRoute extends AbstractRoutes implements Routes
     public static function routes(array $options = [])
     {
         $instance = self::instance();
+        $instance->index('payments', $options);
         $instance->store('payments', $options);
         $instance->show('payments', $options);
         $instance->route(

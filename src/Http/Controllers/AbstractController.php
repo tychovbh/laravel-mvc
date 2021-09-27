@@ -267,6 +267,9 @@ abstract class AbstractController implements ControllerInterface
     public function destroy($id): JsonResponse
     {
         return response()->json([
+            'data' => [
+                'id' => $id,
+            ],
             'deleted' => $this->repository->destroy([$id])
         ]);
     }

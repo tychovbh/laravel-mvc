@@ -18,7 +18,7 @@ class WildcardTest extends TestCase
      */
     private function database(): Database
     {
-        return $database = Database::factory()->create();
+        return Database::factory()->create();
     }
 
     /**

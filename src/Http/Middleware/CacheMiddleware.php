@@ -10,12 +10,15 @@ class CacheMiddleware
     /**
      * Handle an incoming request.
      * TODO do not cache exceptions
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
+        if ($request->method() !== 'GET') {
+            return $next($request);
+        }
 
         if (!config('mvc-cache.enabled') || boolean($request->get('cache_disabled'))) {
             return $next($request);
@@ -28,7 +31,7 @@ class CacheMiddleware
             $path .= '?' . http_build_query($params);
         }
 
-        $cache_minutes = get_route_info($request, 'cache_minutes') ?? (60 * 24);
+        $cache_minutes = get_route_info($request, 'cache_minutes') ?? config('mvc-cache.minutes');
         $route_name = get_route_info($request, 'as');
         $tags = [$route_name];
         $id = get_route_info($request, 'id');

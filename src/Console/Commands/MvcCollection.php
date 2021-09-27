@@ -43,7 +43,7 @@ class MvcCollection extends Command
         $file = sprintf('%s/database/collections/%s.php', base_path(), $filename);
 
         file_replace('Collection.php', [
-            'Entity' => Str::camel($name),
+            'Entity' => Str::studly($name),
             '{table}' => Str::lower($name)
         ], $file, __DIR__ . '/..');
 

@@ -29,7 +29,7 @@ class WildcardManager
      */
     public function __construct(string $database, string $table)
     {
-        $user = user();
+        $user = request()->user();
 
         $user_id = $database === config('database.connections.mysql.database') ? 1 : $user->id;
 

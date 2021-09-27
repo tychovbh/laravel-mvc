@@ -3,7 +3,6 @@
 namespace Tychovbh\Mvc\Models;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 use Mollie\Laravel\Facades\Mollie;
@@ -13,6 +12,12 @@ use Tychovbh\Mvc\Mail\PaymentUpdated;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 use Tychovbh\Mvc\Repositories\ProductRepository;
 
+/**
+ * Class Payment
+ * @package Tychovbh\Mvc\Models
+ * @property int id
+ * @property int user_id
+ */
 class Payment extends Model
 {
     const STATUS_OPEN = PaymentStatus::STATUS_OPEN;
@@ -41,15 +46,6 @@ class Payment extends Model
         $this->fillables('amount', 'description', 'status', 'options', 'products', 'external_id');
         $this->casts(['products' => 'array']);
         parent::__construct($attributes);
-    }
-
-    /**
-     * The User
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     /**

@@ -122,6 +122,12 @@ class MvcServiceProvider extends ServiceProvider
 
                 return new $service();
             });
+
+        }
+
+        if (config('mvc-html-converter.default') === 'LaravelDompdfConverter') {
+            $this->mergeConfigFrom(__DIR__ . '/../config/dompdf.php', 'dompdf');
+            $this->app->register(\Barryvdh\DomPDF\ServiceProvider::class);
         }
 
         if (config('mvc-address-lookup.default')) {

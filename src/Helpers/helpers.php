@@ -590,3 +590,20 @@ if (!function_exists('wildcard_manager')) {
         return WildcardManager::init($connection, $table);
     }
 }
+
+if (!function_exists('pdf_path')) {
+    /**
+     * The path to root folder
+     * @param $file
+     * @param bool $fromAssets
+     * @return string
+     */
+    function pdf_path($file, bool $fromAssets = false): string
+    {
+        if (request('preview') || $fromAssets) {
+            return url(str_replace('public/', '', $file));
+        }
+        return public_path($file);
+    }
+
+}

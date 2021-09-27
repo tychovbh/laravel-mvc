@@ -21,7 +21,9 @@ class UserResource extends JsonResource
             'is_admin' => (bool)$this->is_admin,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'roles' => $this->roles
+            'roles' => $this->when($this->hasRoles, function() {
+                return $this->roles;
+            })
         ];
     }
 }
