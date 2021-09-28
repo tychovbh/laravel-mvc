@@ -45,7 +45,7 @@ trait HasOptions
     {
         $options = $this->options ?? [];
         $options[$key] = $value;
-        $this->options = $options;
+        $this->attributes['options'] = json_encode($options);
     }
 
     /**
@@ -56,7 +56,7 @@ trait HasOptions
     {
         $options = $this->options ?? [];
         Arr::forget($options, $key);
-        $this->options = $options;
+        $this->attributes['options'] = json_encode($options);
     }
 
     /**
