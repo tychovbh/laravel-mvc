@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use Mollie\Laravel\Facades\Mollie;
 use Mollie\Api\Resources\Payment as External;
 use Mollie\Api\Types\PaymentStatus;
+use Tychovbh\Mvc\Contracts\HasOptions;
 use Tychovbh\Mvc\Mail\PaymentUpdated;
 use Tychovbh\Mvc\Repositories\PaymentRepository;
 use Tychovbh\Mvc\Repositories\ProductRepository;
@@ -20,6 +21,8 @@ use Tychovbh\Mvc\Repositories\ProductRepository;
  */
 class Payment extends Model
 {
+    use HasOptions;
+
     const STATUS_OPEN = PaymentStatus::STATUS_OPEN;
     const STATUS_PENDING = PaymentStatus::STATUS_PENDING;
     const STATUS_PAID = PaymentStatus::STATUS_PAID;
@@ -42,7 +45,7 @@ class Payment extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->columns('id', 'external_id', 'amount', 'description', 'status', 'options', 'products', 'user_id', 'created_at', 'updated_at');
+        $this->columns('id', 'external_id', 'amount', 'description', 'status', 'products', 'user_id', 'created_at', 'updated_at');
         $this->fillables('amount', 'description', 'status', 'options', 'products', 'external_id');
         $this->casts(['products' => 'array']);
         parent::__construct($attributes);
