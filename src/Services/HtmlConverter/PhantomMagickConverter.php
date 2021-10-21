@@ -36,9 +36,8 @@ class PhantomMagickConverter implements HtmlConverterInterface
      * Converts all the pages to specified type
      * @param string $path
      * @param string $type
-     * @return bool
      */
-    public function save(string $path, string $type = 'pdf'): bool
+    public function save(string $path, string $type = 'pdf')
     {
         try {
             $converter = new Converter();

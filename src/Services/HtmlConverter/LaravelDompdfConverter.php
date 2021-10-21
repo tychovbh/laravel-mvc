@@ -36,9 +36,8 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * Converts all the pages to specified type
      * @param string $path
      * @param string $type
-     * @return mixed
      */
-    public function save(string $path, string $type = 'pdf'): mixed
+    public function save(string $path, string $type = 'pdf')
     {
         return $this->convert('save', storage_path($path), $type);
     }
@@ -48,9 +47,8 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return mixed
      */
-    public function download(string $path, string $type = 'pdf', bool $force = false): mixed
+    public function download(string $path, string $type = 'pdf', bool $force = false)
     {
         return $this->convert($force ? 'stream' : 'download', $path, $type, $force);
     }
@@ -61,9 +59,8 @@ class LaravelDompdfConverter implements HtmlConverterInterface
      * @param string $path
      * @param string $type
      * @param bool $force
-     * @return mixed
      */
-    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false): mixed
+    private function convert(string $method, string $path, string $type = 'pdf', bool $force = false)
     {
         try {
             $html = '';
