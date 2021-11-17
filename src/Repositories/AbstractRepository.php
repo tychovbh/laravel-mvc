@@ -36,6 +36,11 @@ abstract class AbstractRepository
     protected $select;
 
     /**
+     * @var string
+     */
+    protected $groupBy;
+
+    /**
      * @var Model
      */
     public $model;
@@ -135,7 +140,7 @@ abstract class AbstractRepository
         }
 
         $this->params = [];
-        $this->query->groupBy($this->name . '.id');
+        $this->query->groupBy($this->groupBy ?? $this->name . '.id');
         if ($this->limit) {
             $this->query->limit($this->limit);
         }
