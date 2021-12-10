@@ -2,10 +2,7 @@
 
 namespace Tychovbh\Mvc;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
-use Mollie\Laravel\Facades\Mollie;
-use Mollie\Laravel\MollieServiceProvider;
 use Tychovbh\Mvc\Console\Commands\MvcCollection;
 use Tychovbh\Mvc\Console\Commands\MvcCollections;
 use Tychovbh\Mvc\Console\Commands\MvcPaymentsCheck;
@@ -17,23 +14,17 @@ use Tychovbh\Mvc\Console\Commands\MvcContractsUpdate;
 use Tychovbh\Mvc\Console\Commands\MvcUserCreate;
 use Tychovbh\Mvc\Console\Commands\MvcUserToken;
 use Tychovbh\Mvc\Console\Commands\VendorPublish;
-use Tychovbh\Mvc\Http\Middleware\AuthenticateMiddleware;
-use Tychovbh\Mvc\Http\Middleware\AuthorizeMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateMiddleware;
-use Tychovbh\Mvc\Http\Middleware\CacheMiddleware;
 use Tychovbh\Mvc\Http\Middleware\ValidateRequest;
 use Tychovbh\Mvc\Models\Address;
 use Tychovbh\Mvc\Models\Contract;
-use Tychovbh\Mvc\Models\Payment;
 use Tychovbh\Mvc\Observers\AddressObserver;
 use Tychovbh\Mvc\Observers\ContractObserver;
-use Tychovbh\Mvc\Observers\PaymentObserver;
 use Tychovbh\Mvc\Services\AddressLookup\AddressLookupInterface;
 use Tychovbh\Mvc\Services\DocumentSign\DocumentSignInterface;
 use Tychovbh\Mvc\Services\HtmlConverter\HtmlConverterInterface;
 use Tychovbh\Mvc\Services\Shop\ShopInterface;
 use Tychovbh\Mvc\Services\Voucher\VoucherInterface;
-use Urameshibr\Providers\FormRequestServiceProvider;
 
 class MvcServiceProvider extends ServiceProvider
 {
@@ -46,28 +37,20 @@ class MvcServiceProvider extends ServiceProvider
     {
         $this->observers();
 
-        $this->app->register(MollieServiceProvider::class);
-        if (is_application() === 'lumen') {
-            $this->app->routeMiddleware([
-                'auth' => AuthenticateMiddleware::class,
-                'authorize' => AuthorizeMiddleware::class,
-                'validate' => ValidateMiddleware::class,
-                'cache' => CacheMiddleware::class
-            ]);
-            $this->app->register(FormRequestServiceProvider::class);
-
-            $this->app->withFacades(true, [Mollie::class => 'Mollie']);
-        } else {
-            $router = $this->app['router'];
-            $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
-            $router->pushMiddlewareToGroup('validate.request', ValidateRequest::class);
+        if (config('mvc-payments.enabled')) {
+            $this->app->register(\Mollie\Laravel\MollieServiceProvider::class);
         }
+
+        $router = $this->app['router'];
+        $router->pushMiddlewareToGroup('validate', ValidateMiddleware::class);
+        $router->pushMiddlewareToGroup('validate.request', ValidateRequest::class);
+
 
         if (!$this->app->runningInConsole()) {
             return;
         }
 
-        $this->commands([
+        $commands = [
             MvcRepository::class,
             MvcController::class,
             MvcRequest::class,
@@ -76,9 +59,14 @@ class MvcServiceProvider extends ServiceProvider
             MvcCollections::class,
             MvcUserCreate::class,
             MvcUserToken::class,
-            MvcPaymentsCheck::class,
             MvcContractsUpdate::class
-        ]);
+        ];
+
+        if (config('mvc-payments.enabled')) {
+            $commands[] = MvcPaymentsCheck::class;
+        }
+
+        $this->commands($commands);
 
         $this->publishes([
             __DIR__ . '/../database/migrations' => database_path('migrations'),
@@ -101,7 +89,7 @@ class MvcServiceProvider extends ServiceProvider
     {
         if (config('mvc-document-sign.default')) {
             $this->app->bind(DocumentSignInterface::class, function ($app) {
-                $client = $app->make(Client::class);
+                $client = $app->make(\GuzzleHttp\Client::class);
                 $service = config('mvc-document-sign.default');
                 $service = 'Tychovbh\\Mvc\\Services\\DocumentSign\\' . $service;
 
@@ -126,7 +114,7 @@ class MvcServiceProvider extends ServiceProvider
 
         if (config('mvc-address-lookup.default')) {
             $this->app->bind(AddressLookupInterface::class, function ($app) {
-                $client = $app->make(Client::class);
+                $client = $app->make(\GuzzleHttp\Client::class);
                 $service = config('mvc-address-lookup.default');
                 $service = 'Tychovbh\\Mvc\\Services\\AddressLookup\\' . $service;
 
@@ -136,7 +124,7 @@ class MvcServiceProvider extends ServiceProvider
 
         if (config('mvc-shop.default')) {
             $this->app->bind(ShopInterface::class, function ($app) {
-                $client = $app->make(Client::class);
+                $client = $app->make(\GuzzleHttp\Client::class);
                 $service = config('mvc-shop.default');
                 $service = 'Tychovbh\\Mvc\\Services\\Shop\\' . $service;
 
@@ -146,7 +134,7 @@ class MvcServiceProvider extends ServiceProvider
 
         if (config('mvc-voucher.default')) {
             $this->app->bind(VoucherInterface::class, function ($app) {
-                $client = $app->make(Client::class);
+                $client = $app->make(\GuzzleHttp\Client::class);
                 $service = config('mvc-voucher.default');
                 $service = 'Tychovbh\\Mvc\\Services\\Voucher\\' . $service;
 
@@ -170,7 +158,9 @@ class MvcServiceProvider extends ServiceProvider
      */
     private function observers()
     {
-        $this->observe(Payment::class, PaymentObserver::class);
+        if (config('mvc-payments.enabled')) {
+            $this->observe(\Tychovbh\Mvc\Models\Payment::class, \Tychovbh\Mvc\Observers\PaymentObserver::class);
+        }
         if (config('mvc-address-lookup.default')) {
             $this->observe(Address::class, AddressObserver::class);
         }
