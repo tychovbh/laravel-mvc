@@ -18,6 +18,7 @@ use Tychovbh\Mvc\Repositories\ProductRepository;
  * @package Tychovbh\Mvc\Models
  * @property int id
  * @property int user_id
+ * @property string external_id
  */
 class Payment extends Model
 {

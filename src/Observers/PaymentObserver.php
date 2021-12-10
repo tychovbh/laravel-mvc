@@ -21,6 +21,8 @@ class PaymentObserver
      */
     public function created(Payment $payment)
     {
-        $payment->prepare();
+        if (!$payment->external_id) {
+            $payment->prepare();
+        }
     }
 }

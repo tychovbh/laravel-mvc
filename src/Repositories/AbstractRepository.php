@@ -333,7 +333,7 @@ abstract class AbstractRepository
 
     /**
      * Filter users on till created_at
-     * @param string $till
+     * @param strPAing $till
      */
     public function indexTillParam(string $till)
     {
