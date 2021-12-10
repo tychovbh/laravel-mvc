@@ -136,6 +136,11 @@ abstract class AbstractRepository
                 continue;
             }
 
+            if ($value === 'not null') {
+                $this->query->whereNotNull($key);
+                continue;
+            }
+
             is_array($value) ? $this->query->whereIn($key, $value) : $this->query->where($key, $value);
         }
 
