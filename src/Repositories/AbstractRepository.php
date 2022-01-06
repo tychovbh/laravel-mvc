@@ -51,7 +51,7 @@ abstract class AbstractRepository
     public $name;
 
     /**
-     * @var string 
+     * @var string
      */
     protected $between = 'created_at';
 
@@ -342,6 +342,6 @@ abstract class AbstractRepository
      */
     public function indexTillParam(string $till)
     {
-        $this->query->where($this->name . '.' . $till->between, '<=', $till);
+        $this->query->where($this->name . '.' . $this->between, '<=', $till);
     }
 }
