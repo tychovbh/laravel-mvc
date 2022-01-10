@@ -27,7 +27,11 @@ class AuthorizeMiddleware
 
         if ($id) {
             try {
-                $model = $model::withTrashed()->findOrFail($id);
+                if (method_exists($model, 'trashed')) {
+                    $model = $model::withTrashed()->findOrFail($id);
+                } else {
+                    $model = $model::findOrFail($id);
+                }
             } catch (Exception $exception) {
                 abort(404, message('model.notfound', str_replace('App\\', '', $model), 'ID', $id));
                 return;
