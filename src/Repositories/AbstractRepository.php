@@ -193,7 +193,7 @@ abstract class AbstractRepository
      */
     public function count(): int
     {
-        return $this->applyParams('index')->count([$this->name . '.*']);
+        return $this->applyParams('index')->distinct()->count();
     }
 
     /**
