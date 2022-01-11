@@ -41,6 +41,12 @@ interface Repository
     public function get(): Collection;
 
     /**
+     * Count a collection.
+     * @return int
+     */
+    public function count(): int;
+
+    /**
      * Set query limit
      * @param int $limit
      * @return Repository

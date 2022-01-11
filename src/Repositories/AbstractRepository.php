@@ -184,6 +184,15 @@ abstract class AbstractRepository
     }
 
     /**
+     * Count param filtered Collection.
+     * @return int
+     */
+    public function count(): int
+    {
+        return $this->applyParams('index')->count([$this->name . '.*']);
+    }
+
+    /**
      * Set query limit
      * @param int $limit
      * @return Repository
