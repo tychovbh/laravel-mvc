@@ -54,6 +54,13 @@ interface Repository
     public function limit(int $limit): Repository;
 
     /**
+     * Set query group by
+     * @param string $groupBy
+     * @return Repository
+     */
+    public function groupBy(string $groupBy): Repository;
+
+    /**
      * Set query select
      * @param array $select
      * @return Repository

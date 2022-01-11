@@ -150,7 +150,11 @@ abstract class AbstractRepository
         }
 
         $this->params = [];
-        $this->query->groupBy($this->groupBy ?? $this->name . '.id');
+
+        if ($this->groupBy) {
+            $this->query->groupBy($this->groupBy);
+        }
+
         if ($this->limit) {
             $this->query->limit($this->limit);
         }
@@ -200,6 +204,17 @@ abstract class AbstractRepository
     public function limit(int $limit): Repository
     {
         $this->limit = $limit;
+        return $this;
+    }
+
+    /**
+     * Set query group by
+     * @param string $groupBy
+     * @return Repository
+     */
+    public function groupBy(string $groupBy): Repository
+    {
+        $this->groupBy = $groupBy;
         return $this;
     }
 
