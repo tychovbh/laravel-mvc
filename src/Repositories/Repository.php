@@ -61,6 +61,12 @@ interface Repository
     public function groupBy(string $groupBy): Repository;
 
     /**
+     * Disable query group by
+     * @return Repository
+     */
+    public function disableGroupBy(): Repository;
+
+    /**
      * Set query select
      * @param array $select
      * @return Repository

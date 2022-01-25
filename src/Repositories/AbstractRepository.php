@@ -13,47 +13,52 @@ abstract class AbstractRepository
     /**
      * @var array
      */
-    protected $params = [];
+    protected array $params = [];
 
     /**
      * @var Builder
      */
-    protected $query;
+    protected Builder $query;
 
     /**
      * @var array
      */
-    protected $joins = [];
+    protected array $joins = [];
 
     /**
      * @var int
      */
-    protected $limit;
+    protected int $limit;
 
     /**
      * @var array
      */
-    protected $select;
+    protected array $select;
 
     /**
      * @var string
      */
-    protected $groupBy;
+    protected string $groupBy;
+
+    /**
+     * @var bool
+     */
+    protected bool $disableGroupBy = false;
 
     /**
      * @var Model
      */
-    public $model;
+    public mixed $model;
 
     /**
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * @var string
      */
-    protected $between = 'created_at';
+    protected string $between = 'created_at';
 
     /**
      * AbstractRepository constructor.
@@ -151,8 +156,8 @@ abstract class AbstractRepository
 
         $this->params = [];
 
-        if ($this->groupBy) {
-            $this->query->groupBy($this->groupBy);
+        if (!$this->disableGroupBy) {
+            $this->query->groupBy($this->groupBy ?? $this->name . '.id');
         }
 
         if ($this->limit) {
@@ -193,7 +198,7 @@ abstract class AbstractRepository
      */
     public function count(): int
     {
-        return $this->applyParams('index')->distinct()->count();
+        return $this->applyParams('index')->count($this->name . '.id');
     }
 
     /**
@@ -215,6 +220,17 @@ abstract class AbstractRepository
     public function groupBy(string $groupBy): Repository
     {
         $this->groupBy = $groupBy;
+        return $this;
+    }
+
+    /**
+     * Set query group by
+     * @param string $groupBy
+     * @return Repository
+     */
+    public function disableGroupBy(): Repository
+    {
+        $this->disableGroupBy = true;
         return $this;
     }
 
@@ -362,7 +378,7 @@ abstract class AbstractRepository
 
     /**
      * Filter users on till created_at
-     * @param strPAing $till
+     * @param string $till
      */
     public function indexTillParam(string $till)
     {
