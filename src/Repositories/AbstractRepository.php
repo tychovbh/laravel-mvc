@@ -28,12 +28,12 @@ abstract class AbstractRepository
     /**
      * @var int
      */
-    protected int $limit;
+    protected int $limit = 0;
 
     /**
      * @var array
      */
-    protected array $select;
+    protected array $select = [];
 
     /**
      * @var string
