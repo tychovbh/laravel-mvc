@@ -1,5 +1,5 @@
 <?php
-namespace Eyecons\LaravelTools\Contracts;
+namespace Tychovbh\Mvc\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
