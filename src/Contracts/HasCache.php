@@ -1,73 +1,66 @@
 <?php
-namespace Tychovbh\Mvc\Contracts;
+namespace Eyecons\LaravelTools\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Trait HasCache
+ * @package Eyecons\LaravelTools\Contracts
+ * @property int id
+ * @property string table
+ * @property Carbon updated_at
+ */
 trait HasCache
 {
     /**
-     * Boot the soft deleting trait for a model.
-     *
-     * @return void
+     * Boot the has cache trait for a model.
      */
     public static function bootHasCache()
     {
-        static::created(function (Model $model) {
-            $model->clearIndex($model);
-        });
-
-        static::updated(function (Model $model) {
-            $model->clearShow($model);
-            $model->clearIndex($model);
+        static::saved(function (Model $model) {
+            $model->cacheClearSaved();
         });
 
         static::deleted(function (Model $model) {
-            $model->clearShow($model);
-            $model->clearIndex($model);
+            $model->cacheClear();
         });
     }
 
-//    public static function find($id)
-//    {
-//        return Cache::tags([self::modelTag()])
-//            ->remember($token, now()->addHour(), function () use ($endpoint, $token, $token_key) {
-//                return $this->authenticate($endpoint, $token, $token_key);
-//            });
-//    }
-
     /**
-     * The model cache tag
-     * @param string $table
-     * @param $id
-     * @return string
+     * Clear cache
      */
-    public static function modelTag(string $table, $id)
+    public function cacheClearSaved()
     {
-        return sprintf('%s.show.model.%s', $table, '.' . $id);
+        if (
+            $this->getOriginal('updated_at') &&
+            $this->getOriginal('updated_at')->equalTo($this->updated_at)
+        ) {
+            return;
+        }
+
+        $this->cacheClear();
+    }
+
+    public function cacheClear()
+    {
+        $tags = [
+            $this->getTable() . '.show.' . $this->id,
+            $this->getTable() . '.index',
+        ];
+
+        $tags = array_merge($tags, $this->cacheTags());
+
+        Cache::tags($tags)->flush();
     }
 
     /**
-     * Clear cache show
-     * @param Model $model
+     * Extra cache tags to be cleared.
+     * @return array
      */
-    public function clearShow(Model $model)
+    public function cacheTags(): array
     {
-        Cache::tags([
-            sprintf('%s.show.%s', $model->getTable(), '.' . $model->id),
-            static::modelTag($model->getTable(), $model->id),
-        ])->flush();
-    }
-
-    /**
-     * Clear cache index
-     * @param Model $model
-     */
-    public function clearIndex(Model $model)
-    {
-        Cache::tags([
-            sprintf('%s.index.%s', $model->getTable(), $model->id),
-            sprintf('%s.index.collection', $model->getTable()),
-        ])->flush();
+        return [];
     }
 }
