@@ -177,8 +177,8 @@ abstract class AbstractRepository
      */
     public function setParams(array $params)
     {
-        if (Arr::has($this->params, 'between')) {
-            $this->between = $this->params['between'];
+        if (Arr::has($params, 'between')) {
+            $this->between = $params['between'];
         }
 
         $this->params = $params;
