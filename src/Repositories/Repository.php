@@ -21,6 +21,11 @@ interface Repository
     public function paginate(int $paginate): LengthAwarePaginator;
 
     /**
+     * Set Params.
+     */
+    public function setParams();
+
+    /**
      * Start query with params.
      * @param array $params
      * @return Repository

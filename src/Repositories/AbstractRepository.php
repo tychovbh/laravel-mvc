@@ -69,10 +69,6 @@ abstract class AbstractRepository
     {
         $this->model = $this->model ?? model(get_called_class());
         $this->name = $this->model->getTable();
-
-        if (Arr::has($this->params, 'between')) {
-            $this->between = $this->params['between'];
-        }
     }
 
     /**
@@ -176,6 +172,19 @@ abstract class AbstractRepository
     }
 
     /**
+     * Set Params.
+     * @param array $params
+     */
+    public function setParams(array $params)
+    {
+        if (Arr::has($this->params, 'between')) {
+            $this->between = $this->params['between'];
+        }
+
+        $this->params = $params;
+    }
+
+    /**
      * Add filter params before retrieving data.
      * @param array $params
      * @return Repository
@@ -184,7 +193,8 @@ abstract class AbstractRepository
     public static function withParams(array $params = []): Repository
     {
         $repository = new static();
-        $repository->params = $params;
+        $repository->setParams($params);
+
         return $repository;
     }
 
