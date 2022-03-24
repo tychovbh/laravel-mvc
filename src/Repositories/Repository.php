@@ -22,8 +22,9 @@ interface Repository
 
     /**
      * Set Params.
+     * @param array $params
      */
-    public function setParams();
+    public function setParams(array $params);
 
     /**
      * Start query with params.
