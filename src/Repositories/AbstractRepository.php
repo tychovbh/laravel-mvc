@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
 
 abstract class AbstractRepository
 {
@@ -68,6 +69,10 @@ abstract class AbstractRepository
     {
         $this->model = $this->model ?? model(get_called_class());
         $this->name = $this->model->getTable();
+
+        if (Arr::has($this->params, 'between')) {
+            $this->between = $this->params['between'];
+        }
     }
 
     /**
