@@ -22,7 +22,7 @@ class AuthorizeMiddleware
     {
         $id = $request->route('id');
         $name = explode('.', get_route_info($request, 'as'));
-        $model = 'App\\Models\\' .ucfirst(Str::singular($name[0]));
+        $model = 'App\\Models\\' . Str::ucfirst(Str::camel(Str::singular($name[0])));
         $model = project_or_package_class('Model', $model);
 
         if ($id) {
