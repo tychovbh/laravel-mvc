@@ -18,10 +18,10 @@ interface ControllerInterface
     /**
      * Show User Resource.
      * @param Request $request
-     * @param int $id
+     * @param string $id
      * @return JsonResource
      */
-    public function show(Request $request, int $id): JsonResource;
+    public function show(Request $request, string $id): JsonResource;
 
     /**
      * Store new Resource.
@@ -33,15 +33,15 @@ interface ControllerInterface
     /**
      * Update existing Resource.
      * @param Request $request
-     * @param int $id
+     * @param string $id
      * @return JsonResource
      */
-    public function update(Request $request, int $id): JsonResource;
+    public function update(Request $request, string $id): JsonResource;
 
     /**
      * Destroy Resource.
-     * @param int $id
+     * @param string $id
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse;
+    public function destroy(string $id): JsonResponse;
 }

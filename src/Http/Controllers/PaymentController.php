@@ -11,10 +11,10 @@ class PaymentController extends AbstractController
 {
     /**
      * Payment success
-     * @param int $id
+     * @param string $id
      * @return RedirectResponse
      */
-    public function success(int $id): RedirectResponse
+    public function success(string $id): RedirectResponse
     {
         $payment = new Payment;
 

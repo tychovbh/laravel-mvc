@@ -128,10 +128,10 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Show User Resource.
      * @param Request $request
-     * @param int $id
+     * @param string $id
      * @return JsonResource
      */
-    public function show(Request $request, int $id): JsonResource
+    public function show(Request $request, string $id): JsonResource
     {
         $params = $request->toArray();
         try {
@@ -171,10 +171,10 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Update existing Resource.
      * @param Request $request
-     * @param int $id
+     * @param string $id
      * @return JsonResource
      */
-    public function update(Request $request, int $id): JsonResource
+    public function update(Request $request, string $id): JsonResource
     {
         try {
             $model = $this->repository->update($request->toArray(), $id);
@@ -198,10 +198,10 @@ abstract class AbstractController implements ControllerInterface
 
     /**
      * Destroy Resource.
-     * @param int $id
+     * @param string $id
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         return response()->json([
             'data' => [
