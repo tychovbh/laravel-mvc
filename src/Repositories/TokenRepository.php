@@ -11,7 +11,7 @@ class TokenRepository extends AbstractRepository implements Repository
      * @param array $data
      * @return Token
      */
-    public function save(array $data)
+    public function save(array $data): mixed
     {
         return parent::save([
             'reference' => uniqid(),

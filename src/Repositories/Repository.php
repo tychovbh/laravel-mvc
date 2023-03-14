@@ -35,10 +35,10 @@ interface Repository
 
     /**
      * Find a resource by ID.
-     * @param int $id
+     * @param int|string $id
      * @return mixed
      */
-    public function find(int $id);
+    public function find(int|string $id): mixed;
 
     /**
      * Retrieve a collection.
@@ -91,22 +91,22 @@ interface Repository
      * @param string|int $value
      * @return mixed
      */
-    public function findBy(string $key, $value);
+    public function findBy(string $key, $value): mixed;
 
     /**
      * Save new resource.
      * @param array $data
      * @return mixed
      */
-    public function save(array $data);
+    public function save(array $data): mixed;
 
     /**
      * Update existing resource.
      * @param array $data
-     * @param int $id
+     * @param int|string $id
      * @return mixed
      */
-    public function update(array $data, int $id);
+    public function update(array $data, int|string $id): mixed;
 
     /**
      * Save new resource when not found or update existing resource.

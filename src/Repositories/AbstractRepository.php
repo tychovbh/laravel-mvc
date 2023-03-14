@@ -285,10 +285,10 @@ abstract class AbstractRepository
 
     /**
      * Find a resource by ID
-     * @param int $id
+     * @param int|string $id
      * @return mixed
      */
-    public function find(int $id)
+    public function find(int|string $id): mixed
     {
         return $this->model::findOrFail($id);
     }
@@ -299,7 +299,7 @@ abstract class AbstractRepository
      * @param string|int $value
      * @return mixed
      */
-    public function findBy(string $key, $value)
+    public function findBy(string $key, $value): mixed
     {
         return $this->model::where($key, $value)->firstOrFail();
     }
@@ -309,7 +309,7 @@ abstract class AbstractRepository
      * @param array $data
      * @return mixed
      */
-    public function save(array $data)
+    public function save(array $data): mixed
     {
         return $this->model::create($data);
     }
@@ -317,10 +317,10 @@ abstract class AbstractRepository
     /**
      * Update existing resource.
      * @param array $data
-     * @param int $id
+     * @param int|string $id
      * @return mixed
      */
-    public function update(array $data, int $id)
+    public function update(array $data, int|string $id): mixed
     {
         $model = $this->find($id);
         $model->fill($data);
@@ -335,7 +335,7 @@ abstract class AbstractRepository
      * @param array $data
      * @return mixed
      */
-    public function saveOrUpdate(string $field, string $search, array $data = [])
+    public function saveOrUpdate(string $field, string $search, array $data = []): mixed
     {
         try {
             $property = $this->findBy($field, $search);

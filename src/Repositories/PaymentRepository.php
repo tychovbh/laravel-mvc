@@ -14,7 +14,7 @@ class PaymentRepository extends AbstractRepository implements Repository
      * @return mixed
      * @throws \Exception
      */
-    public function save(array $data)
+    public function save(array $data): mixed
     {
         $existing = $this::withParams([
             'products' => Arr::has($data, 'products') ? json_encode($data['products']) : null,
